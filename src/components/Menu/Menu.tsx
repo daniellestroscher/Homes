@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react';
+import { signOut } from 'next-auth/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faCircleRight, faCircleLeft, faHouse, faMoneyBillTrendUp, faChartSimple, faPlus, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
@@ -73,9 +74,15 @@ function Menu() {
         <div sx={{ variant: 'components.listItem'}}>
             <FontAwesomeIcon icon={faArrowRightFromBracket as IconProp} />
             <li>
-              <Link href=''>
-              Logout
-              </Link>
+              <a
+                href={`/api/auth/signout`}
+                onClick={(e) => {
+                  e.preventDefault()
+                  signOut()
+                }}
+              >
+                Logout
+              </a>
             </li>
         </div>
       </ul>

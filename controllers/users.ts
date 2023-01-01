@@ -3,6 +3,8 @@ import db from "../models/index";
 import isEmail from 'validator/lib/isEmail'
 import isLength from 'validator/lib/isLength'
 import { IUser } from "../types/interfaces";
+const bcrypt = require('bcrypt');
+import { getToken } from 'next-auth/jwt'
 
 db.sequelize.sync();
 const UserModel = db.users;
@@ -11,8 +13,10 @@ export async function addUser(
   req: NextApiRequest,
   res: NextApiResponse<IUser | { error: unknown } | string>
 ) {
-  let { id, name, email } = req.body;
+  const { id, name, email, password } = req.body;
+  const token = await getToken({req})
   try {
+    const hash = await bcrypt.hash(password, 0);
     //check email and name format
     if (!isLength(name, {min: 3, max: 15})) {
       return res.status(422).send("Name must be 3-10 characters long");
@@ -30,6 +34,7 @@ export async function addUser(
       id,
       name,
       email,
+      hash,
     });
     return res.status(201).json(newUser);
 

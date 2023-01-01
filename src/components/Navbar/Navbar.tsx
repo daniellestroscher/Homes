@@ -7,7 +7,7 @@ import Darken from '../Darken';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import Login from '../Login/Login'
 
 function Navbar () {
   const [colorMode, setColorMode] = useColorMode();
@@ -44,6 +44,7 @@ function Navbar () {
         <FontAwesomeIcon icon={faUser as IconProp}
         sx={{ height: '22px', cursor: 'pointer', color: 'text'}}
         />
+        <Login/>
       </div>
     </div>
   )
