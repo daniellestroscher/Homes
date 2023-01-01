@@ -4,7 +4,7 @@ import Auth0Provider from 'next-auth/providers/auth0'
 import EmailProvider from 'next-auth/providers/email'
 import GoogleProvider from 'next-auth/providers/google'
 
-export const options:NextAuthOptions = {
+export const authOptions:NextAuthOptions = {
   providers: [
     Auth0Provider({
       clientId: process.env.AUTH0_ID as string,
@@ -37,4 +37,4 @@ export const options:NextAuthOptions = {
   }
 }
 
-export default (req : NextApiRequest, res: NextApiResponse) => NextAuth(req, res, options)
+export default (req : NextApiRequest, res: NextApiResponse) => NextAuth(req, res, authOptions)

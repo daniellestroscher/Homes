@@ -1,17 +1,19 @@
 
 import Head from 'next/head'
-import { useSession } from "next-auth/react"
-import { Inter } from '@next/font/google'
+import { useSession, getSession } from "next-auth/react"
 import Navbar from '../src/components/Navbar/Navbar'
 import Menu from '../src/components/Menu/Menu'
 import UnitList from '../src/components/UnitList/UnitList'
 
-const inter = Inter({ subsets: ['latin'] })
+import { unstable_getServerSession } from "next-auth/next"
+import { authOptions } from "./api/auth/[...nextauth]"
+import type { GetServerSidePropsContext } from "next"
+import type { Session } from "next-auth"
 
-export default function Home() {
+export default function Home(user: { session: Session }) {
   // `session` will match the returned value of `callbacks.session()` from `NextAuth()`
-  const { data: session } = useSession()
-  console.log(session)
+  //const { data: session } = useSession();
+  console.log(user)
 
   return (
     <>
@@ -25,7 +27,7 @@ export default function Home() {
       <main>
         <Navbar/>
         {
-          session &&
+          user &&
           <>
             <Menu/>
             <UnitList/>
@@ -34,4 +36,25 @@ export default function Home() {
       </main>
     </>
   )
+}
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+  if(!session){
+    return{
+        redirect:{
+            destination:`api/auth/signin?callbackUrl=${ process.env.REDIRECT_URL }`,
+            permanent: false,
+        }
+    }
+  }
+  else {
+    const {user} = session as any;
+    return {
+      props: user
+    }
+  }
 }

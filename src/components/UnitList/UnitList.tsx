@@ -1,15 +1,10 @@
 /** @jsxImportSource theme-ui */
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-function UnitList() {
-  let message = 'here is a card.'
+export default function UnitList() {
 
   return (
-    <div sx={{border: '2px solid black', height: '20px'}}>
-      {message}
+    <div sx={{variant: 'containers.unitList'}}>
+      {'SHOW UPPPP'}
     </div>
   )
 }
-export default UnitList;

@@ -37,7 +37,6 @@ export default {
       borderRadius: 12,
       background: 'grey',
       border: '1px solid accent',
-
     }
   },
   components: {
@@ -79,6 +78,20 @@ export default {
       li: {
         display: 'none'
       }
+    }
+  },
+  containers: {
+    pageComplete: {
+      display: 'flex'
+    },
+    unitList: {
+      display: 'block',
+      height: '500px',
+      backgroundColor: 'purple',
+      // position: 'absolute',
+      // top: '80px',
+      // left: '100px',
+      // display: '-ms-grid'
     }
   }
 

@@ -17,7 +17,7 @@ function Menu() {
       sx={{
       cursor: 'pointer',
       height: '22px',
-      position: 'absolute',
+      position: 'fixed',
       top: '70px',
       left: '10px',
       zIndex: '1',
