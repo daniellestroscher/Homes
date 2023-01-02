@@ -33,10 +33,13 @@ export default {
   },
   cards: {
     primary: {
-      padding: '1 rem',
-      borderRadius: 12,
+      padding: '1rem',
+      margin: '1rem',
+      borderRadius: '12px',
       background: 'grey',
-      border: '1px solid accent',
+      border: '1px solid green',
+      height: '125px',
+      maxWidth: '300px',
     }
   },
   components: {
@@ -81,17 +84,24 @@ export default {
     }
   },
   containers: {
-    pageComplete: {
-      display: 'flex'
+    unitListCont: {
+      display: 'flex',
+      position: 'absolute',
+      top: '58px',
+      margin: '3px',
+      height: '100vh',
+      width: '100vw',
+      border: '1px solid blue',
     },
     unitList: {
-      display: 'block',
-      height: '500px',
+      display: 'grid',
+      //gridTemplateColumns: 'auto auto auto',
+      gridTemplateColumns: 'repeat(4, minmax(35%, auto))',
+      gridTemplateRows: '150px',
+      //justifyContent: 'space-evenly',
+      gap: '5px',
+      //width: '100vw',
       backgroundColor: 'purple',
-      // position: 'absolute',
-      // top: '80px',
-      // left: '100px',
-      // display: '-ms-grid'
     }
   }
 

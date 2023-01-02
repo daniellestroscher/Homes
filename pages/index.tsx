@@ -1,5 +1,6 @@
-
+/** @jsxImportSource theme-ui */
 import Head from 'next/head'
+import { useState } from 'react'
 import { useSession, getSession } from "next-auth/react"
 import Navbar from '../src/components/Navbar/Navbar'
 import Menu from '../src/components/Menu/Menu'
@@ -14,6 +15,7 @@ export default function Home(user: { session: Session }) {
   // `session` will match the returned value of `callbacks.session()` from `NextAuth()`
   //const { data: session } = useSession();
   console.log(user)
+  const [menuToggle, setMenuToggle] = useState<boolean>(true);
 
   return (
     <>
@@ -29,8 +31,17 @@ export default function Home(user: { session: Session }) {
         {
           user &&
           <>
-            <Menu/>
+            <Menu menuToggle={menuToggle} setMenuToggle={setMenuToggle}/>
+            <div sx={{
+              variant: 'containers.unitListCont',
+              left: '35px',
+              ...(menuToggle && {
+                variant: 'containers.unitListCont',
+                left: '155px'
+              })
+            }}>
             <UnitList/>
+            </div>
           </>
         }
       </main>

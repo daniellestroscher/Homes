@@ -5,9 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faCircleRight, faCircleLeft, faHouse, faMoneyBillTrendUp, faChartSimple, faPlus, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-
-function Menu() {
-  const [menuToggle, setMenuToggle] = useState<boolean>(true);
+type props = {
+  menuToggle: boolean,
+  setMenuToggle: (arg:boolean) => void,
+}
+function Menu({menuToggle, setMenuToggle}:props) {
 
   return (
     <>
