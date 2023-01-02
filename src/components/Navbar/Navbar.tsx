@@ -39,13 +39,10 @@ function Navbar () {
       >
       </Image>
       <span>{'park name here'}</span>
-      <div sx={{ display: 'flex', gap:'10px', alignItems:'center'}}>
+      <div sx={{ display: 'flex', alignItems:'center'}}>
         <div sx={{ height: 24 }} onClick={handleModeChange}>
           {colorMode === 'default' ? <Darken /> : <Brighten />}
         </div>
-        <FontAwesomeIcon icon={faUser as IconProp}
-        sx={{ height: '22px', cursor: 'pointer', color: 'text'}}
-        />
         <Login/>
       </div>
     </div>

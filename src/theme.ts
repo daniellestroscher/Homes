@@ -34,25 +34,27 @@ export default {
   cards: {
     primary: {
       padding: '1rem',
-      margin: '1rem',
-      borderRadius: '12px',
+      margin: '6px',
+      borderRadius: '6px',
       background: 'grey',
       border: '1px solid green',
       height: '125px',
-      maxWidth: '300px',
+      width: '275px',
+      minWidth: '225px',
     }
   },
   components: {
-    menuOpen: {
+    menu: {
       position: 'fixed',
       height: '100vh',
       top: '58px',
       bottom: '0px',
       left: '0px',
       width: '155px',
-      margin: '3px',
+      margin: '8px 4px',
       padding: '8px',
       borderRadius: '4px',
+      border: '1px solid green',
       backgroundColor: 'lightGrey',
       li: {
         fontSize: '13px',
@@ -65,43 +67,39 @@ export default {
       gap: '15px',
       padding: '0px 0px 25px',
       color: 'text',
-      fontSize: '15px'
-    },
-    menuClose: {
-      position: 'fixed',
-      height: '100vh',
-      top: '58px',
-      bottom: '0px',
-      left: '0px',
-      width: '35px',
-      margin: '3px',
-      padding: '8px',
-      borderRadius: '4px',
-      backgroundColor: 'lightGrey',
-      li: {
-        display: 'none'
+
+      li : {
+        fontSize: '14px'
       }
-    }
+    },
   },
   containers: {
-    unitListCont: {
+    mainPageCont: {
       display: 'flex',
       position: 'absolute',
       top: '58px',
-      margin: '3px',
       height: '100vh',
       width: '100vw',
-      border: '1px solid blue',
     },
     unitList: {
       display: 'grid',
-      //gridTemplateColumns: 'auto auto auto',
-      gridTemplateColumns: 'repeat(4, minmax(35%, auto))',
-      gridTemplateRows: '150px',
-      //justifyContent: 'space-evenly',
-      gap: '5px',
-      //width: '100vw',
-      backgroundColor: 'purple',
+      gridAutoFlow: 'row',
+      gridTemplateColumns: 'repeat(auto-fill, 275px)',
+      gridTemplateRows: 'repeat(auto-fill, 125px)',
+      gap: '10px',
+      width: '100vw',
+      margin: '8px',
+    },
+    pictureBox: {
+      display: 'flex',
+      height: '35px',
+      margin: '5px',
+      boxShadow: '0 5px 10px -5px rgba(0,0,0,0.5)',
+      border: '2px solid white',
+      borderRadius: '50%',
+      aspectRatio: '1',
+      overflow: 'hidden',
+      backgroundColor: 'accent',
     }
   }
 
