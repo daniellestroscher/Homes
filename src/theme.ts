@@ -27,9 +27,12 @@ export default {
   },
   buttons: {
     primary: {
-
+      padding: '10px',
+      background: 'transparent',
+      border: '1px solid black',
+      width: '80px',
+      cursor: 'pointer',
     }
-
   },
   cards: {
     primary: {
@@ -41,6 +44,15 @@ export default {
       height: '125px',
       width: '275px',
       minWidth: '225px',
+    },
+    communityCard: {
+      padding: '1rem',
+      borderRadius: '6px',
+      background: 'accent',
+      color: 'white',
+      height: '150px',
+      width: '455px',
+      minWidth: '300px',
     }
   },
   components: {
@@ -72,6 +84,12 @@ export default {
         fontSize: '14px'
       }
     },
+    form: {
+      display: 'flex',
+      flexDirection: 'column',
+      width: '500px',
+
+    }
   },
   containers: {
     mainPageCont: {
@@ -80,6 +98,16 @@ export default {
       top: '58px',
       height: '100vh',
       width: '100vw',
+    },
+    singlePageFormCont: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      position: "fixed",
+      top: "60px",
+      width: "800px",
+      height: "100vh",
+      backgroundColor: "lightGrey",
     },
     unitList: {
       display: 'grid',

@@ -19,19 +19,32 @@
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
     "bcrypt": "^5.1.0",
+    "cloudinary": "^1.33.0",
     "eslint": "8.30.0",
     "eslint-config-next": "13.1.0",
+    "express-fileupload": "^1.4.0",
+    "filepond": "^4.30.4",
+    "filepond-plugin-image-exif-orientation": "^1.0.11",
+    "filepond-plugin-image-preview": "^4.6.11",
+    "fs": "^0.0.1-security",
+    "fs-extra": "^11.1.0",
     "next": "13.1.0",
     "next-auth": "^4.18.7",
     "next-connect": "^0.13.0",
+    "next-http-proxy-middleware": "^1.2.5",
     "nodemailer": "^6.8.0",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-filepond": "^7.1.2",
     "sequelize": "^6.28.0",
     "theme-ui": "^0.15.4",
     "typescript": "4.9.4",
     "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "@types/express-fileupload": "^1.4.1",
+    "@types/fs-extra": "^9.0.13"
   }
 }

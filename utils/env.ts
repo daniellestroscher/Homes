@@ -4,5 +4,9 @@ export default {
   dbPort: Number(process.env.DB_SQL_PORT),
   dbPassword: process.env.DB_SQL_PASSWORD as string,
   dbName: process.env.DB_SQL_DATABASENAME as string,
-  dbDialect: process.env.NODE_ENV === 'test' ? 'postgres' : process.env.DB_SQL_DIALECT
+  dbDialect: process.env.NODE_ENV === 'test' ? 'postgres' : process.env.DB_SQL_DIALECT,
+
+  cloudName: process.env.CLOUD_NAME,
+  cloudPublicKey: process.env.API_KEY,
+  cloudSecretKey: process.env.API_SECRET,
 };

@@ -4,9 +4,6 @@ import Image from 'next/image'
 import { useColorMode } from 'theme-ui';
 import Brighten from '../Brighten';
 import Darken from '../Darken';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
 import Login from '../Login/Login'
 
 function Navbar () {

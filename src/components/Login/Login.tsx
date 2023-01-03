@@ -14,7 +14,6 @@ export default function login() {
 
   return (
     <div>
-    <p>
       {!session && (
         <>
           <FontAwesomeIcon icon={faUser as IconProp}
@@ -57,7 +56,6 @@ export default function login() {
           </span>
         </div>
       )}
-    </p>
   </div>
   )
 }

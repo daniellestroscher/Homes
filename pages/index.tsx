@@ -1,17 +1,24 @@
 /** @jsxImportSource theme-ui */
 import Head from "next/head";
-import { useState } from "react";
+import Image from "next/image";
 import Navbar from "../src/components/Navbar/Navbar";
-import Menu from "../src/components/Menu/Menu";
-import UnitList from "../src/components/UnitList/UnitList";
+import CommunityCardList from "../src/components/CommunityCardList/CommunityCardList";
+import AddCommunityForm from "../src/components/AddCommunityForm/AddCommunityForm";
 
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import type { GetServerSidePropsContext } from "next";
 import type { Session } from "next-auth";
+import { useState } from "react";
 
-export default function Home(user: { session: Session }) {
-  // const [menuToggle, setMenuToggle] = useState<boolean>(true);
+type Props = {
+  email: string;
+  session: Session;
+  image: string;
+};
+export default function Home(user: Props) {
+  const [communityFormToggle, setCommunityFormToggle] = useState<boolean>(false);
+  console.log(user)
 
   return (
     <>
@@ -27,36 +34,64 @@ export default function Home(user: { session: Session }) {
       </Head>
       <main>
         <Navbar />
-        {user && (
+        {user && !communityFormToggle && (
           <div sx={{ display: "flex", justifyContent: "center" }}>
             <section
               sx={{
-                width: "75%",
-                height: "100vh",
-                backgroundColor: "lightblue",
+                variant: 'containers.singlePageFormCont'
               }}
             >
-              <span sx={{
-                variant: "containers.pictureBox",
-                height: '140px',
-                position: 'absolute',
-                top: '100px',
-                marginLeft: '50px',
-                }} />
+              <div
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "500px",
+                  gap: "50px",
+                  padding: "25px",
+                }}
+              >
+                <span
+                  sx={{
+                    variant: "containers.pictureBox",
+                    height: "140px",
+                  }}
+                >
+                  <Image
+                    src={user.image}
+                    alt="profile pic"
+                    width={140}
+                    height={140}
+                    sx={{ objectFit: "cover", alignSelf: "center" }}
+                  />
+                </span>
+                <h4>{user.email}</h4>
+              </div>
+              <div>
+                <div
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-end",
+                    width: "455px",
+                  }}
+                >
+                  <h4>My Communities:</h4>
+                  <button
+                    sx={{ variant: "buttons.primary" }}
+                    onClick={() => setCommunityFormToggle(!communityFormToggle)}
+                  >
+                    Add
+                  </button>
+                </div>
+                <CommunityCardList />
+              </div>
             </section>
-            {/* <Menu menuToggle={menuToggle} setMenuToggle={setMenuToggle}/>
-              <div sx={{
-                variant: 'containers.mainPageCont',
-                left: '35px',
-                ...(menuToggle && {
-                  variant: 'containers.mainPageCont',
-                  left: '155px'
-                })
-              }}>
-              <UnitList/>
-              </div> */}
           </div>
         )}
+        {
+          user && communityFormToggle &&
+          <AddCommunityForm communityFormToggle={communityFormToggle} setCommunityFormToggle={setCommunityFormToggle}/>
+        }
       </main>
     </>
   );

@@ -4,6 +4,12 @@ import Auth0Provider from 'next-auth/providers/auth0'
 import EmailProvider from 'next-auth/providers/email'
 import GoogleProvider from 'next-auth/providers/google'
 
+import SequelizeAdapter from "@next-auth/sequelize-adapter"
+import { sequelize } from '../../../models'
+//import { Sequelize } from "sequelize"
+//const connectionString = process.env.DB_CONNECTION_STRING as string;
+//const sequelize = new Sequelize(connectionString)
+
 export const authOptions:NextAuthOptions = {
   providers: [
     Auth0Provider({
@@ -28,6 +34,7 @@ export const authOptions:NextAuthOptions = {
       clientSecret: process.env.GOOGLE_SECRET as string,
     }),
   ],
+  adapter: SequelizeAdapter(sequelize),
   secret: process.env.JWT_SECRET,
   callbacks: {
     async jwt({ token }:any) {
