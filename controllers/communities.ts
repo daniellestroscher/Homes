@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { uploadImage } from "../helpers/cloudinary";
-import fs from "fs-extra";
 import CommunityModel from "../models/community";
-
 import { ICommunity } from "../types/interfaces";
 
 export async function createCommunity(
@@ -18,7 +16,6 @@ export async function createCommunity(
         address,
         image: uploadedImg.secure_url,
       });
-      await fs.unlink(image.path);
       return res.status(200).json(community);
     }
   } catch (error) {

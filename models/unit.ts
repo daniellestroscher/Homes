@@ -1,12 +1,11 @@
 import { DataTypes, Model } from "sequelize";
 
-import { sequelize } from "./index";
+import { sequelize } from "../database/connection";
 import { IUnit } from "../types/interfaces";
 
 const UnitSchema = sequelize.define<Model<IUnit>>("unit", {
   id: {
     type: DataTypes.UUID,
-    defaultValue: sequelize.fn("uuid_generate_v4"),
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
