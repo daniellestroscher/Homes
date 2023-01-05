@@ -5,7 +5,7 @@ import { useColorMode } from 'theme-ui';
 import Brighten from '../Brighten';
 import Darken from '../Darken';
 import Login from '../Login/Login'
-import CommunityCardList from '../CommunityCardList/CommunityCardList';
+
 type Props = {
   name: string | undefined;
 }
@@ -14,8 +14,6 @@ function Navbar ({name}:Props) {
   function handleModeChange() {
     setColorMode(colorMode === 'default' ? 'dark' : 'default');
   }
-  console.log(name);
-
 
   return (
     <div sx={{

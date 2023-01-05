@@ -69,7 +69,7 @@ export default function AddCommunityForm({
         >
           <FontAwesomeIcon
             icon={faXmark as IconProp}
-            sx={{ alignSelf: "flex-end", size: "17px" }}
+            sx={{ alignSelf: "flex-end", size: "40px", padding: "10px" }}
             onClick={() => setCommunityFormToggle(!communityFormToggle)}
           />
           <FilePond
@@ -80,6 +80,7 @@ export default function AddCommunityForm({
             acceptedFileTypes={["image/*"]}
             name="files" /* sets the file input name, it's filepond by default */
             labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+
           />
           <input
             value={community.name}

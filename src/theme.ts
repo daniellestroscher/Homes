@@ -1,10 +1,12 @@
 export default {
   colors: {
-    text: "#343a40",
-    background: "#fff",
+    background: "white",
+    darkGrey: "#343a40",
+    lightGrey: "#f0f0f0",
     accent: "#3a5a40",
-    grey: "#B4B9BC",
-    lightGrey: "#f2f2f2",
+    accentLight: "#839788",
+    accentDark: "#1D480A",
+    champagne: "#EEE0CB",
     modes: {
       dark: {
         text: "#fff",
@@ -14,40 +16,74 @@ export default {
     },
   },
   fonts: {
-    body: "Comic Sans MS",
+    body: "Work Sans, sans-serif",
   },
-  fontWeights: {},
+  fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],
+  fontWeights: {
+    body: 300,
+    heading: 400,
+    bold: 600,
+  },
   space: {},
   styles: {
+    root: {
+      fontFamily: "body",
+      fontWeight: "body",
+    },
   },
   buttons: {
     primary: {
       padding: "10px",
       background: "transparent",
       border: "1px solid black",
+      borderRadius: "3px",
       width: "80px",
       cursor: "pointer",
+      boxShadow: "2px 2px 2px grey",
+      "&:hover": {
+        color: "black",
+      },
+      "&:active": {
+        color: "black",
+        boxShadow: "none",
+      },
     },
   },
   cards: {
     primary: {
       padding: "1rem",
       margin: "6px",
-      borderRadius: "6px",
-      background: "grey",
+      borderRadius: "3px",
       border: "1px solid green",
       height: "125px",
       width: "275px",
       minWidth: "225px",
+      boxShadow: "2px 2px 2px grey",
+      "&:hover": {
+        bg: "accentLight",
+        transform: "scale(1.02)",
+        color: "white",
+        opacity: "0.75",
+        fontWeight: "bold"
+      },
     },
     communityCard: {
       padding: "1rem",
       borderRadius: "6px",
       background: "accent",
       color: "white",
-      minHeight: "150px",
+      minHeight: "200px",
       width: "455px",
       minWidth: "300px",
+      display: "flex",
+      flexDirection: "column",
+      alignSelf: "flex-start",
+      justifyContent: "flex-end",
+      "&:hover": {
+        bg: "text",
+        opacity: "0.90",
+        transform: "scale(1.02)",
+      },
     },
   },
   components: {
@@ -82,6 +118,15 @@ export default {
       display: "flex",
       flexDirection: "column",
       width: "500px",
+      input: {
+        padding: "10px",
+        margin: "8px",
+      },
+      button: {
+        variant: "buttons.primary",
+        margin: "8px",
+        width: "485px",
+      },
     },
   },
   containers: {
@@ -101,24 +146,25 @@ export default {
       width: "800px",
       height: "93vh",
       backgroundColor: "lightGrey",
-      scroll: 'none'
+      scroll: "none",
     },
     unitList: {
       display: "grid",
       gridAutoFlow: "row",
       gridTemplateColumns: "repeat(auto-fill, 275px)",
       gridTemplateRows: "repeat(auto-fill, 125px)",
-      gap: "10px",
+      gap: "15px",
       width: "100vw",
       margin: "8px",
     },
     communityList: {
       display: "flex",
+      alignContent: "center",
       flexDirection: "column",
       height: "550px",
+      padding: "10px 22px",
       overflowY: "scroll",
-      overflowX: 'hidden',
-      margin: "15px 0px",
+      overflowX: "hidden",
       "&::-webkit-scrollbar": {
         display: "none",
       },

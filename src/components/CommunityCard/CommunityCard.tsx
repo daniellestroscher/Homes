@@ -11,11 +11,8 @@ export default function CommintyCard({ card }: Props) {
       <div
         sx={{
           variant: "cards.communityCard",
-          display: "flex",
-          flexDirection: "column",
-          marginTop: "20px",
-          alignSelf: "flex-start",
-          justifyContent: "flex-end",
+          backgroundImage: `url('${card.image}')`,
+          backgroundSize: 'cover',
         }}
       >
         <h3>{card.name}</h3>

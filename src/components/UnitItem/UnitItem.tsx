@@ -12,10 +12,13 @@ export default function UnitItem({unit}:Props) {
 
   return (
     <Link href="/id/unitId" as={`/${id}/${unit.id}`}>
-      <div sx={{variant: 'cards.primary'}}>
+      <div sx={{variant: 'cards.primary', position: "relative"}}>
         <p>{unit.tenantOne.firstName + ' ' + unit.tenantOne.lastName}</p>
         <p>{unit.tenantTwo?.firstName + ' ' + unit.tenantTwo?.lastName}</p>
-        <div>No. {unit.number}</div>
+        <div
+          sx={{position: "absolute", bottom: "15px", right: "15px"}}
+        >No. {unit.number}
+        </div>
       </div>
     </Link>
   )
