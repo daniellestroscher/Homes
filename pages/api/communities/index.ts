@@ -1,8 +1,6 @@
-import nc from 'next-connect';
-import fileupload from 'express-fileupload'
-import { createCommunity  } from '../../../controllers/communities';
+import nc from "next-connect";
+import { createCommunity, getAllCommunities } from "../../../controllers/communities";
 
-//const handler = nc().use(verifyToken).post(createLocation);
-const handler = nc().use(fileupload({useTempFiles: true})).post(createCommunity);
+const handler = nc().get(getAllCommunities).post(createCommunity);
 
 export default handler;

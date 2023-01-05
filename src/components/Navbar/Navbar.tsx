@@ -5,13 +5,17 @@ import { useColorMode } from 'theme-ui';
 import Brighten from '../Brighten';
 import Darken from '../Darken';
 import Login from '../Login/Login'
-
-function Navbar () {
+import CommunityCardList from '../CommunityCardList/CommunityCardList';
+type Props = {
+  name: string | undefined;
+}
+function Navbar ({name}:Props) {
   const [colorMode, setColorMode] = useColorMode();
   function handleModeChange() {
     setColorMode(colorMode === 'default' ? 'dark' : 'default');
   }
-  const [menuToggle, setMenuToggle] = useState<boolean>(true);
+  console.log(name);
+
 
   return (
     <div sx={{
@@ -20,6 +24,7 @@ function Navbar () {
     alignItems: 'center',
     position: 'fixed',
     width: '100vw',
+    height: '70px',
     backgroundColor: 'background',
     boxShadow: '0 0 8px rgba(0, 0, 0, 0.125)',
     padding: '8px 20px 8px 20px',
@@ -35,7 +40,7 @@ function Navbar () {
       priority
       >
       </Image>
-      <span>{'park name here'}</span>
+      <span>{name && name}</span>
       <div sx={{ display: 'flex', alignItems:'center'}}>
         <div sx={{ height: 24 }} onClick={handleModeChange}>
           {colorMode === 'default' ? <Darken /> : <Brighten />}

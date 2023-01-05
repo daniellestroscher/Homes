@@ -1,18 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import UnitModel from "../models/unit";
-import { IUnit } from "../types/interfaces";
-
-// db.sequelize.sync();
-// const UnitModel = db.units;
+import UnitSchema from "../models/unit";
 
 export async function addUnit(
   req: NextApiRequest,
-  res: NextApiResponse //<IUnit | { error: unknown }>
-) {
+  res: NextApiResponse,
+  ) {
   try {
     const { number, tenantOne, tenantTwo } = req.body;
     if (number && tenantOne) {
-      const unit = await UnitModel.create({
+      const unit = await UnitSchema.create({
         number,
         tenantOne,
         tenantTwo,

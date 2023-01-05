@@ -6,6 +6,7 @@ export async function fetchData<T>(
   token?: string,
 ): Promise<T | void> {
   if (options) {
+
     options.headers = {
       'Content-Type': 'application/json',
     };
