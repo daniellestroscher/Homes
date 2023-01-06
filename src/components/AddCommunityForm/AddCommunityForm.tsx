@@ -56,6 +56,7 @@ export default function AddCommunityForm({
       setCommunityList([...communityList, newCommunity]);
       setCommunity(initialState);
       setImgFiles([]);
+      setCommunityFormToggle(!communityFormToggle)
     } else {
       alert("All fields are required");
     }

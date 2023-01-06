@@ -10,18 +10,14 @@ const UnitSchema = sequelize.define<Model<IUnit>>("unit", {
     autoIncrement: true,
     allowNull: false,
   },
+  communityId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+  },
   number: {
     type: DataTypes.INTEGER,
     allowNull: false,
-  },
-  tenantOne: {
-    type: DataTypes.JSON,
-    allowNull: false,
-  },
-  tenantTwo: {
-    type: DataTypes.JSON,
-    allowNull: true,
-  },
+  }
 });
 
 export default UnitSchema;

@@ -7,12 +7,12 @@ interface Props {
 }
 export default function CommintyCard({ card }: Props) {
   return (
-    <Link href="/id/home" as={`/${card.id}/home`}>
+    <Link href="/id" as={`/${card.id}`}>
       <div
         sx={{
           variant: "cards.communityCard",
           backgroundImage: `url('${card.image}')`,
-          backgroundSize: 'cover',
+          backgroundSize: "cover",
         }}
       >
         <h3>{card.name}</h3>

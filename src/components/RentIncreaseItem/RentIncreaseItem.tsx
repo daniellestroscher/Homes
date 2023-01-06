@@ -8,9 +8,9 @@ export default function RentIncreaseItem({unit}:Props) {
 
   return (
     <div sx={{variant: 'cards.primary'}}>
-      <p>{unit.tenantOne.firstName + ' ' + unit.tenantOne.lastName}</p>
-      <p>{unit.tenantTwo?.firstName + ' ' + unit.tenantTwo?.lastName}</p>
-      <div>No. {unit.number}</div>
+      {/* <p>{unit.tenancy?.tenantOne.firstName + ' ' + unit.tenancy?.tenantOne.lastName}</p>
+      <p>{unit.tenancy?.tenantTwo?.firstName + ' ' + unit.tenancy?.tenantTwo?.lastName}</p>
+      <div>No. {unit.number}</div> */}
     </div>
   )
 };

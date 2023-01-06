@@ -1,13 +1,15 @@
+
 import { FilePondFile } from "filepond";
 
-export interface IUser{
-  id?: number;
-  email: string;
-}
 
 export interface IUnit{
   id?: number;
-  number: number;
+  communityId: string;
+  number: number | undefined;
+  // tenancy?: ITenancy;
+}
+
+export interface ITenancy{
   tenantOne: ITenant;
   tenantTwo?: ITenant;
 }
@@ -15,6 +17,9 @@ export interface IUnit{
 export interface ITenant{
   firstName: string;
   lastName: string;
+  email?: string;
+  phoneNumber?: string;
+  pet?: boolean;
 
 }
 

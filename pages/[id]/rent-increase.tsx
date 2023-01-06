@@ -1,14 +1,14 @@
 /** @jsxImportSource theme-ui */
 import { useState } from 'react'
 import { useRouter } from 'next/router';
-import Menu from '../../../src/components/Menu/Menu'
-import RentIncreases from '../../../src/components/RentIncreaseList/RentIncreaseList'
-import Navbar from '../../../src/components/Navbar/Navbar';
-import { authOptions } from '../../api/auth/[...nextauth]';
+import Menu from '../../src/components/Menu/Menu'
+import RentIncreases from '../../src/components/RentIncreaseList/RentIncreaseList'
+import Navbar from '../../src/components/Navbar/Navbar';
+import { authOptions } from '../api/auth/[...nextauth]';
 import { Session, unstable_getServerSession } from 'next-auth';
 import { GetServerSidePropsContext } from 'next';
-import { ICommunity } from '../../../types/interfaces';
-import { getCommunityById } from '../../../src/services/communityService';
+import { ICommunity } from '../../types/interfaces';
+import { getCommunityById } from '../../src/services/communityService';
 
 type Props = {
   user: {
@@ -28,7 +28,7 @@ export default function Home({user, community}:Props) {
     {user && (
       <>
         <Navbar name={community.name}/>
-        <Menu menuToggle={menuToggle} setMenuToggle={setMenuToggle} communityId={id as string}/>
+        {/* <Menu menuToggle={menuToggle} setMenuToggle={setMenuToggle} communityId={id as string}/> */}
         <div sx={{
           variant: 'containers.mainPageCont',
           left: '35px',

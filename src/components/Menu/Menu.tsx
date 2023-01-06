@@ -16,9 +16,17 @@ import Link from "next/link";
 type props = {
   menuToggle: boolean;
   setMenuToggle: (arg: boolean) => void;
+  unitFormToggle: boolean;
+  setUnitFormToggle: (arg: boolean) => void;
   communityId: string;
 };
-function Menu({ menuToggle, setMenuToggle, communityId }: props) {
+function Menu({
+  menuToggle,
+  setMenuToggle,
+  unitFormToggle,
+  setUnitFormToggle,
+  communityId,
+}: props) {
   return (
     <>
       <FontAwesomeIcon
@@ -52,33 +60,44 @@ function Menu({ menuToggle, setMenuToggle, communityId }: props) {
         }}
       >
         <ul sx={{ listStyle: "none", marginTop: "65px" }}>
-          <Link href="/[id]/home" as={`/${communityId}/home`}>
-            <div sx={{ variant: "components.listItem", }}>
-              <FontAwesomeIcon icon={faHouse as IconProp} sx={{size: '17px'}} />
+          <Link href="/[id]" as={`/${communityId}`}>
+            <div sx={{ variant: "components.listItem" }}>
+              <FontAwesomeIcon
+                icon={faHouse as IconProp}
+                sx={{ size: "17px" }}
+              />
               <li>Home</li>
             </div>
           </Link>
           <Link href="/[id]/rent-increase" as={`/${communityId}/rent-increase`}>
             <div sx={{ variant: "components.listItem" }}>
-              <FontAwesomeIcon icon={faMoneyBillTrendUp as IconProp} sx={{size: '17px'}} />
+              <FontAwesomeIcon
+                icon={faMoneyBillTrendUp as IconProp}
+                sx={{ size: "17px" }}
+              />
               <li>Rent Increases</li>
             </div>
           </Link>
           <Link href="/[id]/rent-roll" as={`/${communityId}/rent-roll`}>
             <div sx={{ variant: "components.listItem" }}>
-              <FontAwesomeIcon icon={faChartSimple as IconProp} sx={{size: '17px'}} />
+              <FontAwesomeIcon
+                icon={faChartSimple as IconProp}
+                sx={{ size: "17px" }}
+              />
               <li>Rent Roll</li>
             </div>
           </Link>
         </ul>
 
         <ul sx={{ listStyle: "none", marginTop: "300px" }}>
-          <Link href="">
-            <div sx={{ variant: "components.listItem" }}>
-              <FontAwesomeIcon icon={faPlus as IconProp} sx={{size: '17px'}} />
-              <li>Add Unit</li>
-            </div>
-          </Link>
+          <div
+            sx={{ variant: "components.listItem" }}
+            onClick={() => setUnitFormToggle(!unitFormToggle)}
+          >
+            <FontAwesomeIcon icon={faPlus as IconProp} sx={{ size: "17px" }} />
+            <li>Add Unit</li>
+          </div>
+
           <a
             href={`/api/auth/signout`}
             onClick={(e) => {
@@ -87,7 +106,10 @@ function Menu({ menuToggle, setMenuToggle, communityId }: props) {
             }}
           >
             <div sx={{ variant: "components.listItem" }}>
-              <FontAwesomeIcon icon={faArrowRightFromBracket as IconProp} sx={{size: '17px'}} />
+              <FontAwesomeIcon
+                icon={faArrowRightFromBracket as IconProp}
+                sx={{ size: "17px" }}
+              />
               <li>Logout</li>
             </div>
           </a>

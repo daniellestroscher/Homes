@@ -128,6 +128,22 @@ export default {
         width: "485px",
       },
     },
+    popup: {
+      display: "flex",
+        justifyContent: "center",
+        position: "fixed",
+        bg: "accentLight",
+        margin: "auto",
+        top: "100px",
+        left: "0px",
+        right: "0px",
+        borderRadius: "6px",
+        zIndex: "1",
+        maxWidth: "600px",
+        maxHeight: "400px",
+        width: "800px",
+        height: "93vh",
+    }
   },
   containers: {
     mainPageCont: {
@@ -161,6 +177,7 @@ export default {
       display: "flex",
       alignContent: "center",
       flexDirection: "column",
+      gap: "10px",
       height: "550px",
       padding: "10px 22px",
       overflowY: "scroll",
