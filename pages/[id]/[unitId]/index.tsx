@@ -5,8 +5,9 @@ import Navbar from "../../../src/components/Navbar/Navbar";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { Session, unstable_getServerSession } from "next-auth";
 import { GetServerSidePropsContext } from "next";
-import { ICommunity } from "../../../types/interfaces";
+import { ICommunity, IUnit } from "../../../types/interfaces";
 import { getCommunityById } from "../../../src/services/communityService";
+import { getUnitById } from "../../../src/services/unitService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
@@ -17,11 +18,15 @@ type Props = {
     image: string;
   };
   community: ICommunity;
+  unit: IUnit;
 };
-export default function Home({ user, community }: Props) {
+export default function Home({ user, community, unit }: Props) {
   const [menuToggle, setMenuToggle] = useState<boolean>(true);
   const router = useRouter();
-  const { id } = router.query;
+  const { unitId } = router.query;
+  // console.log(community)
+  // console.log(unitId)
+  console.log(unit);
 
   return (
     <>
@@ -29,15 +34,38 @@ export default function Home({ user, community }: Props) {
         <>
           <Navbar name={community.name} />
           <div sx={{ display: "flex", justifyContent: "center" }}>
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              sx={{
+                position: "absolute",
+                top: "90px",
+                left: "30px",
+                size: "17px",
+                cursor: "pointer",
+              }}
+              onClick={router.back}
+            />
             <section sx={{ variant: "containers.singlePageFormCont" }}>
-              <FontAwesomeIcon
-                icon={faArrowLeft}
-                sx={{ position: "absolute", top: "40px", left: '30px', size: "17px", cursor: 'pointer'}}
-                onClick={router.back}
-              />
+              <div
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  flexDirection: "column",
+                  width: "100%",
+                  padding: "30px",
+                }}
+              >
+                <span>No.{unit.number}</span>
+                {/* <span>{tenancy ? tenancy.tenantOne.firstName}</span> */}
+                {/* <span>{tenancy ? tenancy.tenantOne.firstName}</span> */}
+                <div sx={{ alignSelf: "flex-end" }}>399.65</div>
+              </div>
+              <div sx={{ border: "2px solid #3a5a40", width: "100%" }}></div>
+              <button sx={{ variant: "buttons.secondary" }}>
+                Add New Tenancy
+              </button>
             </section>
           </div>
-          //add form here
         </>
       )}
     </>
@@ -59,13 +87,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
   const { user } = session as any;
-  const res = await getCommunityById(context.params?.id as string);
-  const community = res[0];
+  const [community] = await getCommunityById(context.params?.id as string);
+  const [unit] = await getUnitById(context.params?.unitId as string);
 
   return {
     props: {
       user,
       community,
+      unit,
     },
   };
 }

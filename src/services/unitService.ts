@@ -18,3 +18,12 @@ export async function getUnitList(communityId: string) {
   });
 }
 
+export async function getUnitById(unitId: string) {
+  return await fetchData<IUnit[] | any>(
+    `/units/${unitId}`,
+    {
+    method: "GET",
+  });
+
+}
+

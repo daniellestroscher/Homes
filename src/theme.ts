@@ -48,6 +48,17 @@ export default {
         boxShadow: "none",
       },
     },
+    secondary: {
+      padding: "10px",
+      background: "accentLight",
+      color: "white",
+      border: "none",
+      borderRadius: "3px",
+      margin: "5px",
+      "&:hover": {
+        bg: "accent",
+      },
+    },
   },
   cards: {
     primary: {
@@ -97,7 +108,7 @@ export default {
       margin: "8px 4px",
       padding: "8px",
       borderRadius: "4px",
-      border: "1px solid green",
+      //border: "1px solid green",
       backgroundColor: "lightGrey",
       li: {
         fontSize: "13px",

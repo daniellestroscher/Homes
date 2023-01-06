@@ -91,7 +91,7 @@ function Menu({
 
         <ul sx={{ listStyle: "none", marginTop: "300px" }}>
           <div
-            sx={{ variant: "components.listItem" }}
+            sx={{ variant: "components.listItem", cursor: "pointer" }}
             onClick={() => setUnitFormToggle(!unitFormToggle)}
           >
             <FontAwesomeIcon icon={faPlus as IconProp} sx={{ size: "17px" }} />
