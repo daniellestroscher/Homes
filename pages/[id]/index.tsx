@@ -10,7 +10,7 @@ import { GetServerSidePropsContext } from "next";
 import { ICommunity, ITenancy, IUnit } from "../../types/interfaces";
 import { getCommunityById } from "../../src/services/communityService";
 import { getUnitList } from "../../src/services/unitService";
-import AddUnitForm from "../../src/components/AddUnitForm/AddUnitForm";
+import AddUnitForm from "../../src/components/Forms/AddUnitForm";
 import { useUnitListContext } from "../../src/contexts/unitListContext";
 
 type Props = {
@@ -26,9 +26,9 @@ type Props = {
 export default function Home({ user, community, unitArr, tenancy }: Props) {
   const [menuToggle, setMenuToggle] = useState<boolean>(true);
   const { unitList, setUnitList } = useUnitListContext();
-  useEffect(()=>{
+  useEffect(() => {
     setUnitList(unitArr);
-  }, [])
+  }, []);
 
   const router = useRouter();
   const { id } = router.query;

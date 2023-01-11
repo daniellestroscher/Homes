@@ -14,7 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useModalContext } from "../../contexts/modalContext";
-import AddUnitForm from "../AddUnitForm/AddUnitForm";
+import AddUnitForm from "../Forms/AddUnitForm";
 import { useUnitListContext } from "../../contexts/unitListContext";
 
 type props = {

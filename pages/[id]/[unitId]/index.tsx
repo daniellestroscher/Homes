@@ -11,6 +11,7 @@ import { getUnitById } from "../../../src/services/unitService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useModalContext } from "../../../src/contexts/modalContext";
+import AddTenancyForm from "../../../src/components/Forms/AddTenancyForm";
 
 type Props = {
   user: {
@@ -64,7 +65,9 @@ export default function Home({ user, community, unit }: Props) {
 
               <button
                 sx={{ variant: "buttons.secondary" }}
-                onClick={() => handleModal("here is the content")}
+                onClick={() =>
+                  handleModal(<AddTenancyForm community={community} />)
+                }
               >
                 Add New Tenancy
               </button>

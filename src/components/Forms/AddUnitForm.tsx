@@ -5,6 +5,7 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { ICommunity, IUnit } from "../../../types/interfaces";
 import { createUnit } from "../../services/unitService";
+import { useModalContext } from "../../contexts/modalContext";
 
 type Props = {
   communityId: string;
@@ -17,6 +18,7 @@ export default function AddUnitForm({
   setUnitList,
 }: Props) {
   const [unitNumber, setUnitNumber] = useState<number | null>();
+  const { handleModal } = useModalContext();
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -27,7 +29,7 @@ export default function AddUnitForm({
       });
       setUnitList([...unitList, newUnit]);
       setUnitNumber(null);
-      //close form
+      handleModal(null) //close form
     } else {
       alert("All fields are required");
     }

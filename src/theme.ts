@@ -137,7 +137,7 @@ export default {
         variant: "buttons.primary",
         margin: "8px",
         width: "485px",
-      }
+      },
     },
     popup: {
       display: "flex",
@@ -150,11 +150,10 @@ export default {
       right: "0px",
       borderRadius: "6px",
       zIndex: "1",
-      maxWidth: "600px",
-      maxHeight: "400px",
-      width: "800px",
-      height: "93vh",
-      padding: "10px",
+      overflow: "hidden",
+      maxWidth: "700px",
+      minHeight: "400px",
+      padding: "10px 10px 40px",
     },
     message: {
       display: "flex",

@@ -26,6 +26,7 @@ export interface ITenancy{
   rent: number;
   notes?: string;
   AssignmentOfLease?: boolean;
+  pet?: boolean;
   documents?: File | File[];
 
 }
@@ -35,7 +36,6 @@ export interface ITenant{
   lastName: string;
   email?: string;
   phoneNumber?: string;
-  pet?: boolean;
 }
 
 export interface ModalContextType {

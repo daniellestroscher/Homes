@@ -13,17 +13,14 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import "filepond/dist/filepond.min.css";
+import { useModalContext } from "../../contexts/modalContext";
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 type Props = {
-  communityFormToggle: boolean;
-  setCommunityFormToggle: (arg: boolean) => void;
   communityList: ICommunity[];
   setCommunityList: (arg: ICommunity[]) => void;
 };
 export default function AddCommunityForm({
-  communityFormToggle,
-  setCommunityFormToggle,
   communityList,
   setCommunityList,
 }: Props) {
@@ -33,6 +30,7 @@ export default function AddCommunityForm({
   };
   const [imgFiles, setImgFiles] = useState<FilePondFile[]>([]);
   const [community, setCommunity] = useState<ICommunity>(initialState);
+  const { handleModal } = useModalContext()
 
   const blobToDataURL = async (blob: Blob) => {
     return new Promise((resolve, _) => {
@@ -56,23 +54,16 @@ export default function AddCommunityForm({
       setCommunityList([...communityList, newCommunity]);
       setCommunity(initialState);
       setImgFiles([]);
-      setCommunityFormToggle(!communityFormToggle)
+      handleModal(null); //close form
     } else {
       alert("All fields are required");
     }
   };
 
   return (
-    <div sx={{ display: "flex", justifyContent: "center" }}>
-      <section sx={{ variant: "containers.singlePageFormCont" }}>
         <form
-          sx={{ variant: "components.form", position: "absolute", top: "75px" }}
+          sx={{ variant: "components.form" }}
         >
-          <FontAwesomeIcon
-            icon={faXmark as IconProp}
-            sx={{ alignSelf: "flex-end", size: "40px", padding: "10px" }}
-            onClick={() => setCommunityFormToggle(!communityFormToggle)}
-          />
           <FilePond
             files={imgFiles.map((fileItem) => fileItem.file)}
             allowReorder={true}
@@ -104,7 +95,5 @@ export default function AddCommunityForm({
             Create Community
           </button>
         </form>
-      </section>
-    </div>
   );
 }

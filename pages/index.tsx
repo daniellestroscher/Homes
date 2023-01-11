@@ -4,7 +4,7 @@ import Script from "next/script";
 import Image from "next/image";
 import Navbar from "../src/components/Navbar/Navbar";
 import CommunityCardList from "../src/components/CommunityCardList/CommunityCardList";
-import AddCommunityForm from "../src/components/AddCommunityForm/AddCommunityForm";
+import AddCommunityForm from "../src/components/Forms/AddCommunityForm";
 
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]";
@@ -13,6 +13,7 @@ import type { Session } from "next-auth";
 import { useState, useEffect } from "react";
 import { ICommunity } from "../types/interfaces";
 import { getAllCommunities } from "../src/services/communityService";
+import { useModalContext } from "../src/contexts/modalContext";
 
 type Props = {
   user: {
@@ -23,9 +24,9 @@ type Props = {
   communities: ICommunity[];
 };
 export default function Home({ user, communities }: Props) {
-  const [communityFormToggle, setCommunityFormToggle] = useState<boolean>(false);
   const [communityList, setCommunityList] = useState<ICommunity[]>(communities);
-  const profilePic = user.image.replace(/96/, '400');
+  const { handleModal } = useModalContext();
+  const profilePic = user.image.replace(/96/, "400");
 
   return (
     <>
@@ -37,7 +38,7 @@ export default function Home({ user, communities }: Props) {
       </Head>
       <main>
         <Navbar name={undefined} />
-        {user && !communityFormToggle && (
+        {user && (
           <div sx={{ display: "flex", justifyContent: "center" }}>
             <section
               sx={{
@@ -76,13 +77,20 @@ export default function Home({ user, communities }: Props) {
                     justifyContent: "space-between",
                     alignItems: "flex-end",
                     width: "500px",
-                    padding: '20px',
+                    padding: "20px",
                   }}
                 >
                   <h4>My Communities:</h4>
                   <button
                     sx={{ variant: "buttons.primary" }}
-                    onClick={() => setCommunityFormToggle(!communityFormToggle)}
+                    onClick={() =>
+                      handleModal(
+                        <AddCommunityForm
+                          communityList={communityList}
+                          setCommunityList={setCommunityList}
+                        />
+                      )
+                    }
                   >
                     Add
                   </button>
@@ -91,14 +99,6 @@ export default function Home({ user, communities }: Props) {
               </div>
             </section>
           </div>
-        )}
-        {user && communityFormToggle && (
-          <AddCommunityForm
-            communityFormToggle={communityFormToggle}
-            setCommunityFormToggle={setCommunityFormToggle}
-            communityList={communityList}
-            setCommunityList={setCommunityList}
-          />
         )}
       </main>
     </>
