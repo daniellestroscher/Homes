@@ -12,7 +12,7 @@ export async function createUnit(data: IUnit | any) {
 
 export async function getUnitList(communityId: string) {
   return await fetchData<IUnit[]>(
-    `/units/${communityId}`,
+    `/units/list/${communityId}`,
     {
     method: "GET",
   });

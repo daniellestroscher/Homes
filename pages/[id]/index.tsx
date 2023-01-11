@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Menu from "../../src/components/Menu/Menu";
 import UnitList from "../../src/components/UnitList/UnitList";
@@ -11,6 +11,7 @@ import { ICommunity, ITenancy, IUnit } from "../../types/interfaces";
 import { getCommunityById } from "../../src/services/communityService";
 import { getUnitList } from "../../src/services/unitService";
 import AddUnitForm from "../../src/components/AddUnitForm/AddUnitForm";
+import { useUnitListContext } from "../../src/contexts/unitListContext";
 
 type Props = {
   user: {
@@ -24,8 +25,11 @@ type Props = {
 };
 export default function Home({ user, community, unitArr, tenancy }: Props) {
   const [menuToggle, setMenuToggle] = useState<boolean>(true);
-  const [unitFormToggle, setUnitFormToggle] = useState<boolean>(false);
-  const [unitList, setUnitList] = useState<IUnit[]>(unitArr);
+  const { unitList, setUnitList } = useUnitListContext();
+  useEffect(()=>{
+    setUnitList(unitArr);
+  }, [])
+
   const router = useRouter();
   const { id } = router.query;
 
@@ -37,8 +41,6 @@ export default function Home({ user, community, unitArr, tenancy }: Props) {
           <Menu
             menuToggle={menuToggle}
             setMenuToggle={setMenuToggle}
-            unitFormToggle={unitFormToggle}
-            setUnitFormToggle={setUnitFormToggle}
             communityId={id as string}
           />
           <div
@@ -52,13 +54,6 @@ export default function Home({ user, community, unitArr, tenancy }: Props) {
             }}
           >
             <UnitList tenancy={tenancy} unitList={unitList} />
-            <AddUnitForm
-              unitFormToggle={unitFormToggle}
-              setUnitFormToggle={setUnitFormToggle}
-              community={community}
-              unitList={unitList}
-              setUnitList={setUnitList}
-            />
           </div>
         </>
       )}
@@ -84,6 +79,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   //fetch community
   const [community] = await getCommunityById(context.params?.id as string);
   const unitArr = await getUnitList(community.id as string);
+  console.log(unitArr);
 
   return {
     props: {

@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Navbar from "../../../src/components/Navbar/Navbar";
 import { authOptions } from "../../api/auth/[...nextauth]";
@@ -10,6 +10,7 @@ import { getCommunityById } from "../../../src/services/communityService";
 import { getUnitById } from "../../../src/services/unitService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { useModalContext } from "../../../src/contexts/modalContext";
 
 type Props = {
   user: {
@@ -21,12 +22,11 @@ type Props = {
   unit: IUnit;
 };
 export default function Home({ user, community, unit }: Props) {
+  let { handleModal } = useModalContext();
+
   const [menuToggle, setMenuToggle] = useState<boolean>(true);
   const router = useRouter();
   const { unitId } = router.query;
-  // console.log(community)
-  // console.log(unitId)
-  console.log(unit);
 
   return (
     <>
@@ -61,7 +61,11 @@ export default function Home({ user, community, unit }: Props) {
                 <div sx={{ alignSelf: "flex-end" }}>399.65</div>
               </div>
               <div sx={{ border: "2px solid #3a5a40", width: "100%" }}></div>
-              <button sx={{ variant: "buttons.secondary" }}>
+
+              <button
+                sx={{ variant: "buttons.secondary" }}
+                onClick={() => handleModal("here is the content")}
+              >
                 Add New Tenancy
               </button>
             </section>

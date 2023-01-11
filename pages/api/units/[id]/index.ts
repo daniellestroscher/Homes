@@ -1,8 +1,6 @@
-import nc from 'next-connect';
-import { getUnitById, getUnitList  } from '../../../../controllers/units';
-//import verifyToken from '../../../middleware/verifyToken';
+import nc from "next-connect";
+import { getUnitById } from "../../../../controllers/units";
 
-//const handler = nc().use(verifyToken).post(createLocation);
-const handler = nc().get(getUnitById).get(getUnitList);
+const handler = nc().get(getUnitById);
 
 export default handler;

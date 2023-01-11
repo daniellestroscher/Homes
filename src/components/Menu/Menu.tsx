@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { signOut } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -13,20 +13,18 @@ import {
   faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import { useModalContext } from "../../contexts/modalContext";
+import AddUnitForm from "../AddUnitForm/AddUnitForm";
+import { useUnitListContext } from "../../contexts/unitListContext";
+
 type props = {
   menuToggle: boolean;
   setMenuToggle: (arg: boolean) => void;
-  unitFormToggle: boolean;
-  setUnitFormToggle: (arg: boolean) => void;
   communityId: string;
 };
-function Menu({
-  menuToggle,
-  setMenuToggle,
-  unitFormToggle,
-  setUnitFormToggle,
-  communityId,
-}: props) {
+function Menu({ menuToggle, setMenuToggle, communityId }: props) {
+  const { handleModal } = useModalContext();
+  const { unitList, setUnitList } = useUnitListContext();
   return (
     <>
       <FontAwesomeIcon
@@ -92,7 +90,15 @@ function Menu({
         <ul sx={{ listStyle: "none", marginTop: "300px" }}>
           <div
             sx={{ variant: "components.listItem", cursor: "pointer" }}
-            onClick={() => setUnitFormToggle(!unitFormToggle)}
+            onClick={() =>
+              handleModal(
+                <AddUnitForm
+                  communityId={communityId}
+                  unitList={unitList}
+                  setUnitList={setUnitList}
+                />
+              )
+            }
           >
             <FontAwesomeIcon icon={faPlus as IconProp} sx={{ size: "17px" }} />
             <li>Add Unit</li>

@@ -6,30 +6,20 @@ type Props = {
   tenancy: ITenancy;
 }
 export default function UnitList({unitList, tenancy}:Props) {
-  // const unitList = [
-  //   {
-  //     id: 12345,
-  //     number: 1,
-  //     tenancy: {
-  //       tenantOne: {
-  //         firstName: 'Danielle',
-  //         lastName: 'Stroscher',
-  //       },
-  //       tenantTwo: {
-  //         firstName: 'Danielle',
-  //         lastName: 'Stroscher',
-  //       }
-  //     }
-  //   }
-  // ];
 
   return (
-    <div sx={{ variant: 'containers.unitList'}}>
+    <>
       {
-        unitList && unitList.map((unit:IUnit) => {
-          return <UnitItem key={unit.id} unit={unit} tenancy={tenancy}/>
-        })
+        !unitList.length &&
+        <p sx={{variant: 'components.message'}}>Start by adding a unit to your community!</p>
       }
-    </div>
+      <div sx={{ variant: 'containers.unitList'}}>
+        {
+          unitList && unitList.map((unit:IUnit) => {
+            return <UnitItem key={unit.id} unit={unit} tenancy={tenancy}/>
+          })
+        }
+      </div>
+    </>
   )
 }

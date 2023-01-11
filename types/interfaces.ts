@@ -1,27 +1,6 @@
 
 import { FilePondFile } from "filepond";
-
-
-export interface IUnit{
-  id?: number;
-  communityId: string;
-  number: number | undefined;
-  // tenancy?: ITenancy;
-}
-
-export interface ITenancy{
-  tenantOne: ITenant;
-  tenantTwo?: ITenant;
-}
-
-export interface ITenant{
-  firstName: string;
-  lastName: string;
-  email?: string;
-  phoneNumber?: string;
-  pet?: boolean;
-
-}
+import { ReactNode } from "react";
 
 interface File extends Blob {
   readonly lastModified: number;
@@ -33,3 +12,36 @@ export interface ICommunity{
   address: string;
   image?: string | File | FilePondFile ;
 }
+
+export interface IUnit{
+  id?: number;
+  communityId: string;
+  number: number | undefined;
+  // tenancy?: ITenancy;
+}
+
+export interface ITenancy{
+  tenantOne: ITenant;
+  tenantTwo?: ITenant;
+  rent: number;
+  notes?: string;
+  AssignmentOfLease?: boolean;
+  documents?: File | File[];
+
+}
+
+export interface ITenant{
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phoneNumber?: string;
+  pet?: boolean;
+}
+
+export interface ModalContextType {
+  isOpen: boolean;
+  handleModal: (content: ReactNode | null) => void;
+  modalContent?: ReactNode;
+  title?: string;
+}
+
