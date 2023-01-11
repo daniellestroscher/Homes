@@ -23,9 +23,9 @@ export interface IUnit{
 export interface ITenancy{
   tenantOne: ITenant;
   tenantTwo?: ITenant;
-  rent: number;
+  rent: number | null;
   notes?: string;
-  AssignmentOfLease?: boolean;
+  assignmentOfLease?: boolean;
   pet?: boolean;
   documents?: File | File[];
 
