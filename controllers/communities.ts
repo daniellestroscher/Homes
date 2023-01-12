@@ -19,7 +19,7 @@ export async function createCommunity(
       return res.status(200).json(community);
     }
   } catch (error) {
-    console.log(error, "Error in communities controller");
+    console.log(error, "Error in communities controller CREATE");
     res.status(500).json({ error });
   }
 }
@@ -28,23 +28,34 @@ export async function getAllCommunities(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const communities = await CommunitySchema.findAll({
-    order: [["createdAt", "DESC"]],
-  });
-  res.status(200).json(communities);
+  try {
+    console.log("IN THE CONTROLLER!!!");
+    const communities = await CommunitySchema.findAll({
+      order: [["createdAt", "DESC"]],
+    });
+    res.status(200).json(communities);
+  } catch (error) {
+    console.log(error, "Error in communities controller GETALL");
+    res.status(500).json({ error });
+  }
 }
 
 export async function getCommunityById(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id } = req.query;
-  const community = await sequelize.query(
-    'SELECT * FROM "communities" WHERE "communityId" = (:id)',
-    {
-      replacements: { id },
-      model: CommunitySchema,
-    }
-  );
-  res.status(200).json(community);
+  try {
+    const { id } = req.query;
+    const community = await sequelize.query(
+      'SELECT * FROM "communities" WHERE "communityId" = (:id)',
+      {
+        replacements: { id },
+        model: CommunitySchema,
+      }
+    );
+    res.status(200).json(community);
+  } catch (error) {
+    console.log(error, "Error in communities controller GETBYID");
+    res.status(500).json({ error });
+  }
 }

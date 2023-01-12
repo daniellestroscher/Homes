@@ -4,12 +4,12 @@ import { ITenant } from "../types/interfaces";
 import TenancySchema from "./tenancy";
 
 const TenantSchema = sequelize.define<Model<ITenant>>("tenant", {
-  // tenantId: {
-  //   type: DataTypes.UUID,
-  //   primaryKey: true,
-  //   autoIncrement: true,
-  //   allowNull: false,
-  // },
+  tenantId: {
+    type: DataTypes.UUID,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+  },
   firstName: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -19,7 +19,7 @@ const TenantSchema = sequelize.define<Model<ITenant>>("tenant", {
     allowNull: true,
   }
 });
-TenantSchema.hasOne(TenancySchema, {onDelete: "CASCADE"});
-TenancySchema.hasMany(TenantSchema, {onDelete:"CASCADE"});
+//TenantSchema.hasOne(TenancySchema, {onDelete: "CASCADE"});
+//TenancySchema.hasMany(TenantSchema, {onDelete:"CASCADE"});
 
 export default TenantSchema;

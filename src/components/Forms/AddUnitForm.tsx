@@ -1,8 +1,5 @@
 /** @jsxImportSource theme-ui */
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { ICommunity, IUnit } from "../../../types/interfaces";
 import { createUnit } from "../../services/unitService";
 import { useModalContext } from "../../contexts/modalContext";
@@ -17,7 +14,7 @@ export default function AddUnitForm({
   unitList,
   setUnitList,
 }: Props) {
-  const [unitNumber, setUnitNumber] = useState<number | null>();
+  const [unitNumber, setUnitNumber] = useState<number | undefined>(undefined);
   const { handleModal } = useModalContext();
 
   const handleSubmit = async (e: React.MouseEvent) => {
@@ -27,18 +24,16 @@ export default function AddUnitForm({
         communityId: communityId,
         number: unitNumber,
       });
-      setUnitList([...unitList, newUnit]);
-      setUnitNumber(null);
-      handleModal(null) //close form
+      setUnitList([...unitList, newUnit] as IUnit[]);
+      setUnitNumber(undefined);
+      handleModal(null); //close form
     } else {
       alert("All fields are required");
     }
   };
 
   return (
-    <form
-      sx={{ variant: "components.form" }}
-    >
+    <form sx={{ variant: "components.form" }}>
       <input
         value={unitNumber as number}
         type="number"

@@ -25,7 +25,7 @@ const CommunitySchema = sequelize.define<Model<ICommunity>>("community", {
   },
 });
 
-CommunitySchema.hasMany(UnitSchema, { onDelete: "CASCADE" });
-UnitSchema.hasOne(CommunitySchema, { onDelete: "CASCADE" });
+//CommunitySchema.hasMany(UnitSchema, { onDelete: "CASCADE" });
+//UnitSchema.hasOne(CommunitySchema, { onDelete: "CASCADE" });
 
 export default CommunitySchema;

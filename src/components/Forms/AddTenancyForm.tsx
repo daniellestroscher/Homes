@@ -7,32 +7,60 @@ import {
   IUnit,
 } from "../../../types/interfaces";
 import { useModalContext } from "../../contexts/modalContext";
-// import { createUnit } from "../../services/unitService";
+import { createTenant } from "../../services/tenantService";
+import { createTenancy } from "../../services/tenancyService";
+
 
 type Props = {
   community: ICommunity;
+  unit: IUnit;
 };
-export default function AddTenancyForm({ community }: Props) {
+export default function AddTenancyForm({ community, unit }: Props) {
   const { handleModal } = useModalContext();
-  const [tenancy, setTenancy] = React.useState<ITenancy>({
-    tenantOne: {
-      firstName: "",
-      lastName: "",
-    },
-    rent: null,
-  });
+  const [tenantOne, setTenantOne] = React.useState<ITenant>({
+    tenantId: 0,
+    firstName: '',
+    lastName: '',
+  })
+  const [tenantTwo, setTenantTwo] = React.useState<ITenant>({
+    tenantId: 0,
+    firstName: '',
+    lastName: '',
+  })
+  const initialTenancy = {
+    unitId: 0,
+    tenantOne: 0,
+    tenantTwo: 0,
+    rent: undefined,
+    notes: undefined,
+    assignmentOfLease: undefined,
+    pet: undefined,
+    documents: undefined
+  }
+  const [tenancy, setTenancy] = React.useState<ITenancy>(initialTenancy);
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (tenancy) {
-      console.log(tenancy);
-      // const newUnit = await createUnit({
-      //   communityId: community.id,
-      //   number: unitNumber,
-      // });
-      // setUnitList([...unitList, newUnit]);
-      // setUnitNumber(null);
-      // setUnitFormToggle(!unitFormToggle);
+    if (tenantOne && tenancy && tenancy.rent) {
+
+      const newTenantOne = await createTenant({
+        firstName: tenantOne.firstName,
+        lastName: tenantOne.lastName,
+      })
+      const newTenantTwo = await createTenant({
+        firstName: tenantTwo.firstName,
+        lastName: tenantTwo.lastName,
+      })
+      const newTenancy = await createTenancy({
+        unitId: unit.unitId as number,
+        tenantOne: newTenantOne?.tenantId as number,
+        tenantTwo: newTenantTwo?.tenantId as number,
+        rent: tenancy.rent as number,
+        notes: tenancy.notes,
+        assignmentOfLease: tenancy.assignmentOfLease,
+        pet: tenancy.pet,
+        documents: tenancy.documents,
+      })
       handleModal(null);
     } else {
       alert("All fields are required");
@@ -46,22 +74,20 @@ export default function AddTenancyForm({ community }: Props) {
         <input
           type="text"
           placeholder="First Name"
-          value={tenancy.tenantOne.firstName}
+          value={tenantOne.firstName}
           onChange={(e) =>
-            setTenancy({
-              ...tenancy,
-              tenantOne: { ...tenancy.tenantOne, firstName: e.target.value },
+            setTenantOne({
+              ...tenantOne, firstName: e.target.value,
             })
           }
         ></input>
         <input
           type="text"
           placeholder="Last Name"
-          value={tenancy.tenantOne.lastName}
+          value={tenantOne.lastName}
           onChange={(e) =>
-            setTenancy({
-              ...tenancy,
-              tenantOne: { ...tenancy.tenantOne, lastName: e.target.value },
+            setTenantOne({
+              ...tenantOne, lastName: e.target.value,
             })
           }
         ></input>
@@ -69,30 +95,20 @@ export default function AddTenancyForm({ community }: Props) {
         <input
           type="text"
           placeholder="First Name"
-          value={tenancy.tenantTwo?.firstName}
+          value={tenantTwo.firstName}
           onChange={(e) =>
-            setTenancy({
-              ...tenancy,
-              tenantTwo: {
-                ...tenancy.tenantTwo,
-                firstName: e.target.value,
-                lastName: tenancy.tenantTwo?.lastName as string,
-              },
+            setTenantTwo({
+              ...tenantTwo, firstName: e.target.value
             })
           }
         ></input>
         <input
           type="text"
           placeholder="Last Name"
-          value={tenancy.tenantTwo?.lastName}
+          value={tenantTwo.lastName}
           onChange={(e) =>
-            setTenancy({
-              ...tenancy,
-              tenantTwo: {
-                ...tenancy.tenantTwo,
-                lastName: e.target.value,
-                firstName: tenancy.tenantTwo?.firstName as string,
-              },
+            setTenantTwo({
+              ...tenantTwo, lastName: e.target.value
             })
           }
         ></input>

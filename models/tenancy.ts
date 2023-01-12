@@ -4,10 +4,16 @@ import { ITenancy } from "../types/interfaces";
 import UnitSchema from "./unit";
 
 const TenancySchema = sequelize.define<Model<ITenancy>>("tenancy", {
-  // unitId: {
-  //   type: DataTypes.UUID,
-  //   allowNull: false,
-  // },
+  tenancyId: {
+    type: DataTypes.UUID,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+  },
+  unitId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+  },
   tenantOne: {
     type: DataTypes.UUID,
     allowNull: false,
@@ -38,7 +44,7 @@ const TenancySchema = sequelize.define<Model<ITenancy>>("tenancy", {
   }
 });
 
-UnitSchema.hasMany(TenancySchema, {onDelete:"CASCADE"})
-TenancySchema.hasOne(UnitSchema, {onDelete:"CASCADE"})
+//UnitSchema.hasMany(TenancySchema, {onDelete:"CASCADE"})
+//TenancySchema.hasOne(UnitSchema, {onDelete:"CASCADE"})
 
 export default TenancySchema;

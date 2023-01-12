@@ -66,7 +66,7 @@ export default function Home({ user, community, unit }: Props) {
               <button
                 sx={{ variant: "buttons.secondary" }}
                 onClick={() =>
-                  handleModal(<AddTenancyForm community={community} />)
+                  handleModal(<AddTenancyForm community={community} unit={unit} />)
                 }
               >
                 Add New Tenancy
@@ -95,6 +95,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const { user } = session as any;
   const [community] = await getCommunityById(context.params?.id as string) as ICommunity[];
+  console.log('heyyyyyyyyyyyyyy', community)
   const [unit] = await getUnitById(context.params?.unitId as string) as IUnit[];
 
   return {

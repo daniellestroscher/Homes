@@ -27,6 +27,7 @@ export default function Home({ user, communities }: Props) {
   const [communityList, setCommunityList] = useState<ICommunity[]>(communities);
   const { handleModal } = useModalContext();
   const profilePic = user.image.replace(/96/, "400");
+  console.log(communities)
 
   return (
     <>
@@ -121,7 +122,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const { user } = session as any;
   //fetch communities
-  const communities = await getAllCommunities();
+  const communities = await getAllCommunities() as ICommunity[];
 
   return {
     props: {

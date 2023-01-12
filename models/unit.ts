@@ -20,7 +20,7 @@ const UnitSchema = sequelize.define<Model<IUnit>>("unit", {
   }
 });
 
-UnitSchema.hasMany(TenancySchema, {onDelete:"CASCADE"});
-TenancySchema.hasOne(UnitSchema, {onDelete: "CASCADE"});
+//UnitSchema.hasMany(TenancySchema, {onDelete:"CASCADE"});
+//TenancySchema.hasOne(UnitSchema, {onDelete: "CASCADE"});
 
 export default UnitSchema;
