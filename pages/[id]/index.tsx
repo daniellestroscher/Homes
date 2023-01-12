@@ -31,6 +31,7 @@ export default function Home({ user, community, unitArr, tenancy }: Props) {
 
   const router = useRouter();
   const { id } = router.query;
+  console.log(id)
 
   return (
     <>
@@ -76,8 +77,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const { user } = session as any;
   //fetch community
+  console.log("hey", context.params?.id)
   const [community] = (await getCommunityById(context.params?.id as string)) as ICommunity[];
-  const unitArr = await getUnitList(community.id as number);
+  const unitArr = await getUnitList(community.communityId as number);
 
   return {
     props: {

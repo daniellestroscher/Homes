@@ -16,7 +16,7 @@ export default function UnitList({unitList, tenancy}:Props) {
       <div sx={{ variant: 'containers.unitList'}}>
         {
           unitList && unitList.map((unit:IUnit) => {
-            return <UnitItem key={unit.id} unit={unit} tenancy={tenancy}/>
+            return <UnitItem key={unit.unitId} unit={unit} tenancy={tenancy}/>
           })
         }
       </div>

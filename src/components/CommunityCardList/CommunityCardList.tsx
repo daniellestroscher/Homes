@@ -10,7 +10,7 @@ export default function CommunityCardList({communityList}: Props) {
     <div sx={{variant: 'containers.communityList'}}>
       {
         communityList.length !== 0 ? communityList.map((card:ICommunity) => {
-          return <CommunityCard key={card.id} card={card}/>
+          return <CommunityCard key={card.communityId} card={card}/>
         })
         :
         <p

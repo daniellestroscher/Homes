@@ -7,22 +7,23 @@ interface File extends Blob {
   readonly name: string;
 }
 export interface ICommunity{
-  id?: number;
+  communityId?: number;
   name: string;
   address: string;
   image?: string | File | FilePondFile ;
 }
 
 export interface IUnit{
-  id?: number;
+  unitId?: number;
   communityId: string;
   number: number | undefined;
   // tenancy?: ITenancy;
 }
 
 export interface ITenancy{
-  tenantOne: ITenant;
-  tenantTwo?: ITenant;
+  //unitId
+  tenantOne: ITenant; //tenantOneId
+  tenantTwo?: ITenant; //tenantTwoId
   rent: number | null;
   notes?: string;
   assignmentOfLease?: boolean;
@@ -32,6 +33,7 @@ export interface ITenancy{
 }
 
 export interface ITenant{
+  //tenantId
   firstName: string;
   lastName: string;
   email?: string;

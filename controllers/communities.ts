@@ -40,7 +40,7 @@ export async function getCommunityById(
 ) {
   const { id } = req.query;
   const community = await sequelize.query(
-    'SELECT * FROM "communities" WHERE "id" = (:id)',
+    'SELECT * FROM "communities" WHERE "communityId" = (:id)',
     {
       replacements: { id },
       model: CommunitySchema,

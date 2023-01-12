@@ -42,7 +42,7 @@ export async function getUnitById(req: NextApiRequest, res: NextApiResponse){
     const { id } = req.query;
     if (id) {
       const unit = await sequelize.query(
-        'SELECT * FROM "units" WHERE "id" = (:id)',
+        'SELECT * FROM "units" WHERE "unitId" = (:id)',
         {
           replacements: { id },
           model: UnitSchema,
