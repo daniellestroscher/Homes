@@ -1,8 +1,8 @@
 import { IUnit } from "../../types/interfaces";
 import { fetchData } from "./fetchFactory";
 
-export async function createUnit(data: IUnit | any) {
-  return await fetchData<IUnit | any>(
+export async function createUnit(data: IUnit) {
+  return await fetchData<IUnit>(
     "/units",
     {
     method: "POST",
@@ -10,7 +10,7 @@ export async function createUnit(data: IUnit | any) {
   });
 }
 
-export async function getUnitList(communityId: string) {
+export async function getUnitList(communityId: number) {
   return await fetchData<IUnit[]>(
     `/units/list/${communityId}`,
     {
@@ -19,7 +19,7 @@ export async function getUnitList(communityId: string) {
 }
 
 export async function getUnitById(unitId: string) {
-  return await fetchData<IUnit[] | any>(
+  return await fetchData<IUnit[]>(
     `/units/${unitId}`,
     {
     method: "GET",

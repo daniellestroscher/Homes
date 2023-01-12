@@ -1,6 +1,4 @@
 /** @jsxImportSource theme-ui */
-
-import { faTentArrowDownToLine } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import {
   ICommunity,

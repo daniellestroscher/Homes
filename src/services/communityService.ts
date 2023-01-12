@@ -1,8 +1,8 @@
 import { ICommunity } from "../../types/interfaces";
 import { fetchData } from "./fetchFactory";
 
-export async function createCommunity(data: ICommunity | any) {
-  return await fetchData<ICommunity | any>(
+export async function createCommunity(data: ICommunity) {
+  return await fetchData<ICommunity>(
     "/communities",
     {
     method: "POST",
@@ -11,14 +11,14 @@ export async function createCommunity(data: ICommunity | any) {
 }
 
 export async function getAllCommunities() {
-  return await fetchData<ICommunity[] | any>(
+  return await fetchData<ICommunity[]>(
     "/communities",
     { method: "GET" }
   );
 }
 
 export async function getCommunityById(communityId: string) {
-  return await fetchData<ICommunity[] | any>(
+  return await fetchData<ICommunity[]>(
     `/communities/${communityId}`,
     { method: "GET"}
   );

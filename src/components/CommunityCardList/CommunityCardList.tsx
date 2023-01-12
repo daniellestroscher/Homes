@@ -5,7 +5,7 @@ type Props = {
   communityList: ICommunity[]
 }
 export default function CommunityCardList({communityList}: Props) {
-  const CardList = [] as ICommunity[];
+  //const CardList = [] as ICommunity[];
   return(
     <div sx={{variant: 'containers.communityList'}}>
       {

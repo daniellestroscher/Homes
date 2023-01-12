@@ -86,8 +86,6 @@ export default {
       minHeight: "200px",
       width: "455px",
       minWidth: "300px",
-      display: "flex",
-      flexDirection: "column",
       alignSelf: "flex-start",
       justifyContent: "flex-end",
       "&:hover": {
@@ -108,7 +106,6 @@ export default {
       margin: "8px 4px",
       padding: "8px",
       borderRadius: "4px",
-      //border: "1px solid green",
       backgroundColor: "lightGrey",
       li: {
         fontSize: "13px",

@@ -49,9 +49,9 @@ export default function AddCommunityForm({
 
       const newCommunity = await createCommunity({
         ...community,
-        image: dataUrl,
+        image: dataUrl as FilePondFile,
       });
-      setCommunityList([...communityList, newCommunity]);
+      setCommunityList([...communityList, newCommunity] as ICommunity[]);
       setCommunity(initialState);
       setImgFiles([]);
       handleModal(null); //close form

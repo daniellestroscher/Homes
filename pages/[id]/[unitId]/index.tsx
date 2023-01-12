@@ -94,8 +94,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
   const { user } = session as any;
-  const [community] = await getCommunityById(context.params?.id as string);
-  const [unit] = await getUnitById(context.params?.unitId as string);
+  const [community] = await getCommunityById(context.params?.id as string) as ICommunity[];
+  const [unit] = await getUnitById(context.params?.unitId as string) as IUnit[];
 
   return {
     props: {

@@ -10,7 +10,6 @@ import { GetServerSidePropsContext } from "next";
 import { ICommunity, ITenancy, IUnit } from "../../types/interfaces";
 import { getCommunityById } from "../../src/services/communityService";
 import { getUnitList } from "../../src/services/unitService";
-import AddUnitForm from "../../src/components/Forms/AddUnitForm";
 import { useUnitListContext } from "../../src/contexts/unitListContext";
 
 type Props = {
@@ -77,9 +76,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const { user } = session as any;
   //fetch community
-  const [community] = await getCommunityById(context.params?.id as string);
-  const unitArr = await getUnitList(community.id as string);
-  console.log(unitArr);
+  const [community] = (await getCommunityById(context.params?.id as string)) as ICommunity[];
+  const unitArr = await getUnitList(community.id as number);
 
   return {
     props: {
