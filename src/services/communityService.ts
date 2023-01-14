@@ -18,7 +18,7 @@ export async function getAllCommunities() {
 }
 
 export async function getCommunityById(communityId: string) {
-  return await fetchData<ICommunity[]>(
+  return await fetchData<ICommunity>(
     `/communities/${communityId}`,
     { method: "GET"}
   );

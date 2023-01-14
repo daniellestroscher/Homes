@@ -5,7 +5,7 @@ import Link from "next/link";
 interface Props {
   card: ICommunity;
 }
-export default function CommintyCard({ card }: Props) {
+export default function CommunityCard({ card }: Props) {
   return (
     <Link href="/id" as={`/${card.communityId}`}>
       <div

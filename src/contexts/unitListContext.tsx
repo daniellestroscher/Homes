@@ -7,7 +7,7 @@ type context = {
 }
 
 export const unitListContext = React.createContext<context>({
-  unitList: [{unitId:0, communityId:'', number:1}],
+  unitList: [{unitId:'', communityId:'', number:1}],
   setUnitList: ()=>[{unitId:0, communityId:'', number:1}]
 });
 
@@ -19,7 +19,7 @@ export function useUnitListContext() {
 
 export function UnitListProvider({ children }:{children:ReactNode}) {
   const [unitList, setUnitList] = useState<IUnit[]>([{
-    unitId: 0,
+    unitId: '',
     communityId: '',
     number: 0,
   }]);

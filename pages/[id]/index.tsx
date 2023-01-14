@@ -11,6 +11,7 @@ import { ICommunity, ITenancy, IUnit } from "../../types/interfaces";
 import { getCommunityById } from "../../src/services/communityService";
 import { getUnitList } from "../../src/services/unitService";
 import { useUnitListContext } from "../../src/contexts/unitListContext";
+import { Head } from "next/document";
 
 type Props = {
   user: {
@@ -31,7 +32,7 @@ export default function Home({ user, community, unitArr, tenancy }: Props) {
 
   const router = useRouter();
   const { id } = router.query;
-  console.log(id)
+  //MAY NOT NEED THIS QUERY
 
   return (
     <>
@@ -41,7 +42,7 @@ export default function Home({ user, community, unitArr, tenancy }: Props) {
           <Menu
             menuToggle={menuToggle}
             setMenuToggle={setMenuToggle}
-            communityId={id as string}
+            communityId={community.communityId || id as string}
           />
           <div
             sx={{
@@ -77,14 +78,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const { user } = session as any;
   //fetch community
-  const [community] = (await getCommunityById(context.params?.id as string)) as ICommunity[];
-  const unitArr = await getUnitList(community.communityId as number);
-
+  const community = await getCommunityById(context.params?.id as string) as ICommunity;
+  //fetch unit list
+  const unitArr = await getUnitList(community.communityId as string) as IUnit[];
   return {
     props: {
       user,
       community,
       unitArr,
     },
-  };
+  }
 }

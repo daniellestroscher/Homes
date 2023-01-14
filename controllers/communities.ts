@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { UUID } from "sequelize";
 import { sequelize } from "../database/connection";
 import { uploadImage } from "../helpers/cloudinary";
 import CommunitySchema from "../models/community";
@@ -29,7 +30,6 @@ export async function getAllCommunities(
   res: NextApiResponse
 ) {
   try {
-    console.log("IN THE CONTROLLER!!!");
     const communities = await CommunitySchema.findAll({
       order: [["createdAt", "DESC"]],
     });
@@ -46,14 +46,12 @@ export async function getCommunityById(
 ) {
   try {
     const { id } = req.query;
-    const community = await sequelize.query(
-      'SELECT * FROM "communities" WHERE "communityId" = (:id)',
-      {
-        replacements: { id },
-        model: CommunitySchema,
-      }
-    );
-    res.status(200).json(community);
+    if (id) {
+      const community = await CommunitySchema.findOne({
+        where: {communityId: `${id}`}
+      })
+      res.status(200).json(community);
+    }
   } catch (error) {
     console.log(error, "Error in communities controller GETBYID");
     res.status(500).json({ error });

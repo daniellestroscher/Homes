@@ -64,6 +64,7 @@ export default function login({ }:Props) {
                 alt={"profile pic"}
                 width={35}
                 height={35}
+                priority={true}
               />
             </span>
           )}

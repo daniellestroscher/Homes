@@ -10,6 +10,10 @@ const TenantSchema = sequelize.define<Model<ITenant>>("tenant", {
     autoIncrement: true,
     allowNull: false,
   },
+  tenancyId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+  },
   firstName: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -17,8 +21,9 @@ const TenantSchema = sequelize.define<Model<ITenant>>("tenant", {
   lastName: {
     type: DataTypes.STRING,
     allowNull: true,
-  }
+  },
 });
+
 //TenantSchema.hasOne(TenancySchema, {onDelete: "CASCADE"});
 //TenancySchema.hasMany(TenantSchema, {onDelete:"CASCADE"});
 

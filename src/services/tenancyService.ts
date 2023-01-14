@@ -9,3 +9,11 @@ export async function createTenancy(data: ITenancy) {
     body: JSON.stringify(data),
   });
 }
+
+export async function getTenancyById(unitId: string) {
+  return await fetchData<ITenancy>(
+    `/tenancy/${unitId}`,
+    {
+    method: "GET",
+  });
+}

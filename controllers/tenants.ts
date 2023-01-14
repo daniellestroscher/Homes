@@ -3,14 +3,12 @@ import { sequelize } from "../database/connection";
 
 import TenantSchema from "../models/tenant";
 
-export async function createTenant(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export async function createTenant(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { firstName, lastName } = req.body;
+    const { tenancyId, firstName, lastName } = req.body;
     if (firstName) {
       const tenant = await TenantSchema.create({
+        tenancyId,
         firstName,
         lastName,
       });

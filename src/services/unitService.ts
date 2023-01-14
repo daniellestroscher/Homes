@@ -10,7 +10,7 @@ export async function createUnit(data: IUnit) {
   });
 }
 
-export async function getUnitList(communityId: number) {
+export async function getUnitList(communityId: string) {
   return await fetchData<IUnit[]>(
     `/units/list/${communityId}`,
     {
@@ -19,7 +19,7 @@ export async function getUnitList(communityId: number) {
 }
 
 export async function getUnitById(unitId: string) {
-  return await fetchData<IUnit[]>(
+  return await fetchData<IUnit>(
     `/units/${unitId}`,
     {
     method: "GET",

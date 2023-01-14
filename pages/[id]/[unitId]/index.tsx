@@ -5,9 +5,10 @@ import Navbar from "../../../src/components/Navbar/Navbar";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { Session, unstable_getServerSession } from "next-auth";
 import { GetServerSidePropsContext } from "next";
-import { ICommunity, IUnit } from "../../../types/interfaces";
+import { ICommunity, ITenancy, IUnit } from "../../../types/interfaces";
 import { getCommunityById } from "../../../src/services/communityService";
 import { getUnitById } from "../../../src/services/unitService";
+import { getTenancyById } from "../../../src/services/tenancyService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useModalContext } from "../../../src/contexts/modalContext";
@@ -21,13 +22,12 @@ type Props = {
   };
   community: ICommunity;
   unit: IUnit;
+  tenancy: ITenancy;
 };
-export default function Home({ user, community, unit }: Props) {
+export default function Home({ user, community, unit, tenancy }: Props) {
   let { handleModal } = useModalContext();
-
-  const [menuToggle, setMenuToggle] = useState<boolean>(true);
   const router = useRouter();
-  const { unitId } = router.query;
+  console.log(tenancy.tenants && tenancy.tenants[0].firstName);
 
   return (
     <>
@@ -57,16 +57,23 @@ export default function Home({ user, community, unit }: Props) {
                 }}
               >
                 <span>No.{unit.number}</span>
-                {/* <span>{tenancy ? tenancy.tenantOne.firstName}</span> */}
-                {/* <span>{tenancy ? tenancy.tenantOne.firstName}</span> */}
-                <div sx={{ alignSelf: "flex-end" }}>399.65</div>
+                <span>{`${tenancy.tenants && tenancy.tenants[0].firstName} ${
+                  tenancy.tenants && tenancy.tenants[0].lastName
+                }`}</span>
+                <span>{`${tenancy.tenants && tenancy.tenants[1].firstName} ${
+                  tenancy.tenants && tenancy.tenants[1].lastName
+                }`}</span>
+
+                <div sx={{ alignSelf: "flex-end" }}>{`$${tenancy.rent}`}</div>
               </div>
               <div sx={{ border: "2px solid #3a5a40", width: "100%" }}></div>
 
               <button
                 sx={{ variant: "buttons.secondary" }}
                 onClick={() =>
-                  handleModal(<AddTenancyForm community={community} unit={unit} />)
+                  handleModal(
+                    <AddTenancyForm community={community} unit={unit} />
+                  )
                 }
               >
                 Add New Tenancy
@@ -94,15 +101,19 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
   const { user } = session as any;
-  const [community] = await getCommunityById(context.params?.id as string) as ICommunity[];
-  console.log('heyyyyyyyyyyyyyy', community)
-  const [unit] = await getUnitById(context.params?.unitId as string) as IUnit[];
+  const community = (await getCommunityById(
+    context.params?.id as string
+  )) as ICommunity;
+
+  const unit = (await getUnitById(context.params?.unitId as string)) as IUnit;
+  const tenancy = (await getTenancyById(unit.unitId as string)) as ITenancy;
 
   return {
     props: {
       user,
       community,
       unit,
+      tenancy,
     },
   };
 }
