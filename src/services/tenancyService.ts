@@ -10,6 +10,14 @@ export async function createTenancy(data: ITenancy) {
   });
 }
 
+export async function getAllTenancies() {
+  return await fetchData<ITenancy[]>(
+    "/tenancy",
+    {
+    method: "GET",
+  });
+}
+
 export async function getTenancyById(unitId: string) {
   return await fetchData<ITenancy>(
     `/tenancy/${unitId}`,

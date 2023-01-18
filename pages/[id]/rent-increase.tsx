@@ -60,8 +60,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
   const { user } = session as any;
-  const res = await getCommunityById(context.params?.id as string);
-  const community = res[0];
+  const community = await getCommunityById(context.params?.id as string) as ICommunity;
 
   return {
     props: {

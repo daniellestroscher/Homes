@@ -11,7 +11,7 @@ import { ICommunity, ITenancy, IUnit } from "../../types/interfaces";
 import { getCommunityById } from "../../src/services/communityService";
 import { getUnitList } from "../../src/services/unitService";
 import { useUnitListContext } from "../../src/contexts/unitListContext";
-import { Head } from "next/document";
+import { getAllTenancies } from "../../src/services/tenancyService";
 
 type Props = {
   user: {
@@ -21,9 +21,9 @@ type Props = {
   };
   community: ICommunity;
   unitArr: IUnit[];
-  tenancy: ITenancy;
+  tenancies: ITenancy[];
 };
-export default function Home({ user, community, unitArr, tenancy }: Props) {
+export default function Home({ user, community, unitArr, tenancies }: Props) {
   const [menuToggle, setMenuToggle] = useState<boolean>(true);
   const { unitList, setUnitList } = useUnitListContext();
   useEffect(() => {
@@ -31,8 +31,7 @@ export default function Home({ user, community, unitArr, tenancy }: Props) {
   }, []);
 
   const router = useRouter();
-  const { id } = router.query;
-  //MAY NOT NEED THIS QUERY
+  console.log(tenancies)
 
   return (
     <>
@@ -42,7 +41,7 @@ export default function Home({ user, community, unitArr, tenancy }: Props) {
           <Menu
             menuToggle={menuToggle}
             setMenuToggle={setMenuToggle}
-            communityId={community.communityId || id as string}
+            communityId={community.communityId as string}
           />
           <div
             sx={{
@@ -54,7 +53,7 @@ export default function Home({ user, community, unitArr, tenancy }: Props) {
               }),
             }}
           >
-            <UnitList tenancy={tenancy} unitList={unitList} />
+            <UnitList tenancies={tenancies} unitList={unitList} />
           </div>
         </>
       )}
@@ -77,15 +76,16 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
   const { user } = session as any;
-  //fetch community
+
   const community = await getCommunityById(context.params?.id as string) as ICommunity;
-  //fetch unit list
   const unitArr = await getUnitList(community.communityId as string) as IUnit[];
+  const tenancies = await getAllTenancies() as ITenancy[];
   return {
     props: {
       user,
       community,
       unitArr,
+      tenancies,
     },
   }
 }

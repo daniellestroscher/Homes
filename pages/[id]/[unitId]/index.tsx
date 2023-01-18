@@ -27,7 +27,10 @@ type Props = {
 export default function Home({ user, community, unit, tenancy }: Props) {
   let { handleModal } = useModalContext();
   const router = useRouter();
-  console.log(tenancy.tenants && tenancy.tenants[0].firstName);
+
+  function handleNotes(e: React.KeyboardEvent) {
+    e.preventDefault();
+  }
 
   return (
     <>
@@ -57,16 +60,38 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                 }}
               >
                 <span>No.{unit.number}</span>
-                <span>{`${tenancy.tenants && tenancy.tenants[0].firstName} ${
-                  tenancy.tenants && tenancy.tenants[0].lastName
-                }`}</span>
-                <span>{`${tenancy.tenants && tenancy.tenants[1].firstName} ${
-                  tenancy.tenants && tenancy.tenants[1].lastName
-                }`}</span>
-
-                <div sx={{ alignSelf: "flex-end" }}>{`$${tenancy.rent}`}</div>
+                {tenancy && (
+                  <>
+                    <span>{`${
+                      tenancy.tenants && tenancy.tenants[0].firstName
+                    } ${tenancy.tenants && tenancy.tenants[0].lastName}`}</span>
+                    <span>{`${
+                      tenancy.tenants && tenancy.tenants[1].firstName
+                    } ${tenancy.tenants && tenancy.tenants[1].lastName}`}</span>
+                    <div
+                      sx={{ alignSelf: "flex-end" }}
+                    >{`$${tenancy.rent}`}</div>
+                  </>
+                )}
               </div>
               <div sx={{ border: "2px solid #3a5a40", width: "100%" }}></div>
+              {tenancy && (
+                <>
+                  <span>Tenancy Established: {}</span>
+                  <span>Next Rent Increase: </span>
+                  <span>
+                    Assignment Of Lease?{" "}
+                    {tenancy.assignmentOfLease ? "yes" : "no"}
+                  </span>
+
+                  <textarea onChange={(e) => handleNotes}>
+                    {tenancy.notes}
+                  </textarea>
+
+                  <button>View History</button>
+                  <button>Add Rent Increase</button>
+                </>
+              )}
 
               <button
                 sx={{ variant: "buttons.secondary" }}

@@ -7,8 +7,6 @@ export async function createTenancy(req: NextApiRequest, res: NextApiResponse) {
   try {
     const {
       unitId,
-      // tenantOne,
-      // tenantTwo,
       rent,
       notes,
       assignmentOfLease,
@@ -18,8 +16,6 @@ export async function createTenancy(req: NextApiRequest, res: NextApiResponse) {
     if (rent) {
       const tenancy = await TenancySchema.create({
         unitId,
-        // tenantOne,
-        // tenantTwo,
         rent,
         notes,
         assignmentOfLease,
@@ -30,6 +26,24 @@ export async function createTenancy(req: NextApiRequest, res: NextApiResponse) {
     }
   } catch (error) {
     console.log(error, "Error in tenancy controller CREATE");
+    res.status(500).json({ error });
+  }
+}
+
+export async function getAllTenancies(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  try {
+    const tenancy = await TenancySchema.findAll({
+      include: [
+        TenantSchema,
+      ],
+    });
+    return res.status(200).json(tenancy);
+
+  } catch (error) {
+    console.log(error, "Error in tenancy controller GETALL");
     res.status(500).json({ error });
   }
 }
