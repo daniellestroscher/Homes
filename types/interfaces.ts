@@ -28,7 +28,7 @@ export interface ITenancy{
   notes?: string;
   assignmentOfLease?: boolean;
   pet?: boolean;
-  documents?: File | File[];
+  documents?: File[];
 
   tenants?: ITenant[];
 }

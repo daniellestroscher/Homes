@@ -26,10 +26,14 @@ type Props = {
 };
 export default function Home({ user, community, unit, tenancy }: Props) {
   let { handleModal } = useModalContext();
+  let defaultNotes = tenancy.notes as string
+  const [notes, setNotes] = useState<string>(defaultNotes);
   const router = useRouter();
 
-  function handleNotes(e: React.KeyboardEvent) {
+  function handleNotes(e: React.FocusEvent) {
     e.preventDefault();
+    console.log(notes);
+    //TODO PUT REQ NOTES
   }
 
   return (
@@ -41,7 +45,7 @@ export default function Home({ user, community, unit, tenancy }: Props) {
             <FontAwesomeIcon
               icon={faArrowLeft}
               sx={{
-                position: "absolute",
+                position: "fixed",
                 top: "90px",
                 left: "30px",
                 size: "17px",
@@ -59,42 +63,100 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                   padding: "30px",
                 }}
               >
-                <span>No.{unit.number}</span>
+                <h2>No.{unit.number}</h2>
                 {tenancy && (
-                  <>
-                    <span>{`${
-                      tenancy.tenants && tenancy.tenants[0].firstName
-                    } ${tenancy.tenants && tenancy.tenants[0].lastName}`}</span>
-                    <span>{`${
-                      tenancy.tenants && tenancy.tenants[1].firstName
-                    } ${tenancy.tenants && tenancy.tenants[1].lastName}`}</span>
+                  <div
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <p sx={{ fontSize: "18px", margin: "15px" }}>
+                      {`${tenancy.tenants && tenancy.tenants[0].firstName} ${
+                        tenancy.tenants && tenancy.tenants[0].lastName
+                      }`}
+                      <br />
+                      {`${tenancy.tenants && tenancy.tenants[1].firstName} ${
+                        tenancy.tenants && tenancy.tenants[1].lastName
+                      }`}
+                    </p>
                     <div
-                      sx={{ alignSelf: "flex-end" }}
-                    >{`$${tenancy.rent}`}</div>
-                  </>
+                      sx={{
+                        alignSelf: "flex-end",
+                        fontSize: "20px",
+                        margin: "10px",
+                      }}
+                    >
+                      {`$${tenancy.rent}`}
+                    </div>
+                  </div>
                 )}
               </div>
-              <div sx={{ border: "2px solid #3a5a40", width: "100%" }}></div>
+              <div
+                sx={{
+                  border: "2px solid #3a5a40",
+                  borderRadius: "10px",
+                  width: "90%",
+                }}
+              ></div>
               {tenancy && (
                 <>
-                  <span>Tenancy Established: {}</span>
-                  <span>Next Rent Increase: </span>
-                  <span>
-                    Assignment Of Lease?{" "}
-                    {tenancy.assignmentOfLease ? "yes" : "no"}
-                  </span>
+                  <div
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      width: "90%",
+                      padding: "20px 30px",
+                    }}
+                  >
+                    <div sx={{ alignSelf: "center", margin: "20px 0px" }}>
+                      <p>Tenancy Established: {}</p>
+                      <br />
+                      <p>Next Rent Increase: </p>
+                      <br />
+                      <p>
+                        Assignment Of Lease?
+                        {tenancy.assignmentOfLease ? " yes" : " no"}
+                      </p>
+                    </div>
+                    <div
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "50%",
+                      }}
+                    >
+                      <div sx={{ display: "flex", justifyContent: "flex-end" }}>
+                        <button sx={{ variant: "buttons.secondary" }}>
+                          View History
+                        </button>
+                        <button sx={{ variant: "buttons.secondary" }}>
+                          Add Rent Increase
+                        </button>
+                      </div>
+                      <textarea
+                        sx={{ margin: "20px 0px", height: "125px", border: "none", borderRadius: "6px", padding: "10px" }}
+                        onChange={(e) => setNotes(e.target.value)}
+                        onBlur={(e) => handleNotes(e)}
 
-                  <textarea onChange={(e) => handleNotes}>
-                    {tenancy.notes}
-                  </textarea>
-
-                  <button>View History</button>
-                  <button>Add Rent Increase</button>
+                      >
+                        {tenancy.notes}
+                      </textarea>
+                    </div>
+                  </div>
+                  <div sx={{ display: "flex" }}>
+                    {tenancy.documents as undefined}
+                  </div>
                 </>
               )}
 
               <button
-                sx={{ variant: "buttons.secondary" }}
+                sx={{
+                  variant: "buttons.secondary",
+                  alignSelf: "flex-start",
+                  margin: "0px 50px",
+                }}
                 onClick={() =>
                   handleModal(
                     <AddTenancyForm community={community} unit={unit} />
