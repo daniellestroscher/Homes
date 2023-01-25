@@ -9,6 +9,7 @@ import { ICommunity, ITenancy, IUnit } from "../../../types/interfaces";
 import { getCommunityById } from "../../../src/services/communityService";
 import { getUnitById } from "../../../src/services/unitService";
 import { getTenancyById } from "../../../src/services/tenancyService";
+import { updateNotes } from "../../../src/services/tenancyService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useModalContext } from "../../../src/contexts/modalContext";
@@ -26,14 +27,18 @@ type Props = {
 };
 export default function Home({ user, community, unit, tenancy }: Props) {
   let { handleModal } = useModalContext();
-  let defaultNotes = tenancy.notes as string
+  let defaultNotes = "";
+  if (tenancy && tenancy.notes) defaultNotes = tenancy.notes as string;
+
   const [notes, setNotes] = useState<string>(defaultNotes);
   const router = useRouter();
 
   function handleNotes(e: React.FocusEvent) {
     e.preventDefault();
-    console.log(notes);
-    //TODO PUT REQ NOTES
+    if (notes !== tenancy.notes) {
+      updateNotes(unit.unitId as string, notes);
+      router.replace(router.asPath); //refresh server-side props
+    }
   }
 
   return (
@@ -111,13 +116,18 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                     }}
                   >
                     <div sx={{ alignSelf: "center", margin: "20px 0px" }}>
-                      <p>Tenancy Established: {}</p>
+                      <p>Tenancy Established: {tenancy.establishedDate}</p>
                       <br />
                       <p>Next Rent Increase: </p>
                       <br />
                       <p>
                         Assignment Of Lease?
                         {tenancy.assignmentOfLease ? " yes" : " no"}
+                      </p>
+                      <br />
+                      <p>
+                        Pet?
+                        {tenancy.pet ? " yes" : " no"}
                       </p>
                     </div>
                     <div
@@ -136,10 +146,15 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                         </button>
                       </div>
                       <textarea
-                        sx={{ margin: "20px 0px", height: "125px", border: "none", borderRadius: "6px", padding: "10px" }}
+                        sx={{
+                          margin: "20px 0px",
+                          height: "125px",
+                          border: "none",
+                          borderRadius: "6px",
+                          padding: "10px",
+                        }}
                         onChange={(e) => setNotes(e.target.value)}
                         onBlur={(e) => handleNotes(e)}
-
                       >
                         {tenancy.notes}
                       </textarea>
@@ -155,7 +170,7 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                 sx={{
                   variant: "buttons.secondary",
                   alignSelf: "flex-start",
-                  margin: "0px 50px",
+                  margin: "10px 50px",
                 }}
                 onClick={() =>
                   handleModal(

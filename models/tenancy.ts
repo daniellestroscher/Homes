@@ -1,4 +1,4 @@
-import { Association, AssociationError, DataTypes, Model } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../database/connection";
 import { ITenancy } from "../types/interfaces";
 import TenantSchema from "./tenant";
@@ -19,25 +19,14 @@ const TenancySchema = sequelize.define<Model<ITenancy>>("tenancy", {
     //   key: "unitId",
     // },
   },
-  // tenantOne: {
-  //   type: DataTypes.UUID,
-  //   allowNull: false,
-  //   // references: {
-  //   //   model: TenantSchema,
-  //   //   key: "tenantId",
-  //   // },
-  // },
-  // tenantTwo: {
-  //   type: DataTypes.UUID,
-  //   allowNull: true,
-  //   // references: {
-  //   //   model: TenantSchema,
-  //   //   key: "tenantId",
-  //   // },
-  // },
   rent: {
     type: DataTypes.NUMBER,
     allowNull: false,
+  },
+  establishedDate: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: "NOW()",
   },
   notes: {
     type: DataTypes.STRING,

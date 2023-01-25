@@ -22,8 +22,7 @@ export interface IUnit{
 export interface ITenancy{
   tenancyId?: string;
   unitId: string;
-  //tenantOne: string; //tenantOneId
-  //tenantTwo?: string; //tenantTwoId
+  establishedDate: string;
   rent: number | undefined;
   notes?: string;
   assignmentOfLease?: boolean;

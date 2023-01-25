@@ -13,7 +13,7 @@ export default function UnitItem({ unit, tenancy }: Props) {
   console.log(tenancy)
 
   return (
-    <Link href="/id/unitId" as={`/${id}/${unit.unitId}`}>
+    <Link href="/[id]/[unitId]" as={`/${id}/${unit.unitId}`}>
       <div sx={{ variant: "cards.primary", position: "relative" }}>
         {tenancy && tenancy.tenants && (
           <>

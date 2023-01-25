@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { sequelize } from "../database/connection";
 import TenancySchema from "../models/tenancy";
 import TenantSchema from "../models/tenant";
 
@@ -8,6 +7,7 @@ export async function createTenancy(req: NextApiRequest, res: NextApiResponse) {
     const {
       unitId,
       rent,
+      establishedDate,
       notes,
       assignmentOfLease,
       pet,
@@ -17,6 +17,7 @@ export async function createTenancy(req: NextApiRequest, res: NextApiResponse) {
       const tenancy = await TenancySchema.create({
         unitId,
         rent,
+        establishedDate,
         notes,
         assignmentOfLease,
         pet,
@@ -36,14 +37,11 @@ export async function getAllTenancies(
 ) {
   try {
     const tenancy = await TenancySchema.findAll({
-      include: [
-        TenantSchema,
-      ],
+      include: [TenantSchema],
     });
     return res.status(200).json(tenancy);
-
   } catch (error) {
-    console.log(error, "Error in tenancy controller GETALL");
+    console.log(error, "Error in tenancy controller GET-ALL");
     res.status(500).json({ error });
   }
 }
@@ -68,7 +66,27 @@ export async function getTenancyById(
       return res.status(200).json(tenancy);
     }
   } catch (error) {
-    console.log(error, "Error in tenancy controller GETBYID");
+    console.log(error, "Error in tenancy controller GET-BY-ID");
+    res.status(500).json({ error });
+  }
+}
+
+export async function updateNotes(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const { unitId } = req.query;
+    const notes = req.body;
+    if (unitId && notes) {
+      console.log("in the controller!!!!!!!!!!!!!!!!!");
+      const updatedTenancy = await TenancySchema.update(
+        { notes: notes },
+        {
+          where: { unitId: unitId },
+        }
+      );
+      return res.status(200).json(updatedTenancy);
+    }
+  } catch (error) {
+    console.log(error, "Error in tenancy controller UPDATE-NOTES");
     res.status(500).json({ error });
   }
 }

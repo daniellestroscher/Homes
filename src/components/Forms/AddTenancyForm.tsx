@@ -29,9 +29,8 @@ export default function AddTenancyForm({ community, unit }: Props) {
   });
   const initialTenancy = {
     unitId: "",
-    // tenantOne: '',
-    // tenantTwo: '',
     rent: undefined,
+    establishedDate: "",
     notes: undefined,
     assignmentOfLease: undefined,
     pet: undefined,
@@ -45,9 +44,8 @@ export default function AddTenancyForm({ community, unit }: Props) {
       console.log("in submit handler");
       const newTenancy = await createTenancy({
         unitId: unit.unitId as string,
-        //tenantOne: newTenantOne?.tenantId as string,
-        //tenantTwo: newTenantTwo?.tenantId as string,
         rent: tenancy.rent as number,
+        establishedDate: tenancy.establishedDate,
         notes: tenancy.notes,
         assignmentOfLease: tenancy.assignmentOfLease,
         pet: tenancy.pet,
@@ -68,7 +66,7 @@ export default function AddTenancyForm({ community, unit }: Props) {
       console.log(newTenantTwo, "IM THE TENANT TWO");
       handleModal(null);
     } else {
-      alert("All fields are required");
+      alert("Missing fields are required");
     }
   };
   return (
@@ -124,6 +122,14 @@ export default function AddTenancyForm({ community, unit }: Props) {
       </section>
       <section>
         <h4>Other Info</h4>
+        <label>Date Established:</label>
+        <input
+          type="date"
+          value={tenancy.establishedDate}
+          onChange={(e) =>
+            setTenancy({ ...tenancy, establishedDate: e.target.value })
+          }
+        />
         <input
           type="number"
           placeholder="Rent"
@@ -131,7 +137,7 @@ export default function AddTenancyForm({ community, unit }: Props) {
           onChange={(e) =>
             setTenancy({ ...tenancy, rent: Number(e.target.value) })
           }
-        ></input>
+        />
         <label>Assignment Of Lease?</label>
         <input
           type="checkbox"
@@ -139,24 +145,24 @@ export default function AddTenancyForm({ community, unit }: Props) {
           onChange={(e) =>
             setTenancy({ ...tenancy, assignmentOfLease: e.target.checked })
           }
-        ></input>
+        />
         <label>Pet?</label>
         <input
           type="checkbox"
           checked={tenancy.pet}
           onChange={(e) => setTenancy({ ...tenancy, pet: e.target.checked })}
-        ></input>
+        />
         <input
           type="text"
           placeholder="Notes..."
           value={tenancy.notes}
           onChange={(e) => setTenancy({ ...tenancy, notes: e.target.value })}
-        ></input>
+        />
         <label>Add any related Documents</label>
         <input
           type="file"
           //value={tenancy.documents as File[]}
-        ></input>
+        />
       </section>
       <button type="submit" onClick={async (e) => await handleSubmit(e)}>
         Create Tenancy
