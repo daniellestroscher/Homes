@@ -22,14 +22,24 @@ export interface IUnit{
 export interface ITenancy{
   tenancyId?: string;
   unitId: string;
+  //recordEffectiveDate: string;
   establishedDate: string;
-  rent: number | undefined;
+  //increaseDate: string;
+  //rent: number | undefined;
   notes?: string;
   assignmentOfLease?: boolean;
   pet?: boolean;
   documents?: File[];
 
   tenants?: ITenant[];
+  tenancy_versions?: ITenancyVersions[];
+}
+
+export interface ITenancyVersions{
+  tenancyId: string;
+  recordEffectiveDate: string | undefined;
+  rent: number | undefined;
+  increaseDate: string | undefined;
 }
 
 export interface ITenant{

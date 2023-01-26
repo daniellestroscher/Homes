@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../database/connection";
 import { ITenancy } from "../types/interfaces";
+import TenancyVersionSchema from "./tenancy_versions";
 import TenantSchema from "./tenant";
 import UnitSchema from "./unit";
 
@@ -13,14 +14,6 @@ const TenancySchema = sequelize.define<Model<ITenancy>>("tenancy", {
   },
   unitId: {
     type: DataTypes.UUID,
-    allowNull: false,
-    // references: {
-    //   model: UnitSchema,
-    //   key: "unitId",
-    // },
-  },
-  rent: {
-    type: DataTypes.NUMBER,
     allowNull: false,
   },
   establishedDate: {
@@ -44,6 +37,15 @@ const TenancySchema = sequelize.define<Model<ITenancy>>("tenancy", {
     type: DataTypes.ABSTRACT,
     allowNull: true,
   },
+
+  // rent: {
+  //   type: DataTypes.NUMBER,
+  //   allowNull: false,
+  // },
+  // increaseDate: {
+  //   type: DataTypes.STRING,
+  //   allowNull: true,
+  // },
 });
 //FK on source
 TenantSchema.belongsTo(TenancySchema, {
@@ -53,6 +55,20 @@ TenantSchema.belongsTo(TenancySchema, {
 });
 //FK on target
 TenancySchema.hasMany(TenantSchema, {
+  foreignKey: "tenancyId",
+  sourceKey: "tenancyId",
+  onDelete: "CASCADE",
+});
+
+//FK on source
+TenancyVersionSchema.belongsTo(TenancySchema, {
+  foreignKey: "tenancyId",
+  targetKey: "tenancyId",
+  onDelete: "CASCADE",
+});
+
+//FK on target
+TenancySchema.hasMany(TenancyVersionSchema, {
   foreignKey: "tenancyId",
   sourceKey: "tenancyId",
   onDelete: "CASCADE",

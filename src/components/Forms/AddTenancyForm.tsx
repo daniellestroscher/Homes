@@ -3,12 +3,15 @@ import React from "react";
 import {
   ICommunity,
   ITenancy,
+  ITenancyVersions,
   ITenant,
   IUnit,
 } from "../../../types/interfaces";
 import { useModalContext } from "../../contexts/modalContext";
 import { createTenant } from "../../services/tenantService";
-import { createTenancy } from "../../services/tenancyService";
+import { createRentIncrease, createTenancy } from "../../services/tenancyService";
+import { useRouter } from "next/router";
+import { formatDate } from "../../utils/helperFunctions";
 
 type Props = {
   community: ICommunity;
@@ -16,8 +19,8 @@ type Props = {
 };
 export default function AddTenancyForm({ community, unit }: Props) {
   const { handleModal } = useModalContext();
+  const router = useRouter()
   const [tenantOne, setTenantOne] = React.useState<ITenant>({
-    tenantId: "",
     tenancyId: "",
     firstName: "",
     lastName: "",
@@ -29,22 +32,27 @@ export default function AddTenancyForm({ community, unit }: Props) {
   });
   const initialTenancy = {
     unitId: "",
-    rent: undefined,
-    establishedDate: "",
+    establishedDate: formatDate(new Date(), "yyyy-mm-dd"),
     notes: undefined,
     assignmentOfLease: undefined,
     pet: undefined,
     documents: undefined,
   };
   const [tenancy, setTenancy] = React.useState<ITenancy>(initialTenancy);
+  const initialTenancyVersions = {
+    tenancyId: "",
+    recordEffectiveDate: "",
+    rent: undefined,
+    increaseDate: undefined,
+  }
+  const [tenancyVersions, setTenancyVersions] = React.useState<ITenancyVersions>(initialTenancyVersions)
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (tenantOne && tenancy && tenancy.rent) {
+    if (tenantOne.firstName !== "" && tenancyVersions.rent !== undefined) {
       console.log("in submit handler");
       const newTenancy = await createTenancy({
         unitId: unit.unitId as string,
-        rent: tenancy.rent as number,
         establishedDate: tenancy.establishedDate,
         notes: tenancy.notes,
         assignmentOfLease: tenancy.assignmentOfLease,
@@ -52,19 +60,30 @@ export default function AddTenancyForm({ community, unit }: Props) {
         documents: tenancy.documents,
       });
       console.log(newTenancy, "IM THE TENANCY");
+      const newTenancyVersion = await createRentIncrease({
+        tenancyId: newTenancy?.tenancyId as string,
+        recordEffectiveDate: tenancy.establishedDate,
+        rent: tenancyVersions.rent,
+        increaseDate: tenancyVersions.increaseDate,
+      })
+      console.log(newTenancyVersion, "IM THE TENANCY VERSION")
       const newTenantOne = (await createTenant({
         tenancyId: newTenancy?.tenancyId as string,
         firstName: tenantOne.firstName,
         lastName: tenantOne.lastName,
       })) as ITenant;
       console.log(newTenantOne, "IM THE TENANT ONE");
-      const newTenantTwo = (await createTenant({
-        tenancyId: newTenancy?.tenancyId as string,
-        firstName: tenantTwo.firstName,
-        lastName: tenantTwo.lastName,
-      })) as ITenant;
-      console.log(newTenantTwo, "IM THE TENANT TWO");
+      if (tenantTwo.firstName !== "") {
+        const newTenantTwo = (await createTenant({
+          tenancyId: newTenancy?.tenancyId as string,
+          firstName: tenantTwo.firstName,
+          lastName: tenantTwo.lastName,
+        })) as ITenant;
+        console.log(newTenantTwo, "IM THE TENANT TWO");
+      }
+
       handleModal(null);
+      router.replace(router.asPath); //refresh server-side props
     } else {
       alert("Missing fields are required");
     }
@@ -133,9 +152,9 @@ export default function AddTenancyForm({ community, unit }: Props) {
         <input
           type="number"
           placeholder="Rent"
-          value={tenancy.rent as number}
+          value={tenancyVersions.rent as number}
           onChange={(e) =>
-            setTenancy({ ...tenancy, rent: Number(e.target.value) })
+            setTenancyVersions({ ...tenancyVersions, rent: Number(e.target.value) })
           }
         />
         <label>Assignment Of Lease?</label>

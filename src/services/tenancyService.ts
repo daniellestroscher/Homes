@@ -1,4 +1,4 @@
-import { ITenancy } from "../../types/interfaces";
+import { ITenancy, ITenancyVersions } from "../../types/interfaces";
 import { fetchData } from "./fetchFactory";
 
 export async function createTenancy(data: ITenancy) {
@@ -25,4 +25,11 @@ export async function updateNotes(unitId: string, notes: string) {
     method: "PUT",
     body: JSON.stringify(notes),
   });
+}
+
+export async function createRentIncrease(rentIncrease: ITenancyVersions) {
+  return await fetchData<string>(`/tenancy/rent`, {
+    method: "POST",
+    body: JSON.stringify(rentIncrease),
+  })
 }

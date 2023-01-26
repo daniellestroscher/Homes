@@ -1,22 +1,30 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { where } from "sequelize";
 import TenancySchema from "../models/tenancy";
+import TenancyVersionSchema from "../models/tenancy_versions";
 import TenantSchema from "../models/tenant";
+import { ITenancy } from "../types/interfaces";
 
 export async function createTenancy(req: NextApiRequest, res: NextApiResponse) {
   try {
     const {
       unitId,
-      rent,
       establishedDate,
       notes,
       assignmentOfLease,
       pet,
       documents,
     } = req.body;
-    if (rent) {
+
+    // if (establishedDate) {
+    //   //create the rent increase date
+    //   let { increaseDate } = req.body;
+    //   increaseDate = establishedDate.split("");
+    //   increaseDate[3] = (Number(increaseDate[3]) + 1).toString();
+    //   increaseDate = increaseDate.join("");
+
       const tenancy = await TenancySchema.create({
         unitId,
-        rent,
         establishedDate,
         notes,
         assignmentOfLease,
@@ -24,7 +32,7 @@ export async function createTenancy(req: NextApiRequest, res: NextApiResponse) {
         documents,
       });
       return res.status(200).json(tenancy);
-    }
+    //}
   } catch (error) {
     console.log(error, "Error in tenancy controller CREATE");
     res.status(500).json({ error });
@@ -54,13 +62,18 @@ export async function getTenancyById(
     const { unitId } = req.query;
     if (unitId) {
       const tenancy = await TenancySchema.findOne({
+        limit: 1,
         where: { unitId: unitId },
+        order: [ [ 'createdAt', 'DESC' ]],
         include: [
           TenantSchema,
-          // {
-          //   association: "tenants",
-          //   attributes: ["firstName", "lastName"],
-          // },
+          //TenancyVersionSchema,
+          {
+            association: "tenancy_versions",
+            order: [ [ 'recordEffectiveDate', 'DESC' ]],
+            limit: 1,
+            //where: {max(recordEffectiveDate)},
+          },
         ],
       });
       return res.status(200).json(tenancy);
@@ -76,7 +89,6 @@ export async function updateNotes(req: NextApiRequest, res: NextApiResponse) {
     const { unitId } = req.query;
     const notes = req.body;
     if (unitId && notes) {
-      console.log("in the controller!!!!!!!!!!!!!!!!!");
       const updatedTenancy = await TenancySchema.update(
         { notes: notes },
         {

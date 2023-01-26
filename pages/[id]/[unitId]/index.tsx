@@ -5,7 +5,12 @@ import Navbar from "../../../src/components/Navbar/Navbar";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { Session, unstable_getServerSession } from "next-auth";
 import { GetServerSidePropsContext } from "next";
-import { ICommunity, ITenancy, IUnit } from "../../../types/interfaces";
+import {
+  ICommunity,
+  ITenancy,
+  ITenancyVersions,
+  IUnit,
+} from "../../../types/interfaces";
 import { getCommunityById } from "../../../src/services/communityService";
 import { getUnitById } from "../../../src/services/unitService";
 import { getTenancyById } from "../../../src/services/tenancyService";
@@ -14,6 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useModalContext } from "../../../src/contexts/modalContext";
 import AddTenancyForm from "../../../src/components/Forms/AddTenancyForm";
+import AddRentIncreaseForm from "../../../src/components/Forms/AddRentIncreaseForm";
 
 type Props = {
   user: {
@@ -27,16 +33,18 @@ type Props = {
 };
 export default function Home({ user, community, unit, tenancy }: Props) {
   let { handleModal } = useModalContext();
+  const router = useRouter();
+
   let defaultNotes = "";
   if (tenancy && tenancy.notes) defaultNotes = tenancy.notes as string;
+  const [notesUpdate, setNotesUpdate] = useState<string>(defaultNotes);
 
-  const [notes, setNotes] = useState<string>(defaultNotes);
-  const router = useRouter();
+  console.log(tenancy);
 
   function handleNotes(e: React.FocusEvent) {
     e.preventDefault();
-    if (notes !== tenancy.notes) {
-      updateNotes(unit.unitId as string, notes);
+    if (notesUpdate !== tenancy.notes) {
+      updateNotes(unit.unitId as string, notesUpdate);
       router.replace(router.asPath); //refresh server-side props
     }
   }
@@ -69,7 +77,7 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                 }}
               >
                 <h2>No.{unit.number}</h2>
-                {tenancy && (
+                {tenancy && tenancy.tenants && tenancy.tenancy_versions && (
                   <div
                     sx={{
                       display: "flex",
@@ -82,9 +90,11 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                         tenancy.tenants && tenancy.tenants[0].lastName
                       }`}
                       <br />
-                      {`${tenancy.tenants && tenancy.tenants[1].firstName} ${
-                        tenancy.tenants && tenancy.tenants[1].lastName
-                      }`}
+                      {tenancy.tenants &&
+                        tenancy.tenants[1] &&
+                        `${tenancy.tenants && tenancy.tenants[1].firstName} ${
+                          tenancy.tenants && tenancy.tenants[1].lastName
+                        }`}
                     </p>
                     <div
                       sx={{
@@ -93,7 +103,7 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                         margin: "10px",
                       }}
                     >
-                      {`$${tenancy.rent}`}
+                      {tenancy.tenancy_versions[0].rent}
                     </div>
                   </div>
                 )}
@@ -105,7 +115,7 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                   width: "90%",
                 }}
               ></div>
-              {tenancy && (
+              {tenancy && tenancy.tenancy_versions && (
                 <>
                   <div
                     sx={{
@@ -118,7 +128,9 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                     <div sx={{ alignSelf: "center", margin: "20px 0px" }}>
                       <p>Tenancy Established: {tenancy.establishedDate}</p>
                       <br />
-                      <p>Next Rent Increase: </p>
+                      <p>
+                        Next Rent Increase: {tenancy.tenancy_versions[0].increaseDate}
+                      </p>
                       <br />
                       <p>
                         Assignment Of Lease?
@@ -141,7 +153,16 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                         <button sx={{ variant: "buttons.secondary" }}>
                           View History
                         </button>
-                        <button sx={{ variant: "buttons.secondary" }}>
+                        <button
+                          sx={{ variant: "buttons.secondary" }}
+                          onClick={() =>
+                            handleModal(
+                              <AddRentIncreaseForm
+                                tenancyId={tenancy.tenancyId as string}
+                              />
+                            )
+                          }
+                        >
                           Add Rent Increase
                         </button>
                       </div>
@@ -153,11 +174,10 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                           borderRadius: "6px",
                           padding: "10px",
                         }}
-                        onChange={(e) => setNotes(e.target.value)}
+                        onChange={(e) => setNotesUpdate(e.target.value)}
                         onBlur={(e) => handleNotes(e)}
-                      >
-                        {tenancy.notes}
-                      </textarea>
+                        defaultValue={tenancy.notes}
+                      ></textarea>
                     </div>
                   </div>
                   <div sx={{ display: "flex" }}>
