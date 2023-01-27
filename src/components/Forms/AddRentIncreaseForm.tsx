@@ -7,8 +7,9 @@ import { formatDate } from "../../utils/helperFunctions";
 
 type Props = {
   tenancyId: string;
+  currentRecordEffectiveDate: string | undefined;
 };
-export default function AddRentIncreaseForm({ tenancyId }: Props) {
+export default function AddRentIncreaseForm({ tenancyId, currentRecordEffectiveDate }: Props) {
   let defaultIncrease = {
     tenancyId: tenancyId,
     recordEffectiveDate: formatDate(new Date(), "yyyy-mm-dd"),
@@ -21,7 +22,7 @@ export default function AddRentIncreaseForm({ tenancyId }: Props) {
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (rentIncrease) {
+    if (rentIncrease && currentRecordEffectiveDate !== rentIncrease.recordEffectiveDate) {
       await createRentIncrease({
         tenancyId: rentIncrease.tenancyId,
         recordEffectiveDate: rentIncrease.recordEffectiveDate,
@@ -31,7 +32,7 @@ export default function AddRentIncreaseForm({ tenancyId }: Props) {
       setRentIncrease(defaultIncrease);
       handleModal(null); //close form
     } else {
-      alert("All fields are required");
+      alert("All fields are required or change the effective date to one that in not already in use.");
     }
   };
 

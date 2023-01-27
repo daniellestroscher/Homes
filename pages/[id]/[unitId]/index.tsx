@@ -8,7 +8,6 @@ import { GetServerSidePropsContext } from "next";
 import {
   ICommunity,
   ITenancy,
-  ITenancyVersions,
   IUnit,
 } from "../../../types/interfaces";
 import { getCommunityById } from "../../../src/services/communityService";
@@ -16,10 +15,11 @@ import { getUnitById } from "../../../src/services/unitService";
 import { getTenancyById } from "../../../src/services/tenancyService";
 import { updateNotes } from "../../../src/services/tenancyService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faPen } from "@fortawesome/free-solid-svg-icons";
 import { useModalContext } from "../../../src/contexts/modalContext";
 import AddTenancyForm from "../../../src/components/Forms/AddTenancyForm";
 import AddRentIncreaseForm from "../../../src/components/Forms/AddRentIncreaseForm";
+import EditTenancyForm from "../../../src/components/Forms/EditTenancyForm";
 
 type Props = {
   user: {
@@ -39,8 +39,6 @@ export default function Home({ user, community, unit, tenancy }: Props) {
   if (tenancy && tenancy.notes) defaultNotes = tenancy.notes as string;
   const [notesUpdate, setNotesUpdate] = useState<string>(defaultNotes);
 
-  console.log(tenancy);
-
   function handleNotes(e: React.FocusEvent) {
     e.preventDefault();
     if (notesUpdate !== tenancy.notes) {
@@ -48,7 +46,6 @@ export default function Home({ user, community, unit, tenancy }: Props) {
       router.replace(router.asPath); //refresh server-side props
     }
   }
-
   return (
     <>
       {user && (
@@ -76,7 +73,28 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                   padding: "30px",
                 }}
               >
-                <h2>No.{unit.number}</h2>
+                <div
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                >
+                  <h2>No.{unit.number}</h2>
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    sx={{
+                      size: "17px",
+                      cursor: "pointer",
+                    }}
+                    onClick={()=>
+                      handleModal(
+                      <EditTenancyForm
+                        tenancy={tenancy}
+                      />
+                    )}
+                  />
+                </div>
                 {tenancy && tenancy.tenants && tenancy.tenancy_versions && (
                   <div
                     sx={{
@@ -149,23 +167,24 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                         width: "50%",
                       }}
                     >
-                      <div sx={{ display: "flex", justifyContent: "flex-end" }}>
-                        <button sx={{ variant: "buttons.secondary" }}>
-                          View History
-                        </button>
-                        <button
-                          sx={{ variant: "buttons.secondary" }}
-                          onClick={() =>
-                            handleModal(
-                              <AddRentIncreaseForm
-                                tenancyId={tenancy.tenancyId as string}
-                              />
-                            )
-                          }
-                        >
-                          Add Rent Increase
-                        </button>
-                      </div>
+                    <div sx={{ display: "flex", justifyContent: "flex-end" }}>
+                      <button sx={{ variant: "buttons.secondary" }}>
+                        View History
+                      </button>
+                      <button
+                        sx={{ variant: "buttons.secondary" }}
+                        onClick={() =>
+                          handleModal(
+                            <AddRentIncreaseForm
+                              tenancyId={tenancy.tenancyId as string}
+                              currentRecordEffectiveDate={tenancy.tenancy_versions && tenancy.tenancy_versions[0].recordEffectiveDate as string}
+                            />
+                          )
+                        }
+                      >
+                        Add Rent Increase
+                      </button>
+                    </div>
                       <textarea
                         sx={{
                           margin: "20px 0px",
@@ -194,7 +213,7 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                 }}
                 onClick={() =>
                   handleModal(
-                    <AddTenancyForm community={community} unit={unit} />
+                    <AddTenancyForm unitId={unit.unitId as string} />
                   )
                 }
               >

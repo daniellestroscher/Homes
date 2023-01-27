@@ -14,10 +14,10 @@ import { useRouter } from "next/router";
 import { formatDate } from "../../utils/helperFunctions";
 
 type Props = {
-  community: ICommunity;
-  unit: IUnit;
+  //community: ICommunity;
+  unitId: string;
 };
-export default function AddTenancyForm({ community, unit }: Props) {
+export default function AddTenancyForm({ unitId }: Props) {
   const { handleModal } = useModalContext();
   const router = useRouter()
   const [tenantOne, setTenantOne] = React.useState<ITenant>({
@@ -52,7 +52,7 @@ export default function AddTenancyForm({ community, unit }: Props) {
     if (tenantOne.firstName !== "" && tenancyVersions.rent !== undefined) {
       console.log("in submit handler");
       const newTenancy = await createTenancy({
-        unitId: unit.unitId as string,
+        unitId: unitId,
         establishedDate: tenancy.establishedDate,
         notes: tenancy.notes,
         assignmentOfLease: tenancy.assignmentOfLease,
