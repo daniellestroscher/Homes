@@ -1,5 +1,4 @@
 /** @jsxImportSource theme-ui */
-import { useState } from 'react'
 import { useRouter } from 'next/router';
 import Menu from '../../src/components/Menu/Menu'
 import RentIncreases from '../../src/components/RentIncreaseList/RentIncreaseList'
@@ -9,6 +8,7 @@ import { Session, unstable_getServerSession } from 'next-auth';
 import { GetServerSidePropsContext } from 'next';
 import { ICommunity } from '../../types/interfaces';
 import { getCommunityById } from '../../src/services/communityService';
+import { useMenuContext } from '../../src/contexts/menuContext';
 
 type Props = {
   user: {
@@ -19,7 +19,7 @@ type Props = {
   community: ICommunity;
 };
 export default function Home({user, community}:Props) {
-  const [menuToggle, setMenuToggle] = useState<boolean>(true);
+  const { menuToggle, setMenuToggle } = useMenuContext();
   const router = useRouter();
   const { id } = router.query;
   console.log(community);
@@ -28,7 +28,6 @@ export default function Home({user, community}:Props) {
     {user && (
       <>
         <Navbar name={community.name}/>
-        {/* <Menu menuToggle={menuToggle} setMenuToggle={setMenuToggle} communityId={id as string}/> */}
         <div sx={{
           variant: 'containers.mainPageCont',
           left: '35px',
@@ -37,6 +36,7 @@ export default function Home({user, community}:Props) {
             left: '155px'
           })
         }}>
+        <Menu communityId={community.communityId as string}/>
         <RentIncreases/>
         </div>
       </>

@@ -12,6 +12,7 @@ import { getCommunityById } from "../../src/services/communityService";
 import { getUnitList } from "../../src/services/unitService";
 import { useUnitListContext } from "../../src/contexts/unitListContext";
 import { getAllTenancies } from "../../src/services/tenancyService";
+import { useMenuContext } from "../../src/contexts/menuContext";
 
 type Props = {
   user: {
@@ -24,7 +25,7 @@ type Props = {
   tenancies: ITenancy[];
 };
 export default function Home({ user, community, unitArr, tenancies }: Props) {
-  const [menuToggle, setMenuToggle] = useState<boolean>(true);
+  const { menuToggle, setMenuToggle } = useMenuContext();
   const { unitList, setUnitList } = useUnitListContext();
   useEffect(() => {
     setUnitList(unitArr);
@@ -39,8 +40,8 @@ export default function Home({ user, community, unitArr, tenancies }: Props) {
         <>
           <Navbar name={community.name} />
           <Menu
-            menuToggle={menuToggle}
-            setMenuToggle={setMenuToggle}
+            // menuToggle={menuToggle}
+            // setMenuToggle={setMenuToggle}
             communityId={community.communityId as string}
           />
           <div

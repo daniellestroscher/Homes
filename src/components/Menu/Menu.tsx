@@ -16,14 +16,14 @@ import Link from "next/link";
 import { useModalContext } from "../../contexts/modalContext";
 import AddUnitForm from "../Forms/AddUnitForm";
 import { useUnitListContext } from "../../contexts/unitListContext";
+import { useMenuContext } from "../../contexts/menuContext";
 
 type props = {
-  menuToggle: boolean;
-  setMenuToggle: (arg: boolean) => void;
   communityId: string;
 };
-function Menu({ menuToggle, setMenuToggle, communityId }: props) {
+function Menu({ communityId }: props) {
   const { handleModal } = useModalContext();
+  const { menuToggle, setMenuToggle } = useMenuContext();
   const { unitList, setUnitList } = useUnitListContext();
   return (
     <>

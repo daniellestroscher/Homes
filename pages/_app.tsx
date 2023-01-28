@@ -7,6 +7,7 @@ import { SessionProvider } from "next-auth/react"
 
 import { ModalProvider } from "../src/contexts/modalContext";
 import { UnitListProvider } from "../src/contexts/unitListContext";
+import { MenuProvider } from '../src/contexts/menuContext'
 
 export default function App({
   Component,
@@ -17,8 +18,10 @@ export default function App({
       <ThemeProvider theme={theme}>
         <ModalProvider>
           <UnitListProvider>
-            <Component {...pageProps} />
+            <MenuProvider>
+              <Component {...pageProps} />
 
+            </MenuProvider>
           </UnitListProvider>
         </ModalProvider>
       </ThemeProvider>

@@ -5,6 +5,8 @@ export default {
     lightGrey: "#f0f0f0",
     accent: "#3a5a40",
     accentLight: "#839788",
+    accentLighter: "#CDD5CF",
+    accentLightest: "#F0F2F0",
     accentDark: "#1D480A",
     champagne: "#EEE0CB",
     modes: {
@@ -108,7 +110,7 @@ export default {
       borderRadius: "4px",
       backgroundColor: "lightGrey",
       li: {
-        fontSize: "13px",
+        fontSize: "14px",
         margin: "0px",
         alignSelf: "flex-end",
       },
@@ -116,10 +118,16 @@ export default {
     listItem: {
       display: "flex",
       gap: "15px",
-      padding: "0px 0px 25px",
+      padding: "12px",
       color: "text",
+      borderRadius: "6px",
+      margin: "30px 0px",
       li: {
         fontSize: "14px",
+      },
+      "&:hover": {
+        backgroundColor: "accentLight",
+        color: "white",
       },
     },
     form: {
