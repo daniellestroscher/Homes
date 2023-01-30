@@ -82,7 +82,7 @@ export default function AddTenancyForm({ unitId }: Props) {
         console.log(newTenantTwo, "IM THE TENANT TWO");
       }
 
-      handleModal(null);
+      handleModal(null); //close form
       router.replace(router.asPath); //refresh server-side props
     } else {
       alert("Missing fields are required");

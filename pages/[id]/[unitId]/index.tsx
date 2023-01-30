@@ -20,6 +20,7 @@ import { useModalContext } from "../../../src/contexts/modalContext";
 import AddTenancyForm from "../../../src/components/Forms/AddTenancyForm";
 import AddRentIncreaseForm from "../../../src/components/Forms/AddRentIncreaseForm";
 import EditTenancyForm from "../../../src/components/Forms/EditTenancyForm";
+import Link from "next/link";
 
 type Props = {
   user: {
@@ -168,9 +169,13 @@ export default function Home({ user, community, unit, tenancy }: Props) {
                       }}
                     >
                     <div sx={{ display: "flex", justifyContent: "flex-end" }}>
-                      <button sx={{ variant: "buttons.secondary" }}>
-                        View History
-                      </button>
+                      <Link href="/[id]/[unitId]/history" as={`/${community.communityId}/${unit.unitId}/history`}>
+                        <button
+                          sx={{ variant: "buttons.secondary" }}
+                        >
+                          View History
+                        </button>
+                      </Link>
                       <button
                         sx={{ variant: "buttons.secondary" }}
                         onClick={() =>

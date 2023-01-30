@@ -23,15 +23,15 @@ export async function createTenancy(req: NextApiRequest, res: NextApiResponse) {
     //   increaseDate[3] = (Number(increaseDate[3]) + 1).toString();
     //   increaseDate = increaseDate.join("");
 
-      const tenancy = await TenancySchema.create({
-        unitId,
-        establishedDate,
-        notes,
-        assignmentOfLease,
-        pet,
-        documents,
-      });
-      return res.status(200).json(tenancy);
+    const tenancy = await TenancySchema.create({
+      unitId,
+      establishedDate,
+      notes,
+      assignmentOfLease,
+      pet,
+      documents,
+    });
+    return res.status(200).json(tenancy);
     //}
   } catch (error) {
     console.log(error, "Error in tenancy controller CREATE");
@@ -64,13 +64,13 @@ export async function getTenancyById(
       const tenancy = await TenancySchema.findOne({
         limit: 1,
         where: { unitId: unitId },
-        order: [ [ 'createdAt', 'DESC' ]],
+        order: [["createdAt", "DESC"]],
         include: [
           TenantSchema,
           //TenancyVersionSchema,
           {
             association: "tenancy_versions",
-            order: [ [ 'recordEffectiveDate', 'DESC' ]],
+            order: [["recordEffectiveDate", "DESC"]],
             limit: 1,
             //where: {max(recordEffectiveDate)},
           },
@@ -99,6 +99,45 @@ export async function updateNotes(req: NextApiRequest, res: NextApiResponse) {
     }
   } catch (error) {
     console.log(error, "Error in tenancy controller UPDATE-NOTES");
+    res.status(500).json({ error });
+  }
+}
+
+export async function editTenancy(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const updates = req.body;
+    const { unitId } = req.query;
+    if (updates) {
+      const updatedTenancy = await TenancySchema.update(
+        {
+          pet: updates.tenancy.pet,
+          assignmentOfLease: updates.tenancy.assignmentOfLease,
+        },
+        { where: { unitId: unitId } }
+      );
+      const updatedTenantOne = await TenantSchema.update(
+        {
+          firstName: updates.tenantOne.firstName,
+          lastName: updates.tenantOne.lastName,
+        },
+        {
+          where: {tenantId: updates.tenantOne.tenantId}
+        }
+      );
+      const updatedTenantTwo = await TenantSchema.update(
+        {
+          firstName: updates.tenantTwo.firstName,
+          lastName: updates.tenantTwo.lastName,
+        },
+        {
+          where: {tenantId: updates.tenantTwo.tenantId}
+        }
+      );
+      return res.status(200).json(updatedTenancy);
+      console.log("UPDATES IN CONTROLLER", updates);
+    }
+  } catch (error) {
+    console.log(error, "Error in tenancy controller EDIT-TENANCY");
     res.status(500).json({ error });
   }
 }

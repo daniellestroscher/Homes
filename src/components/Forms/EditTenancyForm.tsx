@@ -1,8 +1,9 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from "react";
 import { ICommunity, ITenancy, ITenant } from "../../../types/interfaces";
-import { createUnit } from "../../services/unitService";
+import { editTenancy } from "../../services/tenancyService";
 import { useModalContext } from "../../contexts/modalContext";
+import { useRouter } from "next/router";
 
 type Props = {
   tenancy?: ITenancy;
@@ -22,11 +23,20 @@ export default function EditTenancyForm({
   const [tenantOne, setTenantOne] = React.useState<ITenant>(defaultTenantOne as ITenant);
   const [tenantTwo, setTenantTwo] = React.useState<ITenant>(defaultTenantTwo as ITenant);
   const { handleModal } = useModalContext();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (updateTenancy) {
-      //handle submit
+      const updates = {
+        tenancy: updateTenancy as ITenancy,
+        tenantOne: tenantOne,
+        tenantTwo: tenantTwo
+      }
+      console.log(tenancy, tenantOne, tenantTwo)
+      editTenancy(tenancy?.unitId as string, updates)
+      handleModal(null);
+      router.replace(router.asPath);
     } else {
       alert("Make a change to update");
     }
@@ -107,10 +117,10 @@ export default function EditTenancyForm({
           checked={updateTenancy.pet}
           onChange={(e) => setUpdateTenancy({ ...updateTenancy, pet: e.target.checked })}
         />
-        <input
+        {/* <input
           type="file"
           //value={tenancy.documents as File[]}
-        />
+        /> */}
       </section>
       <button type="submit" onClick={async (e) => await handleSubmit(e)}>
         Edit Tenancy
