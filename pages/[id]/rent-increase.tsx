@@ -1,14 +1,17 @@
 /** @jsxImportSource theme-ui */
 import { useRouter } from 'next/router';
 import Menu from '../../src/components/Menu/Menu'
-import RentIncreases from '../../src/components/RentIncreaseList/RentIncreaseList'
+import RentIncreaseList from '../../src/components/RentIncreaseList/RentIncreaseList'
 import Navbar from '../../src/components/Navbar/Navbar';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { Session, unstable_getServerSession } from 'next-auth';
 import { GetServerSidePropsContext } from 'next';
-import { ICommunity } from '../../types/interfaces';
+import { ICommunity, IUnit } from '../../types/interfaces';
 import { getCommunityById } from '../../src/services/communityService';
 import { useMenuContext } from '../../src/contexts/menuContext';
+import { useUnitListContext } from '../../src/contexts/unitListContext';
+import { getUnitList } from '../../src/services/unitService';
+import { useEffect } from 'react';
 
 type Props = {
   user: {
@@ -17,12 +20,15 @@ type Props = {
     image: string;
   };
   community: ICommunity;
+  unitArr: IUnit[];
 };
-export default function Home({user, community}:Props) {
+export default function RentIncreasesPage({user, community, unitArr}:Props) {
   const { menuToggle, setMenuToggle } = useMenuContext();
-  const router = useRouter();
-  const { id } = router.query;
-  console.log(community);
+  const { unitList, setUnitList } = useUnitListContext();
+  useEffect(()=>{
+    setUnitList(unitArr);
+  }, [])
+
   return (
   <>
     {user && (
@@ -37,7 +43,7 @@ export default function Home({user, community}:Props) {
           })
         }}>
         <Menu communityId={community.communityId as string}/>
-        <RentIncreases/>
+        <RentIncreaseList unitList={unitList}/>
         </div>
       </>
     )}
@@ -61,11 +67,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const { user } = session as any;
   const community = await getCommunityById(context.params?.id as string) as ICommunity;
+  const unitArr = await getUnitList(community.communityId as string) as IUnit[];
 
   return {
     props: {
       user,
-      community
+      community,
+      unitArr,
     },
   };
 }

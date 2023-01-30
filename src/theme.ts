@@ -171,6 +171,12 @@ export default {
       right: "0px",
       zIndex: "1",
     },
+    increaseSticker: {
+      backgroundColor: "accentLighter",
+      borderRadius: "3px",
+      padding: "7px",
+      color: "accent",
+    }
   },
   containers: {
     mainPageCont: {

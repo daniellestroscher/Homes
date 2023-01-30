@@ -22,17 +22,15 @@ type Props = {
   };
   community: ICommunity;
   unitArr: IUnit[];
-  tenancies: ITenancy[];
+  //tenancies: ITenancy[];
 };
-export default function Home({ user, community, unitArr, tenancies }: Props) {
+export default function Home({ user, community, unitArr }: Props) {
   const { menuToggle, setMenuToggle } = useMenuContext();
   const { unitList, setUnitList } = useUnitListContext();
   useEffect(() => {
     setUnitList(unitArr);
   }, []);
-
-  const router = useRouter();
-  console.log(tenancies)
+  console.log(unitList);
 
   return (
     <>
@@ -40,8 +38,6 @@ export default function Home({ user, community, unitArr, tenancies }: Props) {
         <>
           <Navbar name={community.name} />
           <Menu
-            // menuToggle={menuToggle}
-            // setMenuToggle={setMenuToggle}
             communityId={community.communityId as string}
           />
           <div
@@ -54,7 +50,7 @@ export default function Home({ user, community, unitArr, tenancies }: Props) {
               }),
             }}
           >
-            <UnitList tenancies={tenancies} unitList={unitList} />
+            <UnitList unitList={unitList} />
           </div>
         </>
       )}
@@ -80,13 +76,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const community = await getCommunityById(context.params?.id as string) as ICommunity;
   const unitArr = await getUnitList(community.communityId as string) as IUnit[];
-  const tenancies = await getAllTenancies() as ITenancy[];
+  //const tenancies = await getAllTenancies() as ITenancy[];
   return {
     props: {
       user,
       community,
-      unitArr,
-      tenancies,
+      unitArr
     },
   }
 }

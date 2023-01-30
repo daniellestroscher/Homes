@@ -18,7 +18,7 @@ type Props = {
   };
   community: ICommunity;
 };
-export default function Home({user, community}:Props) {
+export default function RentRollPage({user, community}:Props) {
   const { menuToggle, setMenuToggle } = useMenuContext();
   const router = useRouter();
   const { id } = router.query;

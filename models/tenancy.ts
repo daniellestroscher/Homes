@@ -37,16 +37,8 @@ const TenancySchema = sequelize.define<Model<ITenancy>>("tenancy", {
     type: DataTypes.ABSTRACT,
     allowNull: true,
   },
-
-  // rent: {
-  //   type: DataTypes.NUMBER,
-  //   allowNull: false,
-  // },
-  // increaseDate: {
-  //   type: DataTypes.STRING,
-  //   allowNull: true,
-  // },
 });
+
 //FK on source
 TenantSchema.belongsTo(TenancySchema, {
   foreignKey: "tenancyId",

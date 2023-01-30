@@ -1,6 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import UnitSchema from "../models/unit";
 import { sequelize } from "../database/connection";
+import TenancySchema from "../models/tenancy";
+import TenantSchema from "../models/tenant";
+import TenancyVersionSchema from "../models/tenancy_versions";
 
 export async function addUnit(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -22,7 +25,7 @@ export async function getUnitList(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { id } = req.query;
     if (id) {
-      console.log("UNIT CONTORLLER GET LIST", id);
+      console.log("UNIT CONTROLLER GET LIST", id);
       // const unitList = await sequelize.query(
       //   'SELECT * FROM "units" WHERE "communityId" = (:id)',
       //   {
@@ -32,6 +35,22 @@ export async function getUnitList(req: NextApiRequest, res: NextApiResponse) {
       // );
       const unitList = await UnitSchema.findAll({
         where: { communityId: id },
+        order: [["number", "ASC"]],
+        include: [
+          {
+            model: TenancySchema,
+            order: [["createdAt", "DESC"]],
+            limit: 1,
+            include: [
+              TenantSchema,
+              {
+                model: TenancyVersionSchema,
+                order: [["recordEffectiveDate", "DESC"]],
+                limit: 1,
+              }
+            ],
+          },
+        ],
       });
       return res.status(200).json(unitList);
     }

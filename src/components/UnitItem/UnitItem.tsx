@@ -5,12 +5,11 @@ import { ITenancy, IUnit } from "../../../types/interfaces";
 
 interface Props {
   unit: IUnit;
-  tenancy: ITenancy;
+  tenancy: ITenancy | undefined;
 }
 export default function UnitItem({ unit, tenancy }: Props) {
   const router = useRouter();
   const { id } = router.query;
-  console.log(tenancy)
 
   return (
     <Link href="/[id]/[unitId]" as={`/${id}/${unit.unitId}`}>
