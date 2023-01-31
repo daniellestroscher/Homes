@@ -19,9 +19,11 @@ export default function UnitItem({ unit, tenancy }: Props) {
             <p>
               {`${tenancy.tenants[0].firstName} ${tenancy.tenants[0].lastName}`}
             </p>
-            <p>
-            {`${tenancy.tenants[1]?.firstName} ${tenancy.tenants[1]?.lastName}`}
-            </p>
+            {tenancy.tenants && tenancy.tenants[1] &&
+              <p>
+              {`${tenancy.tenants[1]?.firstName} ${tenancy.tenants[1]?.lastName}`}
+              </p>
+            }
           </>
         )}
         <div sx={{ position: "absolute", bottom: "15px", right: "15px" }}>

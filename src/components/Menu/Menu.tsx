@@ -17,14 +17,17 @@ import { useModalContext } from "../../contexts/modalContext";
 import AddUnitForm from "../Forms/AddUnitForm";
 import { useUnitListContext } from "../../contexts/unitListContext";
 import { useMenuContext } from "../../contexts/menuContext";
+import { useRouter } from "next/router";
 
 type props = {
   communityId: string;
 };
 function Menu({ communityId }: props) {
   const { handleModal } = useModalContext();
+  const router = useRouter();
   const { menuToggle, setMenuToggle } = useMenuContext();
   const { unitList, setUnitList } = useUnitListContext();
+
   return (
     <>
       <FontAwesomeIcon
@@ -37,11 +40,11 @@ function Menu({ communityId }: props) {
           height: "20px",
           position: "fixed",
           top: "85px",
-          left: "11px",
+          left: "17px",
           zIndex: "1",
           color: "text",
           ...(menuToggle && {
-            left: "130px",
+            left: "138px",
           }),
         }}
       />
@@ -50,7 +53,7 @@ function Menu({ communityId }: props) {
           variant: "components.menu",
           ...(!menuToggle && {
             variant: "components.menu",
-            width: "35px",
+            width: "50px",
             li: {
               display: "none",
             },
@@ -59,7 +62,7 @@ function Menu({ communityId }: props) {
       >
         <ul sx={{ listStyle: "none", marginTop: "65px" }}>
           <Link href="/[id]" as={`/${communityId}`}>
-            <div sx={{ variant: "components.listItem" }}>
+            <div sx={{ variant: "components.listItem", ...(router.asPath ===`/${communityId}` && { color: "accent" }) }}>
               <FontAwesomeIcon
                 icon={faHouse as IconProp}
                 sx={{ size: "17px" }}
@@ -68,7 +71,7 @@ function Menu({ communityId }: props) {
             </div>
           </Link>
           <Link href="/[id]/rent-increase" as={`/${communityId}/rent-increase`}>
-            <div sx={{ variant: "components.listItem" }}>
+            <div sx={{ variant: "components.listItem", ...(router.asPath ===`/${communityId}/rent-increase` && { color: "accent" }) }}>
               <FontAwesomeIcon
                 icon={faMoneyBillTrendUp as IconProp}
                 sx={{ size: "17px" }}
@@ -77,7 +80,7 @@ function Menu({ communityId }: props) {
             </div>
           </Link>
           <Link href="/[id]/rent-roll" as={`/${communityId}/rent-roll`}>
-            <div sx={{ variant: "components.listItem" }}>
+            <div sx={{ variant: "components.listItem", ...(router.asPath ===`/${communityId}/rent-roll` && { color: "accent" }) }}>
               <FontAwesomeIcon
                 icon={faChartSimple as IconProp}
                 sx={{ size: "17px" }}

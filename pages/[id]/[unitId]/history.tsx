@@ -1,3 +1,6 @@
+/** @jsxImportSource theme-ui */
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GetServerSidePropsContext } from "next";
 import { Session, unstable_getServerSession } from "next-auth";
 import { useRouter } from "next/router";
@@ -21,25 +24,32 @@ type Props = {
   tenancy: ITenancy;
 };
 
-export default function History({
-  user,
-  community,
-  unit,
-  tenancy,}: Props){
+export default function History({ user, community, unit, tenancy }: Props) {
   const router = useRouter();
   const { id } = router.query;
 
   return (
     <>
-      {user &&
+      {user && (
         <>
-          <Navbar name={undefined}/>
-          <Menu communityId={id as string}/>
-          <UnitHistory/>
+          <Navbar name={undefined} />
+          {/* <Menu communityId={id as string}/> */}
+          <FontAwesomeIcon
+            icon={faArrowLeft}
+            sx={{
+              position: "fixed",
+              top: "90px",
+              left: "30px",
+              size: "17px",
+              cursor: "pointer",
+            }}
+            onClick={router.back}
+          />
+          <UnitHistory />
         </>
-      }
+      )}
     </>
-  )
+  );
 }
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   //fetch session to validate

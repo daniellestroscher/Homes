@@ -28,7 +28,8 @@ type Props = {
 };
 export default function Home({ user, community, unit, tenancy }: Props) {
   const router = useRouter();
-  
+  console.log(tenancy)
+
   return (
     <>
       {user && (

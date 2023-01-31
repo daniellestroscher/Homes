@@ -30,7 +30,6 @@ export default function Home({ user, community, unitArr }: Props) {
   useEffect(() => {
     setUnitList(unitArr);
   }, []);
-  console.log(unitList);
 
   return (
     <>
@@ -43,10 +42,10 @@ export default function Home({ user, community, unitArr }: Props) {
           <div
             sx={{
               variant: "containers.mainPageCont",
-              left: "35px",
+              left: "50px",
               ...(menuToggle && {
                 variant: "containers.mainPageCont",
-                left: "155px",
+                left: "160px",
               }),
             }}
           >

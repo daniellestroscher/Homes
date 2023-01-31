@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { where } from "sequelize";
+import { Op, where } from "sequelize";
 import TenancySchema from "../models/tenancy";
 import TenancyVersionSchema from "../models/tenancy_versions";
 import TenantSchema from "../models/tenant";
+import { formatDate } from "../src/utils/helperFunctions";
 import { ITenancy } from "../types/interfaces";
 
 export async function createTenancy(req: NextApiRequest, res: NextApiResponse) {
@@ -67,12 +68,11 @@ export async function getTenancyById(
         order: [["createdAt", "DESC"]],
         include: [
           TenantSchema,
-          //TenancyVersionSchema,
           {
-            association: "tenancy_versions",
+            model: TenancyVersionSchema,
+            where: {recordEffectiveDate: { [Op.lte]: formatDate(new Date, 'yyyy-mm-dd') }},
             order: [["recordEffectiveDate", "DESC"]],
             limit: 1,
-            //where: {max(recordEffectiveDate)},
           },
         ],
       });

@@ -104,9 +104,9 @@ export default {
       top: "70px",
       bottom: "0px",
       left: "0px",
-      width: "155px",
+      width: "160px",
       margin: "8px 4px",
-      padding: "8px",
+      padding: "4px",
       borderRadius: "4px",
       backgroundColor: "lightGrey",
       li: {

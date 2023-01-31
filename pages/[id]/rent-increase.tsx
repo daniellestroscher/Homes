@@ -36,10 +36,10 @@ export default function RentIncreasesPage({user, community, unitArr}:Props) {
         <Navbar name={community.name}/>
         <div sx={{
           variant: 'containers.mainPageCont',
-          left: '35px',
+          left: '50px',
           ...(menuToggle && {
             variant: 'containers.mainPageCont',
-            left: '155px'
+            left: '160px'
           })
         }}>
         <Menu communityId={community.communityId as string}/>
