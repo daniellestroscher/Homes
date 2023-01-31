@@ -42,8 +42,8 @@ export default function RentIncreasesPage({user, community, unitArr}:Props) {
             left: '160px'
           })
         }}>
-        <Menu communityId={community.communityId as string}/>
-        <RentIncreaseList unitList={unitList}/>
+          <Menu communityId={community.communityId as string}/>
+          <RentIncreaseList unitList={unitList}/>
         </div>
       </>
     )}

@@ -30,14 +30,14 @@ export default function RentRollPage({user, community}:Props) {
         <Navbar name={community.name}/>
         <div sx={{
           variant: 'containers.mainPageCont',
-          left: '35px',
+          left: '60px',
           ...(menuToggle && {
             variant: 'containers.mainPageCont',
-            left: '155px'
+            left: '175px'
           })
         }}>
-        <Menu communityId={community.communityId as string}/>
-        <RentRoll/>
+          <Menu communityId={community.communityId as string}/>
+          <RentRoll/>
         </div>
       </>
     )}

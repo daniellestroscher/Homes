@@ -176,15 +176,15 @@ export default {
       borderRadius: "3px",
       padding: "7px",
       color: "accent",
-    }
+    },
   },
   containers: {
     mainPageCont: {
       display: "flex",
       position: "absolute",
-      top: "70px",
       height: "100vh",
       width: "100vw",
+      top: "80px",
     },
     singlePageFormCont: {
       display: "flex",
