@@ -1,9 +1,10 @@
 /** @jsxImportSource theme-ui */
-import { IUnit } from "../../../types/interfaces";
+import { ITenancyVersions, IUnit } from "../../../types/interfaces";
 import React, { useMemo, useState } from "react";
 import "react-data-grid/lib/styles.css";
 import DataGrid from "react-data-grid";
 import { exportToPdf, exportToXlsx } from "../../utils/exportUtils";
+import { findRent, rentsType } from "../../utils/helperFunctions";
 
 interface Row {
   unit: number;
@@ -23,9 +24,9 @@ interface Row {
 }
 type Props = {
   unitArr: IUnit[];
+  allVersions: ITenancyVersions[];
 };
-export default function RentRoll({ unitArr }: Props) {
-  console.log(unitArr);
+export default function RentRoll({ unitArr, allVersions }: Props) {
 
   function rowKeyGetter(row: Row) {
     return row.unit;
@@ -99,11 +100,21 @@ export default function RentRoll({ unitArr }: Props) {
     unitArr.forEach((unit) => {
       if (unit.tenancies && unit.tenancies[0] && unit.tenancies[0].tenants) {
         let tenant = `${unit.tenancies[0].tenants[0].lastName} ${unit.tenancies[0].tenants[0].firstName}`;
+        let rents: rentsType[] = [];
+        unit.tenancies.forEach((tenancy)=> {
+          //find versions
+          let tenancyRents = allVersions.filter((version)=> tenancy.tenancyId === version.tenancyId)
+          tenancyRents?.forEach((rent)=> {
+            rents.push(
+              { rent: rent.rent as number, recordEffectiveDate: rent.recordEffectiveDate as string }
+            );
+          })
+        })
         rows.push({
           unit: unit.number as number,
           tenant: tenant,
-          jan: 44,
-          feb: 55,
+          jan: findRent(1, 31, rents as rentsType[]) as number,
+          feb: findRent(2, 28, rents as rentsType[]) as number,
           march: 3,
           april: 4,
           may: 5,

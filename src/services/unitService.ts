@@ -24,6 +24,13 @@ export async function getUnitById(unitId: string) {
     {
     method: "GET",
   });
+}
 
+export async function getUnitListWithAllVersions(communityId: string) {
+  return await fetchData<IUnit[]>(
+    `/units/allVersions/${communityId}`,
+    {
+    method: "GET",
+  });
 }
 

@@ -4,6 +4,8 @@ import { sequelize } from "../database/connection";
 import TenancySchema from "../models/tenancy";
 import TenantSchema from "../models/tenant";
 import TenancyVersionSchema from "../models/tenancy_versions";
+import { Op } from "sequelize";
+import { formatDate } from "../src/utils/helperFunctions";
 
 export async function addUnit(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -25,14 +27,6 @@ export async function getUnitList(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { id } = req.query;
     if (id) {
-      console.log("UNIT CONTROLLER GET LIST", id);
-      // const unitList = await sequelize.query(
-      //   'SELECT * FROM "units" WHERE "communityId" = (:id)',
-      //   {
-      //     replacements: { id },
-      //     model: UnitSchema,
-      //   }
-      // );
       const unitList = await UnitSchema.findAll({
         where: { communityId: id },
         order: [["number", "ASC"]],
@@ -45,9 +39,14 @@ export async function getUnitList(req: NextApiRequest, res: NextApiResponse) {
               TenantSchema,
               {
                 model: TenancyVersionSchema,
+                where: {
+                  recordEffectiveDate: {
+                    [Op.lte]: formatDate(new Date(), "yyyy-mm-dd"),
+                  },
+                },
                 order: [["recordEffectiveDate", "DESC"]],
                 limit: 1,
-              }
+              },
             ],
           },
         ],
@@ -71,6 +70,31 @@ export async function getUnitById(req: NextApiRequest, res: NextApiResponse) {
     }
   } catch (error) {
     console.log(error, "Error in units controller");
+    res.status(500).json({ error });
+  }
+}
+
+export async function getUnitListWithAllVersions(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  try {
+    const { id } = req.query;
+    const versionsList = await UnitSchema.findAll({
+      where: { communityId: id },
+      order: [["number", "ASC"]],
+      attributes: ["number"],
+      include: [
+        {
+          model: TenancySchema,
+          attributes: ["tenancyId"],
+          include: [TenantSchema],
+        },
+      ],
+    });
+    return res.status(200).json(versionsList);
+  } catch (error) {
+    console.log(error, "Error in tenancy_versions controller GET-BY-ID");
     res.status(500).json({ error });
   }
 }

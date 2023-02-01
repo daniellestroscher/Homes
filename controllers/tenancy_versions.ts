@@ -28,3 +28,18 @@ export async function createTenancyVersions(
     res.status(500).json({ error });
   }
 }
+
+export async function getAllTenancyVersions(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  try {
+    const allVersions = await TenancyVersionSchema.findAll({
+      order: [["recordEffectiveDate", "ASC"]],
+    });
+    return res.status(200).json(allVersions);
+  } catch (error) {
+    console.log(error, "Error in tenancy_versions controller GET-ALL");
+    res.status(500).json({ error });
+  }
+}

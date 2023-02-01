@@ -6,10 +6,11 @@ import Navbar from '../../src/components/Navbar/Navbar';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { Session, unstable_getServerSession } from 'next-auth';
 import { GetServerSidePropsContext } from 'next';
-import { ICommunity, IUnit } from '../../types/interfaces';
+import { ICommunity, ITenancyVersions, IUnit } from '../../types/interfaces';
 import { getCommunityById } from '../../src/services/communityService';
 import { useMenuContext } from '../../src/contexts/menuContext';
-import { getUnitList } from '../../src/services/unitService';
+import { getUnitListWithAllVersions } from '../../src/services/unitService';
+import { getAllTenancyVersions } from '../../src/services/tenancyVersionsService';
 
 type Props = {
   user: {
@@ -19,12 +20,11 @@ type Props = {
   };
   community: ICommunity;
   unitArr: IUnit[];
+  allVersions: ITenancyVersions[];
 };
-export default function RentRollPage({user, community, unitArr}:Props) {
+export default function RentRollPage({user, community, unitArr, allVersions}:Props) {
   const { menuToggle, setMenuToggle } = useMenuContext();
-  const router = useRouter();
-  const { id } = router.query;
-  
+
   return (
   <>
     {user && (
@@ -39,7 +39,7 @@ export default function RentRollPage({user, community, unitArr}:Props) {
           })
         }}>
           <Menu communityId={community.communityId as string}/>
-          <RentRoll unitArr={unitArr}/>
+          <RentRoll unitArr={unitArr} allVersions={allVersions}/>
         </div>
       </>
     )}
@@ -63,13 +63,16 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const { user } = session as any;
   const community = await getCommunityById(context.params?.id as string) as ICommunity;
-  const unitArr = await getUnitList(community.communityId as string) as IUnit[];
+  const unitArr = await getUnitListWithAllVersions(community.communityId as string) as IUnit[];
+  const allVersions = await getAllTenancyVersions();
+  console.log(allVersions);
 
   return {
     props: {
       user,
       community,
       unitArr,
+      allVersions,
     },
   };
 }
