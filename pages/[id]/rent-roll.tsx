@@ -6,9 +6,10 @@ import Navbar from '../../src/components/Navbar/Navbar';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { Session, unstable_getServerSession } from 'next-auth';
 import { GetServerSidePropsContext } from 'next';
-import { ICommunity } from '../../types/interfaces';
+import { ICommunity, IUnit } from '../../types/interfaces';
 import { getCommunityById } from '../../src/services/communityService';
 import { useMenuContext } from '../../src/contexts/menuContext';
+import { getUnitList } from '../../src/services/unitService';
 
 type Props = {
   user: {
@@ -17,12 +18,13 @@ type Props = {
     image: string;
   };
   community: ICommunity;
+  unitArr: IUnit[];
 };
-export default function RentRollPage({user, community}:Props) {
+export default function RentRollPage({user, community, unitArr}:Props) {
   const { menuToggle, setMenuToggle } = useMenuContext();
   const router = useRouter();
   const { id } = router.query;
-  console.log(community);
+  
   return (
   <>
     {user && (
@@ -37,7 +39,7 @@ export default function RentRollPage({user, community}:Props) {
           })
         }}>
           <Menu communityId={community.communityId as string}/>
-          <RentRoll/>
+          <RentRoll unitArr={unitArr}/>
         </div>
       </>
     )}
@@ -61,11 +63,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const { user } = session as any;
   const community = await getCommunityById(context.params?.id as string) as ICommunity;
+  const unitArr = await getUnitList(community.communityId as string) as IUnit[];
 
   return {
     props: {
       user,
-      community
+      community,
+      unitArr,
     },
   };
 }
