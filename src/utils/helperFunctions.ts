@@ -35,7 +35,7 @@ export type rentsType = {
 
 export function findRent(month: number, day: number, rents: rentsType[]) {
   if (rents.length) {
-    if (month & day) {
+    if (month && day) {
       let rent;
       let dateEnd = new Date(
         new Date().getFullYear(),
@@ -47,14 +47,20 @@ export function findRent(month: number, day: number, rents: rentsType[]) {
         month - 1,
         day - (day - 1)
       ).getTime();
-      let janRent = rents.filter(
+      let allRentsForMonth = rents.filter(
         (obj) =>
-          new Date(obj.recordEffectiveDate).getTime() <= dateEnd &&
-          new Date(obj.recordEffectiveDate).getTime() >= dateStart
+          new Date(obj.recordEffectiveDate.replace(/-/g, " ")).getTime() <=
+            dateEnd &&
+          new Date(obj.recordEffectiveDate.replace(/-/g, " ")).getTime() >=
+            dateStart
       );
-      rent = janRent[0].rent;
-      if (janRent.length > 1) {
-        janRent.sort(
+      if (allRentsForMonth.length) {
+        rent = allRentsForMonth[0].rent;
+      } else {
+        rent = [];
+      }
+      if (allRentsForMonth.length > 1) {
+        allRentsForMonth.sort(
           (a, b) =>
             Number(
               a.recordEffectiveDate.slice(a.recordEffectiveDate.length - 2)
@@ -63,7 +69,7 @@ export function findRent(month: number, day: number, rents: rentsType[]) {
               b.recordEffectiveDate.slice(b.recordEffectiveDate.length - 2)
             )
         );
-        let latestRent = janRent.pop();
+        let latestRent = allRentsForMonth.pop();
         rent = latestRent?.rent;
       }
       return rent;

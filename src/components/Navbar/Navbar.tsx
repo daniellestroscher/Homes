@@ -8,9 +8,11 @@ import Login from "../Login/Login";
 
 type Props = {
   name: string | undefined;
+  colorMode: string;
+  setColorMode: (arg:string) => void;
 };
-function Navbar({ name }: Props) {
-  const [colorMode, setColorMode] = useColorMode();
+function Navbar({ name, colorMode, setColorMode }: Props) {
+  // const [colorMode, setColorMode] = useColorMode();
   function handleModeChange() {
     setColorMode(colorMode === "default" ? "dark" : "default");
   }

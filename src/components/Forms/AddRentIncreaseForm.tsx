@@ -4,12 +4,14 @@ import { ITenancyVersions } from "../../../types/interfaces";
 import { createRentIncrease } from "../../services/tenancyService";
 import { useModalContext } from "../../contexts/modalContext";
 import { formatDate } from "../../utils/helperFunctions";
+import { useRouter } from "next/router";
 
 type Props = {
   tenancyId: string;
   currentRecordEffectiveDate: string | undefined;
 };
 export default function AddRentIncreaseForm({ tenancyId, currentRecordEffectiveDate }: Props) {
+  const router = useRouter();
   let defaultIncrease = {
     tenancyId: tenancyId,
     recordEffectiveDate: formatDate(new Date(), "yyyy-mm-dd"),
@@ -30,6 +32,7 @@ export default function AddRentIncreaseForm({ tenancyId, currentRecordEffectiveD
         increaseDate: rentIncrease.increaseDate,
       });
       setRentIncrease(defaultIncrease);
+      router.replace(router.asPath); //refresh server-side props
       handleModal(null); //close form
     } else {
       alert("All fields are required or change the effective date to one that in not already in use.");

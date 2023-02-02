@@ -11,6 +11,7 @@ import { getCommunityById } from '../../src/services/communityService';
 import { useMenuContext } from '../../src/contexts/menuContext';
 import { getUnitListWithAllVersions } from '../../src/services/unitService';
 import { getAllTenancyVersions } from '../../src/services/tenancyVersionsService';
+import { useColorMode } from 'theme-ui';
 
 type Props = {
   user: {
@@ -24,12 +25,13 @@ type Props = {
 };
 export default function RentRollPage({user, community, unitArr, allVersions}:Props) {
   const { menuToggle, setMenuToggle } = useMenuContext();
+  const [colorMode, setColorMode] = useColorMode();
 
   return (
   <>
     {user && (
       <>
-        <Navbar name={community.name}/>
+        <Navbar name={community.name} colorMode={colorMode} setColorMode={setColorMode}/>
         <div sx={{
           variant: 'containers.mainPageCont',
           left: '60px',
@@ -39,7 +41,7 @@ export default function RentRollPage({user, community, unitArr, allVersions}:Pro
           })
         }}>
           <Menu communityId={community.communityId as string}/>
-          <RentRoll unitArr={unitArr} allVersions={allVersions}/>
+          <RentRoll unitArr={unitArr} allVersions={allVersions} colorMode={colorMode}/>
         </div>
       </>
     )}

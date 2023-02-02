@@ -13,6 +13,7 @@ import { getUnitList } from "../../src/services/unitService";
 import { useUnitListContext } from "../../src/contexts/unitListContext";
 import { getAllTenancies } from "../../src/services/tenancyService";
 import { useMenuContext } from "../../src/contexts/menuContext";
+import { useColorMode } from "theme-ui";
 
 type Props = {
   user: {
@@ -27,6 +28,8 @@ type Props = {
 export default function Home({ user, community, unitArr }: Props) {
   const { menuToggle, setMenuToggle } = useMenuContext();
   const { unitList, setUnitList } = useUnitListContext();
+  const [colorMode, setColorMode] = useColorMode();
+
   useEffect(() => {
     setUnitList(unitArr);
   }, []);
@@ -35,7 +38,7 @@ export default function Home({ user, community, unitArr }: Props) {
     <>
       {user && (
         <>
-          <Navbar name={community.name} />
+          <Navbar name={community.name} colorMode={colorMode} setColorMode={setColorMode} />
           <Menu
             communityId={community.communityId as string}
           />
