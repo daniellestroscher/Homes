@@ -1,19 +1,22 @@
 /** @jsxImportSource theme-ui */
 import { useState } from "react";
-import { IUnit } from "../../../types/interfaces";
-
-import { useModalContext } from "../../contexts/modalContext";
+import { ITenancy, IUnit } from "../../../types/interfaces";
 
 type Props = {
   unitList: IUnit[];
 };
 export default function IncreaseAll({ unitList }: Props) {
-  const [unitNumber, setUnitNumber] = useState<number | undefined>(undefined);
-  const { handleModal } = useModalContext();
+  let tenancyList = unitList.map((unit)=> {
+    if (unit.tenancies && unit.tenancies[0]) {
+      return unit.tenancies[0];
+    }
+  }) as ITenancy[];
+  const [increasePercent, setIncreasePercent] = useState<number | undefined>(undefined);
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (unitNumber) {
+    if (increasePercent) {
+      console.log('submitted')
 
     } else {
       alert("Sorry there was an error");
@@ -22,10 +25,34 @@ export default function IncreaseAll({ unitList }: Props) {
 
   return (
     <div>
+      <form>
+        <label sx={{variant: "containers.visuallyHidden"}}>rent increase percentage:</label>
+        <input
+          type='number'
+          value={increasePercent}
+          onChange={ e => setIncreasePercent(Number(e.target.value)) }
+          placeholder="Increase Percent"
+        />
+      </form>
       {
-        unitList.map((unit)=> {
+        tenancyList.map((tenancy)=> {
+          if (tenancy && tenancy.tenancy_versions && tenancy.tenancy_versions[0] && tenancy.tenancy_versions[0].rent && increasePercent) {
+            let rent = tenancy.tenancy_versions[0].rent;
+            let increaseDiff = rent && rent * (increasePercent/100);
+            let increasedRent = rent + increaseDiff;
+            console.log(increasedRent)
+          }
           return (
-            <div key={unit.number}>{unit.number}</div>
+            <div key={tenancy.tenancyId}>
+              <section sx={{border: '1px solid gray'}}>
+                {tenancy && tenancy.tenancy_versions && tenancy.tenancy_versions[0] &&
+                  tenancy.tenancy_versions[0].rent
+
+                }
+
+              </section>
+              {tenancy.establishedDate}
+            </div>
           )
         })
       }

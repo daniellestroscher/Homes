@@ -1,4 +1,4 @@
-import { IUnit } from "../../types/interfaces";
+import { ITenancy, IUnit } from "../../types/interfaces";
 
 type map = {
   [mm: string]: string;
@@ -119,11 +119,13 @@ export const increasesToSend = (unitList: IUnit[]) => {
       unit.tenancies[0].tenancy_versions[0].increaseDate
     ) {
       let month = Number(unit.tenancies[0].tenancy_versions[0].increaseDate.slice(5, 7));
-      if (month === (now.getMonth() + 1)) {
-        //change to plus 4 for 3 month notice
+      let year = Number(unit.tenancies[0].tenancy_versions[0].increaseDate.slice(0, 4));
+      console.log(year, now.getFullYear())
+      if (month === (now.getMonth() + 4) && year === (now.getFullYear())) {
         return unit;
       }
     }
   });
+  
   return unitsToSendIncreases;
 };

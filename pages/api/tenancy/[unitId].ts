@@ -14,6 +14,6 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 })
   .get(getTenancyById)
   .put(updateNotes)
-  .patch(editTenancy);
+  .patch(editTenancy)
 
 export default handler;

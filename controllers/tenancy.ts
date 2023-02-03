@@ -15,6 +15,7 @@ export async function createTenancy(req: NextApiRequest, res: NextApiResponse) {
       assignmentOfLease,
       pet,
       documents,
+      activeStatus,
     } = req.body;
 
     // if (establishedDate) {
@@ -31,6 +32,7 @@ export async function createTenancy(req: NextApiRequest, res: NextApiResponse) {
       assignmentOfLease,
       pet,
       documents,
+      activeStatus,
     });
     return res.status(200).json(tenancy);
     //}
@@ -65,7 +67,7 @@ export async function getTenancyById(
       const tenancy = await TenancySchema.findOne({
         limit: 1,
         where: { unitId: unitId },
-        order: [["createdAt", "DESC"]],
+        order: [["establishedDate", "DESC"]],
         include: [
           TenantSchema,
           {
@@ -134,10 +136,27 @@ export async function editTenancy(req: NextApiRequest, res: NextApiResponse) {
         }
       );
       return res.status(200).json(updatedTenancy);
-      console.log("UPDATES IN CONTROLLER", updates);
     }
   } catch (error) {
     console.log(error, "Error in tenancy controller EDIT-TENANCY");
     res.status(500).json({ error });
   }
+}
+
+export async function changeTenancyStatus(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const status = req.body;
+    const { unitId } = req.query;
+    console.log(status, unitId, 'IN CONTROLLER');
+    const updatedStatus = await TenancySchema.update(
+      { activeStatus: status },
+      { where: { unitId: unitId }}
+    )
+    return res.status(200).json(updatedStatus);
+
+  } catch (error) {
+    console.log(error, "Error in tenancy controller CHANGE-TENANCY-STATUS");
+    res.status(500).json({ error });
+  }
+
 }

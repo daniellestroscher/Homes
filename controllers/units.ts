@@ -33,7 +33,7 @@ export async function getUnitList(req: NextApiRequest, res: NextApiResponse) {
         include: [
           {
             model: TenancySchema,
-            order: [["createdAt", "DESC"]],
+            order: [["establishedDate", "DESC"]], //changed
             limit: 1,
             include: [
               TenantSchema,

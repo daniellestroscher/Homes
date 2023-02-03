@@ -37,6 +37,10 @@ const TenancySchema = sequelize.define<Model<ITenancy>>("tenancy", {
     type: DataTypes.ABSTRACT,
     allowNull: true,
   },
+  activeStatus: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  }
 });
 
 //FK on source

@@ -32,6 +32,7 @@ export interface ITenancy{
   assignmentOfLease?: boolean;
   pet?: boolean;
   documents?: File[];
+  activeStatus: boolean;
 
   tenants?: ITenant[];
   tenancy_versions?: ITenancyVersions[];

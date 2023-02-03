@@ -22,7 +22,7 @@ export default function RentIncreaseItem({ unit, tenancy, selector }: Props) {
       href={selector ? "javascript:void(0)" : "/[id]/[unitId]"}
       as={selector ? "" : `/${id}/${unit.unitId}`}
     >
-      <div sx={{ variant: "cards.primary", position: "relative" }}>
+      <div sx={{ variant: "cards.primary", cursor: 'auto', position: "relative" }}>
         {tenancy && tenancy.tenants && (
           <>
             <p>
@@ -43,6 +43,7 @@ export default function RentIncreaseItem({ unit, tenancy, selector }: Props) {
                     position: "absolute",
                     top: "10px",
                     right: "10px",
+                    cursor: "pointer",
                     color: "accent",
                     "&:hover": {
                       transform: "scale(1.2)",
@@ -53,6 +54,7 @@ export default function RentIncreaseItem({ unit, tenancy, selector }: Props) {
                     position: "absolute",
                     top: "10px",
                     right: "10px",
+                    cursor: "pointer",
                     color: 'white',
                     border: "2px solid gray",
                     borderRadius: "50%",

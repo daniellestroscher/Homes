@@ -56,7 +56,7 @@ export default function RentIncreasesPage({ user, community, unitArr }: Props) {
               }),
             }}
           >
-            <div sx={{position: 'fixed'}}>
+            <div sx={{ position: "fixed" }}>
               <SearchBar
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
@@ -91,6 +91,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const unitArr = (await getUnitList(
     community.communityId as string
   )) as IUnit[];
+  //const increaseList = await getUnitsDueForIncrease(community.communityId as string)
 
   return {
     props: {

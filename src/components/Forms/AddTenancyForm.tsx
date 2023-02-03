@@ -7,12 +7,11 @@ import {
 } from "../../../types/interfaces";
 import { useModalContext } from "../../contexts/modalContext";
 import { createTenant } from "../../services/tenantService";
-import { createRentIncrease, createTenancy } from "../../services/tenancyService";
+import { changeTenancyStatus, createRentIncrease, createTenancy } from "../../services/tenancyService";
 import { useRouter } from "next/router";
 import { formatDate } from "../../utils/helperFunctions";
 
 type Props = {
-  //community: ICommunity;
   unitId: string;
 };
 export default function AddTenancyForm({ unitId }: Props) {
@@ -35,6 +34,7 @@ export default function AddTenancyForm({ unitId }: Props) {
     assignmentOfLease: undefined,
     pet: undefined,
     documents: undefined,
+    activeStatus: true,
   };
   const [tenancy, setTenancy] = React.useState<ITenancy>(initialTenancy);
   const initialTenancyVersions = {
@@ -49,6 +49,9 @@ export default function AddTenancyForm({ unitId }: Props) {
     e.preventDefault();
     if (tenantOne.firstName !== "" && tenancyVersions.rent !== undefined) {
       console.log("in submit handler");
+      //get tenancy by unit id and change active state.
+      const status = await changeTenancyStatus(unitId, false);
+      console.log(status, "IM THE NEW STATUS")
       const newTenancy = await createTenancy({
         unitId: unitId,
         establishedDate: tenancy.establishedDate,
@@ -56,6 +59,7 @@ export default function AddTenancyForm({ unitId }: Props) {
         assignmentOfLease: tenancy.assignmentOfLease,
         pet: tenancy.pet,
         documents: tenancy.documents,
+        activeStatus: tenancy.activeStatus,
       });
       console.log(newTenancy, "IM THE TENANCY");
       const newTenancyVersion = await createRentIncrease({
@@ -79,9 +83,9 @@ export default function AddTenancyForm({ unitId }: Props) {
         })) as ITenant;
         console.log(newTenantTwo, "IM THE TENANT TWO");
       }
-
       handleModal(null, ''); //close form
       router.replace(router.asPath); //refresh server-side props
+      
     } else {
       alert("Missing fields are required");
     }
