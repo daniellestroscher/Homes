@@ -15,6 +15,7 @@ import { UnitInfo } from "../../../src/components/UnitInfo/UnitInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import { useColorMode } from "theme-ui";
 
 type Props = {
   user: {
@@ -28,13 +29,13 @@ type Props = {
 };
 export default function Home({ user, community, unit, tenancy }: Props) {
   const router = useRouter();
-  console.log(tenancy)
+  const [colorMode, setColorMode] = useColorMode();
 
   return (
     <>
       {user && (
         <>
-          <Navbar name={community.name} />
+          <Navbar name={community.name} colorMode={colorMode} setColorMode={setColorMode} />
           <FontAwesomeIcon
               icon={faArrowLeft}
               sx={{

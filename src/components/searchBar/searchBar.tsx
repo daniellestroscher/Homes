@@ -1,0 +1,24 @@
+/** @jsxImportSource theme-ui */
+
+type Props = {
+  searchQuery: string;
+  setSearchQuery: (arg:string) => void;
+}
+export default function searchBar({ searchQuery, setSearchQuery }: Props) {
+
+  return (
+    <form sx={{marginLeft: '10px', padding:'5px' }}>
+        <label htmlFor="header-search">
+            <span sx={{variant: "containers.visuallyHidden"}}>Search Units</span>
+        </label>
+        <input
+            sx={{ padding:'5px', width: '275px'}}
+            value={searchQuery}
+            onInput={e => setSearchQuery(e.currentTarget.value)}
+            type="text"
+            id="header-search"
+            placeholder="Search Units"
+        />
+    </form>
+  )
+}

@@ -58,7 +58,8 @@ export function UnitInfo({tenancy, unit, community}: Props) {
                   handleModal(
                   <EditTenancyForm
                     tenancy={tenancy}
-                  />
+                  />,
+                  'Edit Tenancy'
                 )}
               />
             </div>
@@ -149,7 +150,8 @@ export function UnitInfo({tenancy, unit, community}: Props) {
                         <AddRentIncreaseForm
                           tenancyId={tenancy.tenancyId as string}
                           currentRecordEffectiveDate={tenancy.tenancy_versions && tenancy.tenancy_versions[0].recordEffectiveDate as string}
-                        />
+                        />,
+                        'Create Rent Increase'
                       )
                     }
                   >
@@ -184,7 +186,8 @@ export function UnitInfo({tenancy, unit, community}: Props) {
             }}
             onClick={() =>
               handleModal(
-                <AddTenancyForm unitId={unit.unitId as string} />
+                <AddTenancyForm unitId={unit.unitId as string} />,
+                'Create New Tenancy'
               )
             }
           >

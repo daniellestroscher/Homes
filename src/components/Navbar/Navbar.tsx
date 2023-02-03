@@ -1,7 +1,5 @@
 /** @jsxImportSource theme-ui */
-import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { useColorMode } from "theme-ui";
 import Brighten from "../Brighten";
 import Darken from "../Darken";
 import Login from "../Login/Login";
@@ -12,7 +10,6 @@ type Props = {
   setColorMode: (arg:string) => void;
 };
 function Navbar({ name, colorMode, setColorMode }: Props) {
-  // const [colorMode, setColorMode] = useColorMode();
   function handleModeChange() {
     setColorMode(colorMode === "default" ? "dark" : "default");
   }

@@ -55,7 +55,8 @@ export interface ITenant{
 
 export interface ModalContextType {
   isOpen: boolean;
-  handleModal: (content: ReactNode | null) => void;
+  handleModal: (content: ReactNode | null, title: string) => void;
+  //(content: ReactNode, title: string) => void
   modalContent?: ReactNode;
   title?: string;
 }

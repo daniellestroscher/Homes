@@ -35,7 +35,7 @@ export default {
   },
   buttons: {
     primary: {
-      padding: "10px",
+      padding: "8px",
       background: "transparent",
       border: "1px solid black",
       borderRadius: "3px",
@@ -67,7 +67,8 @@ export default {
       padding: "1rem",
       margin: "6px",
       borderRadius: "3px",
-      border: "1px solid green",
+      border: "1px solid gray",
+      backgroundColor: "background",
       height: "125px",
       width: "275px",
       minWidth: "225px",
@@ -93,7 +94,6 @@ export default {
       "&:hover": {
         bg: "text",
         opacity: "0.90",
-        transform: "scale(1.02)",
       },
     },
   },
@@ -166,7 +166,7 @@ export default {
       position: "fixed",
       color: "accentLight",
       margin: "auto",
-      top: "100px",
+      top: "130px",
       left: "0px",
       right: "0px",
       zIndex: "1",
@@ -230,5 +230,27 @@ export default {
       overflow: "hidden",
       backgroundColor: "accent",
     },
+    visuallyHidden: {
+      clip: "rect(0 0 0 0)",
+      clipPath: "inset(50%)",
+      height: "1px",
+      overflow: "hidden",
+      position: "absolute",
+      whiteSpace: "nowrap",
+      width: "1px",
+    },
+    increasesBox: {
+      border: '3px solid gray',
+      borderRadius: '6px',
+      backgroundColor: 'accentLightest',
+
+      margin: '15px',
+      padding: '5px',
+      paddingBottom: '8px',
+      display: 'flex',
+      gap: '10px',
+      flexDirection: 'column',
+
+    }
   },
 };

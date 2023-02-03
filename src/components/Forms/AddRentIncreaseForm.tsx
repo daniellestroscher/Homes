@@ -33,7 +33,7 @@ export default function AddRentIncreaseForm({ tenancyId, currentRecordEffectiveD
       });
       setRentIncrease(defaultIncrease);
       router.replace(router.asPath); //refresh server-side props
-      handleModal(null); //close form
+      handleModal(null, ''); //close form
     } else {
       alert("All fields are required or change the effective date to one that in not already in use.");
     }

@@ -14,6 +14,8 @@ import { useUnitListContext } from "../../src/contexts/unitListContext";
 import { getAllTenancies } from "../../src/services/tenancyService";
 import { useMenuContext } from "../../src/contexts/menuContext";
 import { useColorMode } from "theme-ui";
+import SearchBar from "../../src/components/searchBar/searchBar";
+import { filterUnits } from "../../src/utils/helperFunctions";
 
 type Props = {
   user: {
@@ -29,6 +31,9 @@ export default function Home({ user, community, unitArr }: Props) {
   const { menuToggle, setMenuToggle } = useMenuContext();
   const { unitList, setUnitList } = useUnitListContext();
   const [colorMode, setColorMode] = useColorMode();
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const filteredUnits = filterUnits(unitList, searchQuery);
 
   useEffect(() => {
     setUnitList(unitArr);
@@ -52,7 +57,13 @@ export default function Home({ user, community, unitArr }: Props) {
               }),
             }}
           >
-            <UnitList unitList={unitList} />
+            <div>
+              <SearchBar
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+              />
+              <UnitList unitList={filteredUnits}/>
+            </div>
           </div>
         </>
       )}

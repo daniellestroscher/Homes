@@ -16,20 +16,22 @@ export function useModalContext() {
 
 export function ModalProvider({ children }:{children:ReactNode}) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>('');
   let [modalContent, setModalContent] = React.useState<ReactNode>(
     "I'm the Modal Content"
   );
 
-  const handleModal = (content: ReactNode) => {
+  const handleModal = (content: ReactNode, title:string) => {
     setIsOpen(!isOpen);
+    setTitle(title);
     if (content) {
       setModalContent(content)
     }
   };
 
   return (
-    <ModalContext.Provider value={{ isOpen, handleModal, modalContent}}>
-      <Modal />
+    <ModalContext.Provider value={{ isOpen, handleModal, modalContent, title}}>
+      <Modal title={title}/>
       {children}
     </ModalContext.Provider>
   );

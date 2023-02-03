@@ -54,7 +54,7 @@ export default function AddCommunityForm({
       setCommunityList([...communityList, newCommunity] as ICommunity[]);
       setCommunity(initialState);
       setImgFiles([]);
-      handleModal(null); //close form
+      handleModal(null, ''); //close form
     } else {
       alert("All fields are required");
     }

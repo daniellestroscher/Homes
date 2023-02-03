@@ -3,7 +3,6 @@ import { ITenancy, IUnit } from '../../../types/interfaces';
 import UnitItem from '../UnitItem/UnitItem'
 type Props = {
   unitList: IUnit[];
-  //tenancies: ITenancy[];
 }
 export default function UnitList({unitList}:Props) {
 
@@ -16,7 +15,6 @@ export default function UnitList({unitList}:Props) {
       <div sx={{ variant: 'containers.unitList'}}>
         {
           unitList && unitList.map((unit:IUnit) => {
-            //let tenancy = tenancies.find((one)=>one.unitId === unit.unitId)
             return <UnitItem key={unit.unitId} unit={unit} tenancy={unit.tenancies && unit.tenancies[0]}/>
 
           })

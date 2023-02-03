@@ -1,11 +1,9 @@
 /** @jsxImportSource theme-ui */
 import React from "react";
 import {
-  ICommunity,
   ITenancy,
   ITenancyVersions,
   ITenant,
-  IUnit,
 } from "../../../types/interfaces";
 import { useModalContext } from "../../contexts/modalContext";
 import { createTenant } from "../../services/tenantService";
@@ -82,7 +80,7 @@ export default function AddTenancyForm({ unitId }: Props) {
         console.log(newTenantTwo, "IM THE TENANT TWO");
       }
 
-      handleModal(null); //close form
+      handleModal(null, ''); //close form
       router.replace(router.asPath); //refresh server-side props
     } else {
       alert("Missing fields are required");
@@ -141,7 +139,7 @@ export default function AddTenancyForm({ unitId }: Props) {
       </section>
       <section>
         <h4>Other Info</h4>
-        <label>Date Established:</label>
+        <label sx={{variant: "containers.visuallyHidden"}}>Date Established:</label>
         <input
           type="date"
           value={tenancy.establishedDate}

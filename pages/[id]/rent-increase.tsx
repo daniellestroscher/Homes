@@ -1,17 +1,19 @@
 /** @jsxImportSource theme-ui */
-import { useRouter } from 'next/router';
-import Menu from '../../src/components/Menu/Menu'
-import RentIncreaseList from '../../src/components/RentIncreaseList/RentIncreaseList'
-import Navbar from '../../src/components/Navbar/Navbar';
-import { authOptions } from '../api/auth/[...nextauth]';
-import { Session, unstable_getServerSession } from 'next-auth';
-import { GetServerSidePropsContext } from 'next';
-import { ICommunity, IUnit } from '../../types/interfaces';
-import { getCommunityById } from '../../src/services/communityService';
-import { useMenuContext } from '../../src/contexts/menuContext';
-import { useUnitListContext } from '../../src/contexts/unitListContext';
-import { getUnitList } from '../../src/services/unitService';
-import { useEffect } from 'react';
+import Menu from "../../src/components/Menu/Menu";
+import RentIncreaseList from "../../src/components/RentIncreaseList/RentIncreaseList";
+import Navbar from "../../src/components/Navbar/Navbar";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { Session, unstable_getServerSession } from "next-auth";
+import { GetServerSidePropsContext } from "next";
+import { ICommunity, IUnit } from "../../types/interfaces";
+import { getCommunityById } from "../../src/services/communityService";
+import { useMenuContext } from "../../src/contexts/menuContext";
+import { useUnitListContext } from "../../src/contexts/unitListContext";
+import { getUnitList } from "../../src/services/unitService";
+import { useEffect, useState } from "react";
+import { filterUnits } from "../../src/utils/helperFunctions";
+import { useColorMode } from "theme-ui";
+import SearchBar from "../../src/components/searchBar/searchBar";
 
 type Props = {
   user: {
@@ -22,33 +24,50 @@ type Props = {
   community: ICommunity;
   unitArr: IUnit[];
 };
-export default function RentIncreasesPage({user, community, unitArr}:Props) {
+export default function RentIncreasesPage({ user, community, unitArr }: Props) {
   const { menuToggle, setMenuToggle } = useMenuContext();
   const { unitList, setUnitList } = useUnitListContext();
-  useEffect(()=>{
+  const [colorMode, setColorMode] = useColorMode();
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredUnits = filterUnits(unitList, searchQuery);
+
+  useEffect(() => {
     setUnitList(unitArr);
-  }, [])
+  }, []);
 
   return (
-  <>
-    {user && (
-      <>
-        <Navbar name={community.name}/>
-        <div sx={{
-          variant: 'containers.mainPageCont',
-          left: '50px',
-          ...(menuToggle && {
-            variant: 'containers.mainPageCont',
-            left: '160px'
-          })
-        }}>
-          <Menu communityId={community.communityId as string}/>
-          <RentIncreaseList unitList={unitList}/>
-        </div>
-      </>
-    )}
-  </>
-  )
+    <>
+      {user && (
+        <>
+          <Navbar
+            name={community.name}
+            colorMode={colorMode}
+            setColorMode={setColorMode}
+          />
+          <Menu communityId={community.communityId as string} />
+          <div
+            sx={{
+              variant: "containers.mainPageCont",
+              left: "50px",
+              ...(menuToggle && {
+                variant: "containers.mainPageCont",
+                left: "160px",
+              }),
+            }}
+          >
+            <div sx={{position: 'fixed'}}>
+              <SearchBar
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+              />
+              <RentIncreaseList unitList={filteredUnits} />
+            </div>
+          </div>
+        </>
+      )}
+    </>
+  );
 }
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   //fetch session to validate
@@ -66,8 +85,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
   const { user } = session as any;
-  const community = await getCommunityById(context.params?.id as string) as ICommunity;
-  const unitArr = await getUnitList(community.communityId as string) as IUnit[];
+  const community = (await getCommunityById(
+    context.params?.id as string
+  )) as ICommunity;
+  const unitArr = (await getUnitList(
+    community.communityId as string
+  )) as IUnit[];
 
   return {
     props: {
@@ -77,4 +100,3 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     },
   };
 }
-

@@ -1,3 +1,5 @@
+import { IUnit } from "../../types/interfaces";
+
 type map = {
   [mm: string]: string;
   dd: string;
@@ -76,3 +78,52 @@ export function findRent(month: number, day: number, rents: rentsType[]) {
     }
   }
 }
+
+export const filterUnits = (unitList: IUnit[], query: string) => {
+  if (!query) {
+    return unitList;
+  }
+
+  return unitList.filter((unit) => {
+    const unitNumber = unit.number?.toString();
+    let unitTenantOne;
+    let unitTenantTwo;
+    if (unit.tenancies && unit.tenancies[0].tenants) {
+      unitTenantOne = `${unit.tenancies[0].tenants[0].firstName} ${unit.tenancies[0].tenants[0].lastName}`;
+    }
+    if (
+      unit.tenancies &&
+      unit.tenancies[0].tenants &&
+      unit.tenancies[0].tenants[1]
+    ) {
+      unitTenantTwo = `${unit.tenancies[0].tenants[1].firstName} ${unit.tenancies[0].tenants[1].lastName}`;
+    }
+
+    return (
+      unitNumber?.includes(query) ||
+      unitTenantOne?.includes(query) ||
+      unitTenantTwo?.includes(query)
+    );
+  });
+};
+
+export const increasesToSend = (unitList: IUnit[]) => {
+  //tenants get 3 month notice.
+  let now = new Date(Date.now());
+
+  let unitsToSendIncreases = unitList.filter((unit) => {
+    if (
+      unit.tenancies &&
+      unit.tenancies[0] &&
+      unit.tenancies[0].tenancy_versions &&
+      unit.tenancies[0].tenancy_versions[0].increaseDate
+    ) {
+      let month = Number(unit.tenancies[0].tenancy_versions[0].increaseDate.slice(5, 7));
+      if (month === (now.getMonth() + 1)) {
+        //change to plus 4 for 3 month notice
+        return unit;
+      }
+    }
+  });
+  return unitsToSendIncreases;
+};

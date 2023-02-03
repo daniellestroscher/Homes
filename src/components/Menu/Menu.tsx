@@ -99,7 +99,8 @@ function Menu({ communityId }: props) {
                   communityId={communityId}
                   unitList={unitList}
                   setUnitList={setUnitList}
-                />
+                />,
+                'Add a Unit!'
               )
             }
           >

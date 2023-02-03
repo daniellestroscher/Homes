@@ -26,7 +26,7 @@ export default function AddUnitForm({
       });
       setUnitList([...unitList, newUnit] as IUnit[]);
       setUnitNumber(undefined);
-      handleModal(null); //close form
+      handleModal(null, ''); //close form
     } else {
       alert("All fields are required");
     }

@@ -2,28 +2,12 @@
 import { ITenancyVersions, IUnit } from "../../../types/interfaces";
 import React, { useMemo, useState } from "react";
 import "react-data-grid/lib/styles.css";
-import DataGrid from "react-data-grid";
+import DataGrid, { FormatterProps } from "react-data-grid";
 import { exportToPdf, exportToXlsx } from "../../utils/exportUtils";
 import { findRent, rentsType } from "../../utils/helperFunctions";
-import { css } from 'linaria';
-
-// const toolbarClassname = css`
-//   display: flex;
-//   justify-content: flex-end;
-//   gap: 8px;
-//   margin-block-end: 8px;
-// `;
-
-// const dialogContainerClassname = css`
-//   position: absolute;
-//   inset: 0;
-//   display: flex;
-//   place-items: center;
-//   background: rgba(0, 0, 0, 0.1);
-// `;
 
 interface Row {
-  unit: number;
+  unit: string;
   tenant: string;
   jan: number;
   feb: number;
@@ -122,7 +106,7 @@ export default function RentRoll({ unitArr, allVersions, colorMode }: Props) {
       },
       {
         key: "sept",
-        name: "Sept",
+        name: "September",
         summaryFormatter({ row }: any) {
           return <>${row.sept}</>;
         },
@@ -155,6 +139,7 @@ export default function RentRoll({ unitArr, allVersions, colorMode }: Props) {
     const rows: Row[] = [];
     unitArr.forEach((unit) => {
       if (unit.tenancies && unit.tenancies[0] && unit.tenancies[0].tenants) {
+        let unitNumber = `${unit.number}`
         let tenant = `${unit.tenancies[0].tenants[0].lastName}`;
         let rents: rentsType[] = [];
         unit.tenancies.forEach((tenancy) => {
@@ -170,7 +155,7 @@ export default function RentRoll({ unitArr, allVersions, colorMode }: Props) {
           });
         });
         rows.push({
-          unit: unit.number as number,
+          unit: unitNumber,
           tenant: tenant,
           jan: findRent(1, 31, rents as rentsType[]) as number,
           feb: findRent(2, 28, rents as rentsType[]) as number,
@@ -220,7 +205,6 @@ export default function RentRoll({ unitArr, allVersions, colorMode }: Props) {
       december += Number(row.dec.toString().slice(1));
     });
     const summaryRow: any = {
-      // id: "total_0",
       jan: january,
       feb: february,
       march: march,
@@ -244,18 +228,20 @@ export default function RentRoll({ unitArr, allVersions, colorMode }: Props) {
       rows={currentRows}
       onRowsChange={setCurrentRows}
       rowKeyGetter={rowKeyGetter}
+
       defaultColumnOptions={{
         sortable: true,
         resizable: true,
       }}
       bottomSummaryRows={summaryRows}
-      className={colorMode === 'default' ? 'rdg-light' : 'rdg-dark'}
+      className={colorMode === 'default' ? 'rdg-light fill-grid' : 'rdg-dark fill-grid'}
+      style={{ resize: 'both' }}
     />
 
   );
 
   return (
-    <div>
+    <div sx={{position:'fixed'}}>
       {gridElement}
       <ExportButton onExport={() => exportToXlsx(gridElement, "RentRoll.xlsx")}>
         Export to XSLX
