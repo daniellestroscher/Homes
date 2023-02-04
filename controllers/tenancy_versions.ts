@@ -9,11 +9,11 @@ export async function createTenancyVersions(
   try {
     const { tenancyId, recordEffectiveDate, rent } = req.body;
     if (tenancyId && rent) {
-      //create the rent increase date
+      //create the next rent increase date.
       let { increaseDate } = req.body;
-      increaseDate = recordEffectiveDate.split("");
-      increaseDate[3] = (Number(increaseDate[3]) + 1).toString();
-      increaseDate = increaseDate.join("");
+      increaseDate = recordEffectiveDate.split("-");
+      increaseDate[0] = (Number(increaseDate[0]) + 1).toString();
+      increaseDate = increaseDate.join("-");
 
       const tenancyVersion = await TenancyVersionSchema.create({
         tenancyId,

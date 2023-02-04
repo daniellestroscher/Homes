@@ -47,19 +47,23 @@ export default function RentIncreaseList({ unitList }: Props) {
             />
             <h5>Increases to send this month:</h5>
           </section>
-          <section sx={{ variant: "containers.unitList" }}>
-            {sendTheseIncreases &&
-              sendTheseIncreases.map((unit: IUnit, i) => {
-                return (
-                  <RentIncreaseItem
-                    key={i + 1}
-                    unit={unit}
-                    tenancy={unit.tenancies && (unit.tenancies[0] as ITenancy)}
-                    selector={true}
-                  />
-                );
-              })}
-          </section>
+          {sendTheseIncreases.length > 0 ?
+            <section sx={{ variant: "containers.unitList" }}>
+              {sendTheseIncreases &&
+                sendTheseIncreases.map((unit: IUnit, i) => {
+                  return (
+                    <RentIncreaseItem
+                      key={i + 1}
+                      unit={unit}
+                      tenancy={unit.tenancies && (unit.tenancies[0] as ITenancy)}
+                      selector={true}
+                    />
+                  );
+                })}
+            </section>
+            :
+            <div sx={{alignSelf: "center"}}>no due increases found.</div>
+          }
           <button
             sx={{variant: 'buttons.secondary', marginTop: "10px", width: '100px'}}
             onClick={() => handleModal(

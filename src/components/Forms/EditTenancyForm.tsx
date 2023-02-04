@@ -35,7 +35,7 @@ export default function EditTenancyForm({
       }
       console.log(tenancy, tenantOne, tenantTwo)
       editTenancy(tenancy?.unitId as string, updates)
-      handleModal(null);
+      handleModal(null, '');
       router.replace(router.asPath);
     } else {
       alert("Make a change to update");
