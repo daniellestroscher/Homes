@@ -31,7 +31,8 @@ export default function EditTenancyForm({
       const updates = {
         tenancy: updateTenancy as ITenancy,
         tenantOne: tenantOne,
-        tenantTwo: tenantTwo
+        tenantTwo: tenantTwo,
+        tenancyId: tenancy?.tenancyId
       }
       console.log(tenancy, tenantOne, tenantTwo)
       editTenancy(tenancy?.unitId as string, updates)
@@ -43,7 +44,7 @@ export default function EditTenancyForm({
   };
 
   return (
-    <form>
+    <form sx={{variant: 'components.form'}}>
       <section>
         <h4>Edit Tenants</h4>
         <h6>Tenant One</h6>
@@ -73,7 +74,7 @@ export default function EditTenancyForm({
         <input
           type="text"
           placeholder="First Name"
-          value={tenantTwo.firstName}
+          value={tenantTwo ? tenantTwo.firstName : ''}
           onChange={(e) =>
             setTenantTwo({
               ...tenantTwo,
@@ -84,7 +85,7 @@ export default function EditTenancyForm({
         <input
           type="text"
           placeholder="Last Name"
-          value={tenantTwo.lastName}
+          value={tenantTwo ? tenantTwo.lastName: ''}
           onChange={(e) =>
             setTenantTwo({
               ...tenantTwo,

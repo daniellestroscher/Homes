@@ -14,8 +14,8 @@ export async function getAllTenancies() {
   });
 }
 
-export async function getTenancyById(unitId: string) {
-  return await fetchData<ITenancy>(`/tenancy/${unitId}`, {
+export async function getTenanciesById(unitId: string) {
+  return await fetchData<ITenancy[]>(`/tenancy/${unitId}`, {
     method: "GET",
   });
 }

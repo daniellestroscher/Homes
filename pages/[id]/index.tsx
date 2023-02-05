@@ -25,19 +25,39 @@ type Props = {
   };
   community: ICommunity;
   unitArr: IUnit[];
-  //tenancies: ITenancy[];
+  tenancyArr: ITenancy[]
 };
-export default function Home({ user, community, unitArr }: Props) {
+export default function Home({ user, community, unitArr, tenancyArr }: Props) {
   const { menuToggle, setMenuToggle } = useMenuContext();
   const { unitList, setUnitList } = useUnitListContext();
   const [colorMode, setColorMode] = useColorMode();
 
   const [searchQuery, setSearchQuery] = useState('');
-  const filteredUnits = filterUnits(unitList, searchQuery);
 
   useEffect(() => {
     setUnitList(unitArr);
   }, []);
+
+  unitList.forEach((unit) => {
+    unit.tenancies = [];
+    let activeTenancy = tenancyArr.find((one)=> {
+      return one.unitId == unit.unitId &&
+      new Date(one.establishedDate).getTime() <= new Date().getTime() &&
+      one.activeStatus == true;
+    })
+    let nextTenancy = tenancyArr.find((one)=> {
+      return one.unitId === unit.unitId &&
+      new Date(one.establishedDate).getTime() > new Date().getTime() &&
+      one.activeStatus === false;
+    })
+    if (activeTenancy) {
+      unit.tenancies.push(activeTenancy);
+    } else if (nextTenancy) {
+      unit.tenancies?.push(nextTenancy);
+    }
+  })
+  const filteredUnits = filterUnits(unitList, searchQuery);
+  console.log(filteredUnits, 'filtered units')
 
   return (
     <>
@@ -62,7 +82,7 @@ export default function Home({ user, community, unitArr }: Props) {
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
               />
-              <UnitList unitList={filteredUnits}/>
+              <UnitList unitList={filteredUnits} tenancyArr={tenancyArr}/>
             </div>
           </div>
         </>
@@ -89,12 +109,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const community = await getCommunityById(context.params?.id as string) as ICommunity;
   const unitArr = await getUnitList(community.communityId as string) as IUnit[];
-  //const tenancies = await getAllTenancies() as ITenancy[];
+  const tenancyArr = await getAllTenancies() as ITenancy[];
   return {
     props: {
       user,
       community,
-      unitArr
+      unitArr,
+      tenancyArr
     },
   }
 }

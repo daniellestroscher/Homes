@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ITenancyVersions } from "../../../types/interfaces";
 import { createRentIncrease } from "../../services/tenancyService";
 import { useModalContext } from "../../contexts/modalContext";
-import { formatDate } from "../../utils/helperFunctions";
+import { formatDate, formatRentEffectiveDate } from "../../utils/helperFunctions";
 import { useRouter } from "next/router";
 
 type Props = {
@@ -14,7 +14,7 @@ export default function AddRentIncreaseForm({ tenancyId, currentRecordEffectiveD
   const router = useRouter();
   let defaultIncrease = {
     tenancyId: tenancyId,
-    recordEffectiveDate: formatDate(new Date(), "yyyy-mm-dd"),
+    recordEffectiveDate: formatDate(formatRentEffectiveDate(new Date), 'yyyy-mm-dd'),
     rent: undefined,
     increaseDate: undefined,
   };

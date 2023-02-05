@@ -10,7 +10,7 @@ import {
 } from "../../../types/interfaces";
 import { getCommunityById } from "../../../src/services/communityService";
 import { getUnitById } from "../../../src/services/unitService";
-import { getTenancyById } from "../../../src/services/tenancyService";
+import { getTenanciesById } from "../../../src/services/tenancyService";
 import { UnitInfo } from "../../../src/components/UnitInfo/UnitInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -25,11 +25,12 @@ type Props = {
   };
   community: ICommunity;
   unit: IUnit;
-  tenancy: ITenancy;
+  tenancyArr: ITenancy[];
 };
-export default function Home({ user, community, unit, tenancy }: Props) {
+export default function Home({ user, community, unit, tenancyArr }: Props) {
   const router = useRouter();
   const [colorMode, setColorMode] = useColorMode();
+  console.log(tenancyArr);
 
   return (
     <>
@@ -47,7 +48,7 @@ export default function Home({ user, community, unit, tenancy }: Props) {
               }}
               onClick={router.back}
             />
-          <UnitInfo tenancy={tenancy} unit={unit} community={community}/>
+          <UnitInfo tenancyArr={tenancyArr} unit={unit} community={community}/>
         </>
       )}
     </>
@@ -74,14 +75,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   )) as ICommunity;
 
   const unit = (await getUnitById(context.params?.unitId as string)) as IUnit;
-  const tenancy = (await getTenancyById(unit.unitId as string)) as ITenancy;
+  const tenancyArr = (await getTenanciesById(unit.unitId as string)) as ITenancy[];
 
   return {
     props: {
       user,
       community,
       unit,
-      tenancy,
+      tenancyArr,
     },
   };
 }

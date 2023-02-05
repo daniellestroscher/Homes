@@ -49,9 +49,14 @@ export default function AddTenancyForm({ unitId }: Props) {
     e.preventDefault();
     if (tenantOne.firstName !== "" && tenancyVersions.rent !== undefined) {
       console.log("in submit handler");
-      //get tenancy by unit id and change active state.
-      const status = await changeTenancyStatus(unitId, false);
-      console.log(status, "IM THE NEW STATUS")
+      if (new Date(tenancy.establishedDate).getTime() <= new Date().getTime()) {
+        //get tenancy by unit id and change active state because new tenancy is now active.
+        const status = await changeTenancyStatus(unitId, false);
+        console.log(status, "IM THE NEW STATUS");
+      }
+      if (new Date(tenancy.establishedDate).getTime() > new Date().getTime()) {
+        tenancy.activeStatus = false;
+      }
       const newTenancy = await createTenancy({
         unitId: unitId,
         establishedDate: tenancy.establishedDate,
@@ -85,15 +90,15 @@ export default function AddTenancyForm({ unitId }: Props) {
       }
       handleModal(null, ''); //close form
       router.replace(router.asPath); //refresh server-side props
-      
+
     } else {
       alert("Missing fields are required");
     }
   };
   return (
-    <form>
+    <form sx={{ variant: "components.form"}}>
       <section>
-        <h4>Add Tenants</h4>
+        <h4>Add Tenants:</h4>
         <h6>Tenant One</h6>
         <input
           type="text"
@@ -146,19 +151,23 @@ export default function AddTenancyForm({ unitId }: Props) {
         <label sx={{variant: "containers.visuallyHidden"}}>Date Established:</label>
         <input
           type="date"
+          title='Date of Tenancy Establishment'
           value={tenancy.establishedDate}
           onChange={(e) =>
             setTenancy({ ...tenancy, establishedDate: e.target.value })
           }
         />
+        <label sx={{variant: "containers.visuallyHidden"}}>Rent</label>
         <input
           type="number"
           placeholder="Rent"
+          title="Rent"
           value={tenancyVersions.rent as number}
           onChange={(e) =>
             setTenancyVersions({ ...tenancyVersions, rent: Number(e.target.value) })
           }
         />
+        <br/>
         <label>Assignment Of Lease?</label>
         <input
           type="checkbox"
@@ -173,13 +182,14 @@ export default function AddTenancyForm({ unitId }: Props) {
           checked={tenancy.pet}
           onChange={(e) => setTenancy({ ...tenancy, pet: e.target.checked })}
         />
+        <label sx={{variant: "containers.visuallyHidden"}}>Add Notes</label>
         <input
           type="text"
           placeholder="Notes..."
           value={tenancy.notes}
           onChange={(e) => setTenancy({ ...tenancy, notes: e.target.value })}
         />
-        <label>Add any related Documents</label>
+        <label sx={{variant: "containers.visuallyHidden"}}>Add any related Documents</label>
         <input
           type="file"
           //value={tenancy.documents as File[]}

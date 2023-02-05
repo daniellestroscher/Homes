@@ -166,7 +166,7 @@ export default {
       position: "fixed",
       color: "accentLight",
       margin: "auto",
-      top: "130px",
+      top: "300px",
       left: "0px",
       right: "0px",
       zIndex: "1",

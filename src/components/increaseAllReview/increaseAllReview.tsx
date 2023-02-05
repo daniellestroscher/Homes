@@ -7,7 +7,7 @@ import { useState } from "react";
 import { ITenancyVersions, IUnit } from "../../../types/interfaces";
 import { useModalContext } from "../../contexts/modalContext";
 import { createRentIncrease } from "../../services/tenancyService";
-import { formatDate } from "../../utils/helperFunctions";
+import { formatDate, formatRentEffectiveDate } from "../../utils/helperFunctions";
 
 type Props = {
   unitList: IUnit[];
@@ -16,7 +16,7 @@ export default function IncreaseAll(this: any, { unitList }: Props) {
   const { handleModal } = useModalContext();
   const router = useRouter();
   const [increasePercent, setIncreasePercent] = useState<number | undefined>(undefined);
-  const [effectiveDate, setEffectiveDate ] = useState<string>(formatDate(new Date(), 'yyyy-mm-dd'));
+  const [effectiveDate, setEffectiveDate ] = useState<string>(formatDate(formatRentEffectiveDate(new Date), 'yyyy-mm-dd'));
   let rentIncreaseObjArr: ITenancyVersions[] = [];
 
   const handleSubmit = async (e: React.MouseEvent) => {
@@ -73,7 +73,7 @@ export default function IncreaseAll(this: any, { unitList }: Props) {
               tenancyId: unit.tenancies[0].tenancyId as string,
               recordEffectiveDate: effectiveDate,
               rent: increasedRent,
-              increaseDate: effectiveDate, //updates in the controller
+              increaseDate: undefined, //updates in the controller
             })
           }
           return (

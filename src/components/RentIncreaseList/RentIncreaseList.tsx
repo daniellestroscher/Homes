@@ -68,7 +68,7 @@ export default function RentIncreaseList({ unitList }: Props) {
             sx={{variant: 'buttons.secondary', marginTop: "10px", width: '100px'}}
             onClick={() => handleModal(
               <IncreaseAll unitList={sendTheseIncreases}/>,
-              'Are you sure you want to increase the following rents?'
+              'Do you want to increase the following rents?'
             )}
           >
               Increase all

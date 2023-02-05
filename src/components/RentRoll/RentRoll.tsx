@@ -205,18 +205,18 @@ export default function RentRoll({ unitArr, allVersions, colorMode }: Props) {
       december += Number(row.dec.toString().slice(1));
     });
     const summaryRow: any = {
-      jan: january,
-      feb: february,
-      march: march,
-      april: april,
-      may: may,
-      june: june,
-      july: july,
-      aug: august,
-      sept: september,
-      oct: october,
-      nov: november,
-      dec: december,
+      jan: january.toFixed(2),
+      feb: february.toFixed(2),
+      march: march.toFixed(2),
+      april: april.toFixed(2),
+      may: may.toFixed(2),
+      june: june.toFixed(2),
+      july: july.toFixed(2),
+      aug: august.toFixed(2),
+      sept: september.toFixed(2),
+      oct: october.toFixed(2),
+      nov: november.toFixed(2),
+      dec: december.toFixed(2),
     };
     return [summaryRow];
   }, [currentRows]);

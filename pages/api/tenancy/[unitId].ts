@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nc from "next-connect";
-import { getTenancyById } from "../../../controllers/tenancy";
+import { getTenanciesById } from "../../../controllers/tenancy";
 import { updateNotes, editTenancy } from "../../../controllers/tenancy";
 
 const handler = nc<NextApiRequest, NextApiResponse>({
@@ -12,7 +12,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
     res.status(404).end("Page is not found");
   },
 })
-  .get(getTenancyById)
+  .get(getTenanciesById)
   .put(updateNotes)
   .patch(editTenancy)
 

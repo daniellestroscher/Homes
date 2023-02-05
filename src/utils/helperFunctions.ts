@@ -35,6 +35,12 @@ export type rentsType = {
   recordEffectiveDate: string;
 };
 
+export function formatRentEffectiveDate(date: Date) {
+  date.setMonth(date.getMonth()+4);
+  date.setDate(1);
+  return date;
+}
+
 export function findRent(month: number, day: number, rents: rentsType[]) {
   if (rents.length) {
     if (month && day) {
@@ -88,11 +94,12 @@ export const filterUnits = (unitList: IUnit[], query: string) => {
     const unitNumber = unit.number?.toString();
     let unitTenantOne;
     let unitTenantTwo;
-    if (unit.tenancies && unit.tenancies[0].tenants) {
+    if (unit.tenancies && unit.tenancies[0] && unit.tenancies[0].tenants) {
       unitTenantOne = `${unit.tenancies[0].tenants[0].firstName} ${unit.tenancies[0].tenants[0].lastName}`;
     }
     if (
       unit.tenancies &&
+      unit.tenancies[0] &&
       unit.tenancies[0].tenants &&
       unit.tenancies[0].tenants[1]
     ) {
@@ -126,6 +133,6 @@ export const increasesToSend = (unitList: IUnit[]) => {
       }
     }
   });
-  
+
   return unitsToSendIncreases;
 };

@@ -4,7 +4,7 @@ import { sequelize } from "../database/connection";
 import TenancySchema from "../models/tenancy";
 import TenantSchema from "../models/tenant";
 import TenancyVersionSchema from "../models/tenancy_versions";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import { formatDate } from "../src/utils/helperFunctions";
 
 export async function addUnit(req: NextApiRequest, res: NextApiResponse) {
@@ -29,27 +29,28 @@ export async function getUnitList(req: NextApiRequest, res: NextApiResponse) {
     if (id) {
       const unitList = await UnitSchema.findAll({
         where: { communityId: id },
-        order: [["number", "ASC"]],
-        include: [
-          {
-            model: TenancySchema,
-            order: [["establishedDate", "DESC"]], //changed
-            limit: 1,
-            include: [
-              TenantSchema,
-              {
-                model: TenancyVersionSchema,
-                where: {
-                  recordEffectiveDate: {
-                    [Op.lte]: formatDate(new Date(), "yyyy-mm-dd"),
-                  },
-                },
-                order: [["recordEffectiveDate", "DESC"]],
-                limit: 1,
-              },
-            ],
-          },
+        order: [
+          ["number", "ASC"],
         ],
+        // include: [
+        //   {
+        //     model: TenancySchema,
+        //     order: [['establishedDate', 'desc']],
+        //     include: [
+        //       TenantSchema,
+        //       // {
+        //       //   model: TenancyVersionSchema,
+        //       //   where: {
+        //       //     recordEffectiveDate: {
+        //       //       [Op.lte]: formatDate(new Date(), "yyyy-mm-dd"),
+        //       //     }
+        //       //   },
+        //       //   order: [["recordEffectiveDate", "DESC"]],
+        //       //   limit: 1,
+        //       // },
+        //     ],
+        //   },
+        // ],
       });
       return res.status(200).json(unitList);
     }
