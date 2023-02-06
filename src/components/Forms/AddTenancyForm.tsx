@@ -13,8 +13,9 @@ import { formatDate } from "../../utils/helperFunctions";
 
 type Props = {
   unitId: string;
+  activeTenancy: ITenancy | undefined;
 };
-export default function AddTenancyForm({ unitId }: Props) {
+export default function AddTenancyForm({ unitId, activeTenancy }: Props) {
   const { handleModal } = useModalContext();
   const router = useRouter()
   const [tenantOne, setTenantOne] = React.useState<ITenant>({
@@ -35,6 +36,7 @@ export default function AddTenancyForm({ unitId }: Props) {
     pet: undefined,
     documents: undefined,
     activeStatus: true,
+    previousTenancy: null,
   };
   const [tenancy, setTenancy] = React.useState<ITenancy>(initialTenancy);
   const initialTenancyVersions = {
@@ -51,11 +53,15 @@ export default function AddTenancyForm({ unitId }: Props) {
       console.log("in submit handler");
       if (new Date(tenancy.establishedDate).getTime() <= new Date().getTime()) {
         //get tenancy by unit id and change active state because new tenancy is now active.
-        const status = await changeTenancyStatus(unitId, false);
+        let prevTenancyId = activeTenancy?.tenancyId;
+        const status = await changeTenancyStatus(unitId, prevTenancyId, false);
         console.log(status, "IM THE NEW STATUS");
       }
       if (new Date(tenancy.establishedDate).getTime() > new Date().getTime()) {
         tenancy.activeStatus = false;
+      }
+      if (activeTenancy) {
+        tenancy.previousTenancy = activeTenancy.tenancyId as string;
       }
       const newTenancy = await createTenancy({
         unitId: unitId,
@@ -65,6 +71,7 @@ export default function AddTenancyForm({ unitId }: Props) {
         pet: tenancy.pet,
         documents: tenancy.documents,
         activeStatus: tenancy.activeStatus,
+        previousTenancy: tenancy.previousTenancy,
       });
       console.log(newTenancy, "IM THE TENANCY");
       const newTenancyVersion = await createRentIncrease({

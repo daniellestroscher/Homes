@@ -33,6 +33,7 @@ export interface ITenancy{
   pet?: boolean;
   documents?: File[];
   activeStatus: boolean;
+  previousTenancy: string | null;
 
   tenants?: ITenant[];
   tenancy_versions?: ITenancyVersions[];

@@ -41,10 +41,9 @@ export async function editTenancy(unitId: string, updates: {tenancy: ITenancy, t
   })
 }
 
-export async function changeTenancyStatus(unitId: string, status: boolean) {
-  console.log('in service')
+export async function changeTenancyStatus(unitId: string, tenancyId: string | undefined, status: boolean) {
   return await fetchData(`/tenancy/status/${unitId}`, {
     method: "PATCH",
-    body: JSON.stringify(status),
+    body: JSON.stringify({status, tenancyId}),
   })
 }

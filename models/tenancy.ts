@@ -40,6 +40,10 @@ const TenancySchema = sequelize.define<Model<ITenancy>>("tenancy", {
   activeStatus: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
+  },
+  previousTenancy: {
+    type: DataTypes.UUID,
+    allowNull: true,
   }
 });
 

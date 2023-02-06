@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui */
 import {
-  faArrowLeft,
   faCheckCircle,
   faCircleXmark,
   faPen,
@@ -12,35 +11,25 @@ import { useEffect, useState } from "react";
 import { ICommunity, ITenancy, IUnit } from "../../../types/interfaces";
 import { useModalContext } from "../../contexts/modalContext";
 import { updateNotes } from "../../services/tenancyService";
-import { formatDate } from "../../utils/helperFunctions";
 import AddRentIncreaseForm from "../Forms/AddRentIncreaseForm";
 import AddTenancyForm from "../Forms/AddTenancyForm";
 import EditTenancyForm from "../Forms/EditTenancyForm";
 type Props = {
-  tenancyArr: ITenancy[];
   unit: IUnit;
   community: ICommunity;
+  currentTenancy: ITenancy | undefined;
+  futureTenancy: ITenancy | undefined;
 };
-export function UnitInfo({ unit, community, tenancyArr }: Props) {
+export function UnitInfo({ unit, community, currentTenancy, futureTenancy }: Props) {
   let { handleModal } = useModalContext();
-  // useEffect(()=> {
-  //   console.log('this useeffect was called.')
-  // }, [tenancyArr])
-
-  let tenancy = tenancyArr.find((tenancy) => {
-    return tenancy.activeStatus === true;
-  });
-
-  let futureTenancyAvailable = tenancyArr.find((tenancy) => {
-    return (
-      tenancy.establishedDate > formatDate(new Date(), "yyyy-mm-dd") &&
-      tenancy.activeStatus === false
-    );
-  });
-
-  if (!tenancy && futureTenancyAvailable) {
-    tenancy = futureTenancyAvailable;
-  }
+  
+  const [tenancy, setTenancy] = useState<ITenancy | undefined>(currentTenancy);
+  useEffect(()=>{
+    setTenancy(currentTenancy)
+    if (!tenancy && futureTenancy) {
+      setTenancy(futureTenancy);
+    }
+  }, [currentTenancy])
 
   let defaultNotes = "";
   if (tenancy && tenancy.notes) defaultNotes = tenancy.notes as string;
@@ -258,9 +247,9 @@ export function UnitInfo({ unit, community, tenancyArr }: Props) {
               </div>
             </>
           )}
-        {futureTenancyAvailable && (
+        {futureTenancy && (
           <div sx={{ color: "darkRed", marginTop: "15px" }}>
-            {`A new tenancy in beginning on ${futureTenancyAvailable.establishedDate}`}
+            {`A new tenancy in beginning on ${futureTenancy.establishedDate}`}
           </div>
         )}
 
@@ -272,7 +261,7 @@ export function UnitInfo({ unit, community, tenancyArr }: Props) {
           }}
           onClick={() =>
             handleModal(
-              <AddTenancyForm unitId={unit.unitId as string} />,
+              <AddTenancyForm unitId={unit.unitId as string} activeTenancy={tenancy} />,
               "Create New Tenancy"
             )
           }
