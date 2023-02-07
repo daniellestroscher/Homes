@@ -243,7 +243,7 @@ export default {
       border: '3px solid gray',
       borderRadius: '6px',
       backgroundColor: 'accentLightest',
-
+      zIndex: '1px',
       margin: '15px',
       padding: '5px',
       paddingBottom: '8px',

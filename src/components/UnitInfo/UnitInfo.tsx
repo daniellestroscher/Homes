@@ -22,7 +22,8 @@ type Props = {
 };
 export function UnitInfo({ unit, community, currentTenancy, futureTenancy }: Props) {
   let { handleModal } = useModalContext();
-  
+  console.log(currentTenancy, 'current tenancy')
+
   const [tenancy, setTenancy] = useState<ITenancy | undefined>(currentTenancy);
   useEffect(()=>{
     setTenancy(currentTenancy)
@@ -249,7 +250,7 @@ export function UnitInfo({ unit, community, currentTenancy, futureTenancy }: Pro
           )}
         {futureTenancy && (
           <div sx={{ color: "darkRed", marginTop: "15px" }}>
-            {`A new tenancy in beginning on ${futureTenancy.establishedDate}`}
+            {`A new tenancy is beginning on ${futureTenancy.establishedDate}`}
           </div>
         )}
 

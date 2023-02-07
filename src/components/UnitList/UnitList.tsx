@@ -5,31 +5,8 @@ import { filterUnits } from '../../utils/helperFunctions';
 import UnitItem from '../UnitItem/UnitItem'
 type Props = {
   unitList: IUnit[];
-  tenancyArr: ITenancy[];
 }
-export default function UnitList({unitList, tenancyArr }:Props) {
-  // unitList.forEach((unit) => {
-  //   unit.tenancies = [];
-  //   let activeTenancy = tenancyArr.find((one)=> {
-  //     return one.unitId == unit.unitId &&
-  //     new Date(one.establishedDate).getTime() <= new Date().getTime() &&
-  //     one.activeStatus == true;
-  //   })
-  //   let nextTenancy = tenancyArr.find((one)=> {
-  //     return one.unitId === unit.unitId &&
-  //     new Date(one.establishedDate).getTime() > new Date().getTime() &&
-  //     one.activeStatus === false;
-  //   })
-  //   if (activeTenancy) {
-  //     unit.tenancies.push(activeTenancy);
-  //   } else if (nextTenancy) {
-  //     unit.tenancies?.push(nextTenancy);
-  //   }
-  // })
-  // const filteredUnits = filterUnits(unitList, searchQuery);
-  // const [unitListWithTenancy, setUnitListWithTenancy] = useState<IUnit[]>(filteredUnits);
-  // console.log(unitListWithTenancy, 'the list')
-
+export default function UnitList({unitList }:Props) {
 
   return (
     <>

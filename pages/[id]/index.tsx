@@ -15,7 +15,7 @@ import { getAllTenancies } from "../../src/services/tenancyService";
 import { useMenuContext } from "../../src/contexts/menuContext";
 import { useColorMode } from "theme-ui";
 import SearchBar from "../../src/components/searchBar/searchBar";
-import { filterUnits } from "../../src/utils/helperFunctions";
+import { addTenanciesToUnitArr, filterUnits } from "../../src/utils/helperFunctions";
 
 type Props = {
   user: {
@@ -38,26 +38,30 @@ export default function Home({ user, community, unitArr, tenancyArr }: Props) {
     setUnitList(unitArr);
   }, []);
 
-  unitList.forEach((unit) => {
-    unit.tenancies = [];
-    let activeTenancy = tenancyArr.find((one)=> {
-      return one.unitId == unit.unitId &&
-      new Date(one.establishedDate).getTime() <= new Date().getTime() &&
-      one.activeStatus == true;
-    })
-    let nextTenancy = tenancyArr.find((one)=> {
-      return one.unitId === unit.unitId &&
-      new Date(one.establishedDate).getTime() > new Date().getTime() &&
-      one.activeStatus === false;
-    })
-    if (activeTenancy) {
-      unit.tenancies.push(activeTenancy);
-    } else if (nextTenancy) {
-      unit.tenancies?.push(nextTenancy);
-    }
-  })
+  addTenanciesToUnitArr(unitList, tenancyArr)
+
+  // function addTenanciesToUnitArr(unitList: IUnit[], tenancyArr: ITenancy[]) {
+  //   unitList.forEach((unit) => {
+  //     unit.tenancies = [];
+  //     let activeTenancy = tenancyArr.find((one)=> {
+  //       return one.unitId == unit.unitId &&
+  //       new Date(one.establishedDate).getTime() <= new Date().getTime() &&
+  //       one.activeStatus == true;
+  //     })
+  //     let nextTenancy = tenancyArr.find((one)=> {
+  //       return one.unitId === unit.unitId &&
+  //       new Date(one.establishedDate).getTime() > new Date().getTime() &&
+  //       one.activeStatus === false;
+  //     })
+  //     if (activeTenancy) {
+  //       unit.tenancies.push(activeTenancy);
+  //     } else if (nextTenancy) {
+  //       unit.tenancies?.push(nextTenancy);
+  //     }
+  //   })
+  //   return unitList;
+  // }
   const filteredUnits = filterUnits(unitList, searchQuery);
-  console.log(filteredUnits, 'filtered units')
 
   return (
     <>
@@ -77,12 +81,13 @@ export default function Home({ user, community, unitArr, tenancyArr }: Props) {
               }),
             }}
           >
+            <SearchBar
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            />
             <div>
-              <SearchBar
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-              />
-              <UnitList unitList={filteredUnits} tenancyArr={tenancyArr}/>
+              <div sx={{height: '40px'}}></div>
+              <UnitList unitList={filteredUnits}/>
             </div>
           </div>
         </>

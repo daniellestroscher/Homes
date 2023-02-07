@@ -12,16 +12,35 @@ import { formatDate, formatRentEffectiveDate } from "../../utils/helperFunctions
 type Props = {
   unitList: IUnit[];
 };
-export default function IncreaseAll(this: any, { unitList }: Props) {
+export default function IncreaseAll({ unitList }: Props) {
   const { handleModal } = useModalContext();
   const router = useRouter();
   const [increasePercent, setIncreasePercent] = useState<number | undefined>(undefined);
   const [effectiveDate, setEffectiveDate ] = useState<string>(formatDate(formatRentEffectiveDate(new Date), 'yyyy-mm-dd'));
   let rentIncreaseObjArr: ITenancyVersions[] = [];
 
+
+  console.log(rentIncreaseObjArr, 'increase Arr')
+
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (increasePercent) {
+      unitList.forEach((unit)=>{
+        if (unit.tenancies && unit.tenancies[0].tenancy_versions && unit.tenancies[0].tenancy_versions[0].rent && increasePercent) {
+            let rent = unit.tenancies[0].tenancy_versions[0].rent;
+            let increaseDiff = Number(rent.toString().slice(1)) * (increasePercent/100);
+            let increasedRent = Number(rent.toString().slice(1)) + increaseDiff;
+            increasedRent = Number(increasedRent.toFixed(2));
+
+            rentIncreaseObjArr.push({
+              tenancyId: unit.tenancies[0].tenancyId as string,
+              recordEffectiveDate: effectiveDate,
+              rent: increasedRent,
+              increaseDate: undefined, //updates in the controller
+            })
+          }
+      })
+      console.log(rentIncreaseObjArr, '2')
       await Promise.all(rentIncreaseObjArr.map((version)=> {
         createRentIncrease({
           tenancyId: version.tenancyId,
@@ -68,13 +87,6 @@ export default function IncreaseAll(this: any, { unitList }: Props) {
             let increaseDiff = Number(rent.toString().slice(1)) * (increasePercent/100);
             increasedRent = Number(rent.toString().slice(1)) + increaseDiff;
             increasedRent = Number(increasedRent.toFixed(2));
-
-            rentIncreaseObjArr.push({
-              tenancyId: unit.tenancies[0].tenancyId as string,
-              recordEffectiveDate: effectiveDate,
-              rent: increasedRent,
-              increaseDate: undefined, //updates in the controller
-            })
           }
           return (
             <div key={unit.number}>

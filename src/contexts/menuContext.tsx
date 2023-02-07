@@ -6,7 +6,7 @@ type context = {
 }
 
 export const MenuContext = createContext<context>({
- menuToggle: true,
+ menuToggle: false,
  setMenuToggle: () => {}
 })
 

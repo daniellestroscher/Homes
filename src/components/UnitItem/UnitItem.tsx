@@ -10,7 +10,6 @@ interface Props {
 export default function UnitItem({ unit, tenancies }: Props) {
   const router = useRouter();
   const { id } = router.query;
-  console.log(tenancies);
   let tenancy;
   if (tenancies) tenancy = tenancies[0];
   let tenancyUpcoming;
@@ -32,9 +31,7 @@ export default function UnitItem({ unit, tenancies }: Props) {
           </>
         )}
         {tenancy?.activeStatus === false && (
-          <>
-            <h6 sx={{position: 'absolute', bottom: '5px', color: 'darkRed'}}>This tenancy is not yet established.</h6>
-          </>
+          <h6 sx={{position: 'absolute', bottom: '5px', color: 'darkRed'}}>This tenancy <br/>is not yet established.</h6>
         )}
         <div sx={{ position: "absolute", bottom: "15px", right: "15px" }}>
           No. {unit.number}

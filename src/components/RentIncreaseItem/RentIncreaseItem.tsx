@@ -17,12 +17,19 @@ export default function RentIncreaseItem({ unit, tenancy, selector }: Props) {
   const { id } = router.query;
   const [selected, setSelected] = useState<boolean>(false);
 
+  let established = true;
+  if (new Date(tenancy?.establishedDate as string).getTime() > new Date().getTime()) {
+    established = false;
+  }
+
   return (
     <Link
       href={selector ? "javascript:void(0)" : "/[id]/[unitId]"}
       as={selector ? "" : `/${id}/${unit.unitId}`}
     >
-      <div sx={{ variant: "cards.primary", cursor: 'auto', position: "relative" }}>
+      <div
+        sx={{ variant: "cards.primary", cursor: "auto", position: "relative" }}
+      >
         {tenancy && tenancy.tenants && (
           <>
             <p>
@@ -55,7 +62,7 @@ export default function RentIncreaseItem({ unit, tenancy, selector }: Props) {
                     top: "10px",
                     right: "10px",
                     cursor: "pointer",
-                    color: 'white',
+                    color: "white",
                     border: "2px solid gray",
                     borderRadius: "50%",
                     "&:hover": {
@@ -68,13 +75,21 @@ export default function RentIncreaseItem({ unit, tenancy, selector }: Props) {
         )}
         {tenancy && tenancy.tenancy_versions && (
           <div sx={{ position: "absolute", bottom: "5px", left: "5px" }}>
-            <section sx={{ variant: "components.increaseSticker" }}>
-              <p>
-                next increase:
-                <br />
-                {tenancy?.tenancy_versions[0].increaseDate}
-              </p>
-            </section>
+            {
+              established ?
+              <section sx={{ variant: "components.increaseSticker" }}>
+                <p>
+                  next increase:
+                  <br />
+                  {tenancy &&
+                    tenancy.tenancy_versions &&
+                    tenancy.tenancy_versions[0] &&
+                    tenancy.tenancy_versions[0].increaseDate}
+                </p>
+              </section>
+              :
+              <h6 sx={{color: 'darkRed'}}>This tenancy <br/> is not yet established.</h6>
+            }
           </div>
         )}
         <div sx={{ position: "absolute", bottom: "15px", right: "15px" }}>

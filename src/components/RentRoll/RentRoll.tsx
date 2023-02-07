@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { ITenancyVersions, IUnit } from "../../../types/interfaces";
+import { ITenancy, ITenancyVersions, IUnit } from "../../../types/interfaces";
 import React, { useMemo, useState } from "react";
 import "react-data-grid/lib/styles.css";
 import DataGrid, { FormatterProps } from "react-data-grid";
@@ -31,6 +31,7 @@ export default function RentRoll({ unitArr, allVersions, colorMode }: Props) {
   function rowKeyGetter(row: Row) {
     return row.unit;
   }
+  console.log(unitArr, 'units',)
 
   function getColumns() {
     return [
@@ -140,7 +141,8 @@ export default function RentRoll({ unitArr, allVersions, colorMode }: Props) {
     unitArr.forEach((unit) => {
       if (unit.tenancies && unit.tenancies[0] && unit.tenancies[0].tenants) {
         let unitNumber = `${unit.number}`
-        let tenant = `${unit.tenancies[0].tenants[0].lastName}`;
+        let currentTenancy = unit.tenancies.find((one)=> one.activeStatus === true);
+        let tenant = `${currentTenancy && currentTenancy.tenants && currentTenancy.tenants[0].lastName}`;
         let rents: rentsType[] = [];
         unit.tenancies.forEach((tenancy) => {
           //find versions
@@ -156,7 +158,7 @@ export default function RentRoll({ unitArr, allVersions, colorMode }: Props) {
         });
         rows.push({
           unit: unitNumber,
-          tenant: tenant,
+          tenant: tenant ? tenant : 'TBD',
           jan: findRent(1, 31, rents as rentsType[]) as number,
           feb: findRent(2, 28, rents as rentsType[]) as number,
           march: findRent(3, 31, rents as rentsType[]) as number,
@@ -235,7 +237,7 @@ export default function RentRoll({ unitArr, allVersions, colorMode }: Props) {
       }}
       bottomSummaryRows={summaryRows}
       className={colorMode === 'default' ? 'rdg-light fill-grid' : 'rdg-dark fill-grid'}
-      style={{ resize: 'both' }}
+      style={{ resize: 'both', height: '80vh', width: '85vw' }}
     />
 
   );

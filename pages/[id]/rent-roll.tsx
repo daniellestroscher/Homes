@@ -67,7 +67,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const community = await getCommunityById(context.params?.id as string) as ICommunity;
   const unitArr = await getUnitListWithAllVersions(community.communityId as string) as IUnit[];
   const allVersions = await getAllTenancyVersions();
-  console.log(allVersions);
 
   return {
     props: {

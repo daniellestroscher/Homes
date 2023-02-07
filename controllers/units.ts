@@ -29,9 +29,7 @@ export async function getUnitList(req: NextApiRequest, res: NextApiResponse) {
     if (id) {
       const unitList = await UnitSchema.findAll({
         where: { communityId: id },
-        order: [
-          ["number", "ASC"],
-        ],
+        order: [["number", "ASC"]],
         // include: [
         //   {
         //     model: TenancySchema,
@@ -88,7 +86,7 @@ export async function getUnitListWithAllVersions(
       include: [
         {
           model: TenancySchema,
-          attributes: ["tenancyId"],
+          attributes: ["tenancyId", "activeStatus"],
           include: [TenantSchema],
         },
       ],

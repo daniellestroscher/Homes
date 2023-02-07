@@ -123,11 +123,12 @@ export const increasesToSend = (unitList: IUnit[]) => {
       unit.tenancies &&
       unit.tenancies[0] &&
       unit.tenancies[0].tenancy_versions &&
+      unit.tenancies[0].tenancy_versions[0] &&
       unit.tenancies[0].tenancy_versions[0].increaseDate
     ) {
       let month = Number(unit.tenancies[0].tenancy_versions[0].increaseDate.slice(5, 7));
       let year = Number(unit.tenancies[0].tenancy_versions[0].increaseDate.slice(0, 4));
-      console.log(year, now.getFullYear())
+      
       if (month === (now.getMonth() + 4) && year === (now.getFullYear())) {
         return unit;
       }
@@ -136,3 +137,25 @@ export const increasesToSend = (unitList: IUnit[]) => {
 
   return unitsToSendIncreases;
 };
+
+export const addTenanciesToUnitArr = (unitList: IUnit[], tenancyArr: ITenancy[]) => {
+  unitList.forEach((unit) => {
+    unit.tenancies = [];
+    let activeTenancy = tenancyArr.find((one)=> {
+      return one.unitId == unit.unitId &&
+      new Date(one.establishedDate).getTime() <= new Date().getTime() &&
+      one.activeStatus == true;
+    })
+    let nextTenancy = tenancyArr.find((one)=> {
+      return one.unitId === unit.unitId &&
+      new Date(one.establishedDate).getTime() > new Date().getTime() &&
+      one.activeStatus === false;
+    })
+    if (activeTenancy) {
+      unit.tenancies.push(activeTenancy);
+    } else if (nextTenancy) {
+      unit.tenancies?.push(nextTenancy);
+    }
+  })
+  return unitList;
+}

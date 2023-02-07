@@ -50,7 +50,19 @@ export async function getAllTenancies(
 ) {
   try {
     const tenancy = await TenancySchema.findAll({
-      include: [TenantSchema],
+      include: [
+        TenantSchema,
+        {
+          model: TenancyVersionSchema,
+          where: {
+            recordEffectiveDate: {
+              [Op.lte]: formatDate(new Date(), "yyyy-mm-dd"),
+            }
+          },
+          limit: 1,
+        },
+      ],
+
     });
     return res.status(200).json(tenancy);
   } catch (error) {
