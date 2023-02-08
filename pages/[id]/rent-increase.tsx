@@ -3,7 +3,7 @@ import Menu from "../../src/components/Menu/Menu";
 import RentIncreaseList from "../../src/components/RentIncreaseList/RentIncreaseList";
 import Navbar from "../../src/components/Navbar/Navbar";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { Session, unstable_getServerSession } from "next-auth";
+import { getServerSession, Session, unstable_getServerSession } from "next-auth";
 import { GetServerSidePropsContext } from "next";
 import { ICommunity, ITenancy, IUnit } from "../../types/interfaces";
 import { getCommunityById } from "../../src/services/communityService";
@@ -42,7 +42,7 @@ export default function RentIncreasesPage({
   const [searchQuery, setSearchQuery] = useState("");
   useEffect(() => {
     setUnitList(unitArr);
-  }, []);
+  }, [tenancyArr, unitArr]);
 
   addTenanciesToUnitArr(unitList, tenancyArr);
   const filteredUnits = filterUnits(unitList, searchQuery);
@@ -85,7 +85,7 @@ export default function RentIncreasesPage({
 }
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   //fetch session to validate
-  const session = await unstable_getServerSession(
+  const session = await getServerSession(
     context.req,
     context.res,
     authOptions

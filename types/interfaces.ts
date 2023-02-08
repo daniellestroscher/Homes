@@ -16,7 +16,7 @@ export interface ICommunity{
 export interface IUnit{
   unitId?: string;
   communityId: string;
-  number: number | undefined;
+  number: string | undefined;
 
   tenancies?: ITenancy[];
 }

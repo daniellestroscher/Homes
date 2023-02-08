@@ -20,6 +20,12 @@ export async function getTenanciesById(unitId: string) {
   });
 }
 
+export async function getTenanciesByIdWithAllVersions(unitId: string) {
+  return await fetchData<ITenancy[]>(`/tenancy/history/${unitId}`, {
+    method: "GET",
+  });
+}
+
 export async function updateNotes(unitId: string, notes: string) {
   return await fetchData<string>(`/tenancy/${unitId}`, {
     method: "PUT",

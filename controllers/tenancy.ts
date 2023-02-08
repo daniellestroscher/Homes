@@ -57,12 +57,11 @@ export async function getAllTenancies(
           where: {
             recordEffectiveDate: {
               [Op.lte]: formatDate(new Date(), "yyyy-mm-dd"),
-            }
+            },
           },
           limit: 1,
         },
       ],
-
     });
     return res.status(200).json(tenancy);
   } catch (error) {
@@ -88,11 +87,41 @@ export async function getTenanciesById(
             where: {
               recordEffectiveDate: {
                 [Op.lte]: formatDate(new Date(), "yyyy-mm-dd"),
-              }
+              },
             },
-            //order: [["recordEffectiveDate", "DESC"]],
             limit: 1,
           },
+        ],
+      });
+      return res.status(200).json(tenancy);
+    }
+  } catch (error) {
+    console.log(error, "Error in tenancy controller GET-BY-ID");
+    res.status(500).json({ error });
+  }
+}
+
+export async function getTenanciesByIdWithAllVersions(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  try {
+    const { unitId } = req.query;
+    if (unitId) {
+      const tenancy = await TenancySchema.findAll({
+        where: { unitId: unitId },
+        order: [["establishedDate", "DESC"]],
+        include: [
+          TenantSchema,
+          TenancyVersionSchema,
+          // {
+          //   model: TenancyVersionSchema,
+          //   // where: {
+          //   //   recordEffectiveDate: {
+          //   //     [Op.lte]: formatDate(new Date(), "yyyy-mm-dd"),
+          //   //   }
+          //   // },
+          // },
         ],
       });
       return res.status(200).json(tenancy);
@@ -127,7 +156,7 @@ export async function editTenancy(req: NextApiRequest, res: NextApiResponse) {
     const updates = req.body;
     //const { unitId } = req.query;
     if (updates) {
-      console.log('in edit tenancy controller')
+      console.log("in edit tenancy controller");
       const updatedTenancy = await TenancySchema.update(
         {
           pet: updates.tenancy.pet,
@@ -170,10 +199,10 @@ export async function changeTenancyStatus(
   res: NextApiResponse
 ) {
   try {
-    const {status, tenancyId} = req.body;
+    const { status, tenancyId } = req.body;
     const { unitId } = req.query;
     console.log(status, tenancyId, "IN CONTROLLER");
-    if(tenancyId) {
+    if (tenancyId) {
       const updatedStatus = await TenancySchema.update(
         { activeStatus: status },
         { where: { tenancyId: tenancyId } }

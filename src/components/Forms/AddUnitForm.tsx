@@ -14,7 +14,7 @@ export default function AddUnitForm({
   unitList,
   setUnitList,
 }: Props) {
-  const [unitNumber, setUnitNumber] = useState<number | undefined>(undefined);
+  const [unitNumber, setUnitNumber] = useState<string | undefined>(undefined);
   const { handleModal } = useModalContext();
 
   const handleSubmit = async (e: React.MouseEvent) => {
@@ -35,9 +35,9 @@ export default function AddUnitForm({
   return (
     <form sx={{ variant: "components.form" }}>
       <input
-        value={unitNumber as number}
-        type="number"
-        onChange={(e) => setUnitNumber(Number(e.target.value))}
+        value={unitNumber as string}
+        type="text"
+        onChange={(e) => setUnitNumber(e.target.value)}
         placeholder="Unit Number"
       ></input>
 

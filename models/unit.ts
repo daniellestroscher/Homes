@@ -15,7 +15,7 @@ const UnitSchema = sequelize.define<Model<IUnit>>("unit", {
     allowNull: false,
   },
   number: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   }
 });

@@ -2,13 +2,14 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GetServerSidePropsContext } from "next";
-import { Session, unstable_getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth";
 import { useRouter } from "next/router";
+import { useColorMode } from "theme-ui";
 import Menu from "../../../src/components/Menu/Menu";
 import Navbar from "../../../src/components/Navbar/Navbar";
 import { UnitHistory } from "../../../src/components/UnitHistory/UnitHistory";
 import { getCommunityById } from "../../../src/services/communityService";
-import { getTenancyById } from "../../../src/services/tenancyService";
+import { getTenanciesById, getTenanciesByIdWithAllVersions } from "../../../src/services/tenancyService";
 import { getUnitById } from "../../../src/services/unitService";
 import { ICommunity, ITenancy, IUnit } from "../../../types/interfaces";
 import { authOptions } from "../../api/auth/[...nextauth]";
@@ -21,19 +22,18 @@ type Props = {
   };
   community: ICommunity;
   unit: IUnit;
-  tenancy: ITenancy;
+  tenancyArrWithAllVersions: ITenancy[];
 };
 
-export default function History({ user, community, unit, tenancy }: Props) {
+export default function History({ user, unit, tenancyArrWithAllVersions }: Props) {
   const router = useRouter();
-  const { id } = router.query;
+  const [colorMode, setColorMode] = useColorMode();
 
   return (
     <>
       {user && (
         <>
-          <Navbar name={undefined} />
-          {/* <Menu communityId={id as string}/> */}
+          <Navbar name={undefined} colorMode={colorMode} setColorMode={setColorMode} />
           <FontAwesomeIcon
             icon={faArrowLeft}
             sx={{
@@ -45,7 +45,7 @@ export default function History({ user, community, unit, tenancy }: Props) {
             }}
             onClick={router.back}
           />
-          <UnitHistory />
+          <UnitHistory unit={unit} tenancyArr={tenancyArrWithAllVersions} />
         </>
       )}
     </>
@@ -53,7 +53,7 @@ export default function History({ user, community, unit, tenancy }: Props) {
 }
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   //fetch session to validate
-  const session = await unstable_getServerSession(
+  const session = await getServerSession(
     context.req,
     context.res,
     authOptions
@@ -67,19 +67,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
   const { user } = session as Session;
-  const community = (await getCommunityById(
-    context.params?.id as string
-  )) as ICommunity;
+  // const community = (await getCommunityById(
+  //   context.params?.id as string
+  // )) as ICommunity;
 
   const unit = (await getUnitById(context.params?.unitId as string)) as IUnit;
-  const tenancy = (await getTenancyById(unit.unitId as string)) as ITenancy;
+  const tenancyArrWithAllVersions = (await getTenanciesByIdWithAllVersions(unit.unitId as string)) as ITenancy[];
 
   return {
     props: {
       user,
-      community,
       unit,
-      tenancy,
+      tenancyArrWithAllVersions,
     },
   };
 }

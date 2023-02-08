@@ -5,7 +5,7 @@ import Menu from "../../src/components/Menu/Menu";
 import UnitList from "../../src/components/UnitList/UnitList";
 import Navbar from "../../src/components/Navbar/Navbar";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { Session, unstable_getServerSession } from "next-auth";
+import { getServerSession, Session, unstable_getServerSession } from "next-auth";
 import { GetServerSidePropsContext } from "next";
 import { ICommunity, ITenancy, IUnit } from "../../types/interfaces";
 import { getCommunityById } from "../../src/services/communityService";
@@ -36,31 +36,10 @@ export default function Home({ user, community, unitArr, tenancyArr }: Props) {
 
   useEffect(() => {
     setUnitList(unitArr);
-  }, []);
+  }, [tenancyArr, unitArr]);
 
   addTenanciesToUnitArr(unitList, tenancyArr)
 
-  // function addTenanciesToUnitArr(unitList: IUnit[], tenancyArr: ITenancy[]) {
-  //   unitList.forEach((unit) => {
-  //     unit.tenancies = [];
-  //     let activeTenancy = tenancyArr.find((one)=> {
-  //       return one.unitId == unit.unitId &&
-  //       new Date(one.establishedDate).getTime() <= new Date().getTime() &&
-  //       one.activeStatus == true;
-  //     })
-  //     let nextTenancy = tenancyArr.find((one)=> {
-  //       return one.unitId === unit.unitId &&
-  //       new Date(one.establishedDate).getTime() > new Date().getTime() &&
-  //       one.activeStatus === false;
-  //     })
-  //     if (activeTenancy) {
-  //       unit.tenancies.push(activeTenancy);
-  //     } else if (nextTenancy) {
-  //       unit.tenancies?.push(nextTenancy);
-  //     }
-  //   })
-  //   return unitList;
-  // }
   const filteredUnits = filterUnits(unitList, searchQuery);
 
   return (
@@ -97,7 +76,7 @@ export default function Home({ user, community, unitArr, tenancyArr }: Props) {
 }
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   //fetch session to validate
-  const session = await unstable_getServerSession(
+  const session = await getServerSession(
     context.req,
     context.res,
     authOptions

@@ -4,7 +4,7 @@ import Menu from '../../src/components/Menu/Menu'
 import RentRoll from '../../src/components/RentRoll/RentRoll';
 import Navbar from '../../src/components/Navbar/Navbar';
 import { authOptions } from '../api/auth/[...nextauth]';
-import { Session, unstable_getServerSession } from 'next-auth';
+import { getServerSession, Session, unstable_getServerSession } from 'next-auth';
 import { GetServerSidePropsContext } from 'next';
 import { ICommunity, ITenancyVersions, IUnit } from '../../types/interfaces';
 import { getCommunityById } from '../../src/services/communityService';
@@ -50,11 +50,12 @@ export default function RentRollPage({user, community, unitArr, allVersions}:Pro
 }
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   //fetch session to validate
-  const session = await unstable_getServerSession(
+  const session = await getServerSession(
     context.req,
     context.res,
     authOptions
   );
+  console.log(session, 'session');
   if (!session) {
     return {
       redirect: {
